@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1016 1411" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(1,0,0,1,-54.715302,-773.837838)">
+        <g transform="matrix(1.33452,0,0,1.432099,0,0)">
+            <path d="M843,80.358L843,1620.642C843,1664.993 804.36,1701 756.766,1701L86.234,1701C38.64,1701 0,1664.993 0,1620.642L0,80.358C0,36.007 38.64,0 86.234,0L756.766,0C804.36,0 843,36.007 843,80.358Z" style="fill:rgb(29,29,29);"/>
+        </g>
+        <g id="T" transform="matrix(2.58875,0,0,0.762097,102.071089,-1034.617807)">
+            <rect x="54.715" y="2125" width="246.285" height="248" style="fill:rgb(74,74,74);"/>
+        </g>
+        <g id="B" transform="matrix(2.58875,0,0,0.762097,102.071089,564.544355)">
+            <rect x="54.715" y="2125" width="246.285" height="248" style="fill:rgb(74,74,74);"/>
+        </g>
+        <g>
+            <g id="M" transform="matrix(2.58875,0,0,5.686138,102.071089,-11309.204882)">
+                <rect x="54.715" y="2125" width="246.285" height="248" style="fill:rgb(119,119,119);"/>
+            </g>
+            <g id="L" transform="matrix(0,5.72574,-0.762097,0,1863.170948,460.552238)">
+                <rect x="54.715" y="2125" width="246.285" height="248" style="fill:rgb(74,74,74);"/>
+            </g>
+            <g id="R" transform="matrix(0,5.72574,-0.762097,0,2689.740343,460.552238)">
+                <rect x="54.715" y="2125" width="246.285" height="248" style="fill:rgb(74,74,74);"/>
+            </g>
+        </g>
+        <g id="BL" transform="matrix(0.767405,0,0,0.762097,12.72653,564.544355)">
+            <rect x="54.715" y="2125" width="246.285" height="248" style="fill:none;"/>
+        </g>
+        <g id="BR" transform="matrix(0.767405,0,0,0.762097,839.295925,564.544355)">
+            <rect x="54.715" y="2125" width="246.285" height="248" style="fill:none;"/>
+        </g>
+        <g id="TL" transform="matrix(0.767405,0,0,0.762097,12.72653,-1034.617807)">
+            <rect x="54.715" y="2125" width="246.285" height="248"/>
+        </g>
+        <g id="TR" transform="matrix(0.767405,0,0,0.762097,839.295925,-1034.617807)">
+            <rect x="54.715" y="2125" width="246.285" height="248"/>
+        </g>
+        <g id="Card-Grid" serif:id="Card Grid">
+            <g id="Grid-BG" serif:id="Grid BG" transform="matrix(0.998174,0,0,1.134621,0.099901,-19.914975)">
+                <path d="M54.715,2046.846L54.715,533L1072.142,533L1072.142,2046.846L1001.492,2109L125.365,2109L54.715,2046.846Z" style="fill:rgb(39,40,45);stroke:rgb(118,35,35);stroke-width:0.97px;"/>
+            </g>
+            <g id="Grid-Decor" serif:id="Grid Decor">
+                <g id="Corner-Top" serif:id="Corner Top">
+                </g>
+                <g id="Corner-Top1" serif:id="Corner Top">
+                </g>
+                <g id="Bottom-Corner-L" serif:id="Bottom Corner L">
+                </g>
+                <g id="Bottom-Corner-R" serif:id="Bottom Corner R">
+                </g>
+                <g id="Side-Top" serif:id="Side Top">
+                </g>
+                <g id="Side-L" serif:id="Side L">
+                    <g transform="matrix(0,3.773585,-0.68,0,452.405032,-808.81693)">
+                        <path d="M540,584.838L593,584.838" style="fill:none;stroke:rgb(229,60,60);stroke-width:0.38px;stroke-linecap:butt;"/>
+                    </g>
+                    <g transform="matrix(0,0.943396,-0.68,0,452.405032,950.484957)">
+                        <path d="M540,584.838L593,584.838" style="fill:none;stroke:rgb(229,60,60);stroke-width:1.27px;stroke-linecap:butt;"/>
+                    </g>
+                    <g transform="matrix(0,0.377358,-0.68,0,452.405032,1361.633648)">
+                        <path d="M540,584.838L593,584.838" style="fill:none;stroke:rgb(229,60,60);stroke-width:1.89px;stroke-linecap:butt;"/>
+                    </g>
+                </g>
+                <g id="Side-R" serif:id="Side R">
+                    <g transform="matrix(0,6.509434,-1.173,0,1756.299481,-1953.175421)">
+                        <path d="M540,584.838L593,584.838" style="fill:none;stroke:rgb(229,60,60);stroke-width:0.22px;stroke-linecap:butt;"/>
+                    </g>
+                    <g transform="matrix(0,1.735849,-1.2512,0,1802.0338,382.072114)">
+                        <path d="M540,584.838L593,584.838" style="fill:none;stroke:rgb(229,60,60);stroke-width:0.69px;stroke-linecap:butt;"/>
+                    </g>
+                    <g transform="matrix(0,0.698113,-1.258,0,1806.010698,1083.437787)">
+                        <path d="M540,584.838L593,584.838" style="fill:none;stroke:rgb(229,60,60);stroke-width:1.02px;stroke-linecap:butt;"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
