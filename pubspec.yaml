@@ -75,7 +75,7 @@ flutter:
     - assets/ui/grid_border/border_l.svg
     - assets/ui/grid_border/border_r.svg
     - assets/ui/grp_card.svg
-    - assets/ui/grp_card.png
+    - assets/ui/add_card.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

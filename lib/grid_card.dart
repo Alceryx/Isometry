@@ -1,39 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
 class GrpCard extends StatelessWidget 
 {
   final String title;
   final String type;  
+  final String img; 
   const GrpCard
   ({
     super.key,
     required this.title,
-    required this.type,
+    required this.type, 
+    required this.img
   });
 
   @override
   Widget build(BuildContext context) 
   {
-    return Container
+    return Padding
     (
-      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-      decoration: BoxDecoration
-      (
-        image: DecorationImage(image: AssetImage('assets/ui/grp_card.png'))
-      ),
+      padding: const EdgeInsets.only(top: 10),
       child: Stack
       (
         children: 
         [
-          // Positioned.fill
-          // (
-          //   child: SvgPicture.asset
-          //   (
-          //     'assets/ui/grp_card.svg', 
-          //     width: cardWidth,
-          //   )
-          // )
+          SvgPicture.asset(img),
+
+          Padding
+          (
+            padding: const EdgeInsets.all(6.0),
+            child: Column
+            (
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: 
+              [
+                Text
+                (
+                  type, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.onPrimary)
+                ),
+                Text
+                (
+                  title, style: Theme.of(context).textTheme.titleLarge?.copyWith
+                  (color: Theme.of(context).colorScheme.onPrimary)
+                )
+              ],
+            ),
+          )
         ],
       ),
     );

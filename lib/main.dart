@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget
           titleLarge: TextStyle
           (
             fontFamily: 'Liberator',
-            fontSize: 32,
+            fontSize: 40,
             fontWeight: FontWeight.w300,
           ),
 
@@ -78,7 +78,12 @@ class MyApp extends StatelessWidget
             fontWeight: FontWeight.w100,
           ),
 
-          
+          titleSmall: TextStyle
+          (
+            fontFamily: 'Liberator',
+            fontSize: 20,
+            fontWeight: FontWeight.w300,
+          ),
         ),
 
       ),

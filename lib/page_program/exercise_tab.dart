@@ -303,6 +303,7 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                       ], //COL FOR GRID BG
                     ),
 
+
                     GridView.builder
                     (
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount
@@ -311,15 +312,29 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                         crossAxisSpacing: 5,
                         mainAxisSpacing: 5,
                       ),
-                      itemCount: grpData.length, //user will decide this
+                      itemCount: grpData.length + 1, //user will decide this
                       itemBuilder: (context, index) 
                       {
-                        final card = grpData[index];
-                        return GrpCard
-                        (
-                          title: card['title'] as String,
-                          type: card['type'] as String,
-                        );
+                        
+                        if (index < grpData.length)
+                        {
+                          final card = grpData[index];
+                          return GrpCard
+                          (
+                            title: card['title'] as String,
+                            type: card['type'] as String,
+                            img: 'assets/ui/grp_card.svg'
+                          );
+                        }
+                        else
+                        {
+                          return GrpCard
+                          (
+                            title: '',
+                            type: '',
+                            img: 'assets/ui/add_card.svg'
+                          ); 
+                        }
                       },
                     ), 
                   ]
