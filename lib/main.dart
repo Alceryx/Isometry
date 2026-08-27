@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:isometry/grid_card.dart';
+import 'package:isometry/exercise_grp_data.dart';
 import 'package:isometry/page_program/exercise_tab.dart';
+import 'package:provider/provider.dart';
 
 void main() 
 {
-  runApp(const MyApp());
+  runApp
+  (
+    ChangeNotifierProvider
+    (
+      create: (context) => GrpData(),
+      child: const MyApp()
+    )
+  );
 }
 
 class MyApp extends StatelessWidget 

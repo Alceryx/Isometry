@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.3.0
+  provider: ^6.1.5+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -65,6 +66,7 @@ flutter:
     - assets/ui/button_sort.svg
     - assets/ui/button_filter.svg
     - assets/ui/button_select.svg
+    - assets/ui/button_option.svg
     - assets/ui/grid_border/border_tl.svg
     - assets/ui/grid_border/border_tr.svg
     - assets/ui/grid_border/border_bl.svg

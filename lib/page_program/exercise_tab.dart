@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:isometry/add_card_dialog.dart';
+import 'package:isometry/edit_card_dialog.dart';
 import 'package:isometry/exercise_grp_data.dart';
-import 'package:isometry/grid_card.dart';
+import 'package:isometry/exercise_grp_card.dart';
+import 'package:provider/provider.dart';
+
+
 
 class ExerciseGrpTab extends StatefulWidget 
 {
@@ -19,6 +24,7 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
   @override
   Widget build(BuildContext context) 
   {
+    final cardData = context.watch<GrpData>();
     return Scaffold
     (
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -172,61 +178,83 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
           
               Padding
               (
-                padding: const EdgeInsets.symmetric( vertical: 10),
-                child: Row
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: SizedBox
                 (
-                  children: 
-                  [
-                    SizedBox
-                    (
-                      height: toolHeight,
-                      width: 230,
-                      child: Stack
+                  height: toolHeight,
+                  child: Row
+                  (
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: 
+                    [
+                      Expanded
                       (
-                        children: 
-                        [
-                          SvgPicture.asset
+                        child: SizedBox
+                        (
+                          child: Stack
                           (
-                            'assets/ui/search_bar.svg',
-                            height: toolHeight,
-                          ),
-                      
-                          Padding
-                          (
-                            padding: EdgeInsetsGeometry.all(7),
-                            child: TextField
-                            (
-                              style: Theme.of(context).textTheme.displaySmall,
-                              decoration: InputDecoration
+                            children: 
+                            [
+                              Row
                               (
-                                border: InputBorder.none,
-                                hintText: 'Search',
-                                hintStyle: Theme.of(context).textTheme.displaySmall
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: 
+                                [
+                                  Expanded
+                                  (
+                                    child: ColoredBox
+                                    (color: Theme.of(context).colorScheme.surface)
+                                  ),
+                                  SvgPicture.asset('assets/ui/search_bar.svg')
+                                ]
                               ),
-                            ),
+
+                              Padding
+                              (
+                                padding: const EdgeInsets.only(left: 10, right: 10, bottom: 7),
+                                child: TextField
+                                (
+                                  style: Theme.of(context).textTheme.displaySmall?.copyWith
+                                  (
+                                    color: Theme.of(context).colorScheme.onSurface
+                                  ),
+                                  decoration: InputDecoration
+                                  (
+                                    border: InputBorder.none,
+                                    hintText: 'Search',
+                                    hintStyle: Theme.of(context).textTheme.displaySmall?.copyWith
+                                    (
+                                      color: Theme.of(context).colorScheme.onSurface
+                                    )
+                                  )
+                                ),
+                              )
+                            ], //Search Bar
                           )
-                        ] 
+                        )
                       ),
-                    ),
-                    Spacer(flex:3),
-          
-                    GestureDetector
-                    (
-                      onTap: () {},
-                      child: SvgPicture.asset
+                      SizedBox(width: 10),
+                            
+                      GestureDetector
                       (
-                        'assets/ui/button_sort.svg',
-                        height: toolHeight,
+                        onTap: () {},
+                        child: SvgPicture.asset
+                        (
+                          'assets/ui/button_sort.svg',
+                        ),
                       ),
-                    ),
-                    Spacer(flex:1),
-          
-                    SvgPicture.asset
-                    (
-                      'assets/ui/button_select.svg',
-                      height: toolHeight,
-                    )
-                  ] // ROW FOR TOOL BAR
+                      SizedBox(width: 10,),
+                            
+                      GestureDetector
+                      (
+                        onTap: () {},
+                        child: SvgPicture.asset
+                        (
+                          'assets/ui/button_select.svg',
+                        ),
+                      )
+                    ] // ROW FOR TOOL BAR
+                  ),
                 ),
               ),
               
@@ -304,44 +332,72 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                     ),
 
 
-                    GridView.builder
+                    Padding
                     (
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount
+                      padding: const EdgeInsets.all(10.0),
+                      child: GridView.builder
                       (
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 5,
-                        mainAxisSpacing: 5,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount
+                        (
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                        ),
+                        itemCount: cardData.cards.length + 1,
+                        itemBuilder: (context, index) 
+                        {
+                          
+                          if (index < cardData.cards.length)
+                          {
+                            final card = cardData.cards[index];
+                            return GrpCard
+                            (
+                              title: card.title,
+                              type: card.type,
+                              img: card.img,
+                              isAddCard: false,
+                              onOptionTap: ()
+                                {
+                                  showDialog
+                                  (
+                                    context: context, builder: (context) 
+                                    => EditCardDialog
+                                    (
+                                      index: index, 
+                                      edittingCard: cardData.cards[index])
+                                  );
+                                },
+                            );
+                          }
+                          else //Add Card Butotn
+                          {
+                            return InkWell
+                            (
+                              onTap: () 
+                              {
+                                showDialog
+                                (
+                                  context: context, 
+                                  builder: (context) => AddCardDialog()
+                                );
+                              },
+                              child: GrpCard
+                              (
+                                title: '', 
+                                type: '',
+                                img: 'assets/ui/add_card.svg',
+                                isAddCard: true,
+                              ),
+                            ); 
+                          }
+                        },
                       ),
-                      itemCount: grpData.length + 1, //user will decide this
-                      itemBuilder: (context, index) 
-                      {
-                        
-                        if (index < grpData.length)
-                        {
-                          final card = grpData[index];
-                          return GrpCard
-                          (
-                            title: card['title'] as String,
-                            type: card['type'] as String,
-                            img: 'assets/ui/grp_card.svg'
-                          );
-                        }
-                        else
-                        {
-                          return GrpCard
-                          (
-                            title: '',
-                            type: '',
-                            img: 'assets/ui/add_card.svg'
-                          ); 
-                        }
-                      },
                     ), 
                   ]
                 )
               ),
               
-              SizedBox(height: 20,)
+              SizedBox(height: 20)
             ],//COL FOR WHOLE PAGE
           ),
         ),
