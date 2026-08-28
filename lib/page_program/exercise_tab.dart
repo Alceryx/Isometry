@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:isometry/page_program/dialog_add_card.dart';
 import 'package:isometry/page_program/dialog_edit_card.dart';
 import 'package:isometry/page_program/exercise_card_data.dart';
-import 'package:isometry/page_program/exercise_card_data_provider.dart';
 import 'package:isometry/page_program/exercise_card_design.dart';
-import 'package:provider/provider.dart';
-
-
+import 'package:isometry/page_program/exercise_card_data_provider.dart';
 
 class ExerciseGrpTab extends StatefulWidget 
 {
@@ -20,7 +18,7 @@ class ExerciseGrpTab extends StatefulWidget
 class _ExerciseGrpTabState extends State<ExerciseGrpTab> 
 {
   final double toolHeight = 33;
-  final double cornerSize = 65; 
+  final double cornerSize = 60; 
 
   @override
   Widget build(BuildContext context) 
