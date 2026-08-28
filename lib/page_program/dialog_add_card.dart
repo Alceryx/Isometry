@@ -1,30 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:isometry/exercise_grp_card.dart';
-import 'package:isometry/exercise_grp_data.dart';
+import 'package:isometry/page_program/exercise_card_data.dart';
+import 'package:isometry/page_program/exercise_card_data_provider.dart';
 import 'package:provider/provider.dart';
 
-class EditCardDialog extends StatefulWidget 
+class AddCardDialog extends StatefulWidget 
 {
-  final int index; 
-  final GrpCard edittingCard;
-  const EditCardDialog
-  ({
-    super.key,
-    required this.index,
-    required this.edittingCard
-  });
+  const AddCardDialog({super.key});
 
   @override
-  State<EditCardDialog> createState() => _EditCardDialogState();
+  State<AddCardDialog> createState() => _AddCardDialogState();
 }
 
-class _EditCardDialogState extends State<EditCardDialog> 
+class _AddCardDialogState extends State<AddCardDialog> 
 {
-
-  late final TextEditingController titleController 
-    = TextEditingController(text: widget.edittingCard.title);
-  late final TextEditingController typeController
-    = TextEditingController(text: widget.edittingCard.type);
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController typeController = TextEditingController();
 
   @override
   void dispose() 
@@ -41,7 +31,7 @@ class _EditCardDialogState extends State<EditCardDialog>
     (
       title: Text
       (
-        'Editing ${widget.edittingCard.title}',
+        'New Exercise Group',
         style: Theme.of(context).textTheme.titleMedium?.copyWith
         (
           color: Theme.of(context).colorScheme.primary
@@ -60,7 +50,7 @@ class _EditCardDialogState extends State<EditCardDialog>
             decoration: InputDecoration
             (
               border: InputBorder.none,
-              hintText: 'Enter a New Title',
+              hintText: 'Enter a Title',
               hintStyle: Theme.of(context).textTheme.displaySmall?.copyWith
               (
                 color: Theme.of(context).colorScheme.onSurface
@@ -75,7 +65,7 @@ class _EditCardDialogState extends State<EditCardDialog>
             decoration: InputDecoration
             (
               border: InputBorder.none,
-              hintText: 'Enter a New Type',
+              hintText: 'Enter a Type',
               hintStyle: Theme.of(context).textTheme.displaySmall?.copyWith
               (
                 color: Theme.of(context).colorScheme.onSurface
@@ -89,38 +79,25 @@ class _EditCardDialogState extends State<EditCardDialog>
       [
         TextButton
         (
-          child: Text('Delete'),
+          
           onPressed: () 
           {
-            context.read<GrpData>().deleteCard(widget.index);
+            final newCard = GrpCardData
+            (
+              title: titleController.text, 
+              type: typeController.text, 
+            );
+
+            context.read<GrpDataProvider>().addCard(newCard);
             Navigator.pop(context);
           }, 
+          child: Text('Add')
         ),
 
         TextButton
         (
-          child: Text('Save'),
-          onPressed: () 
-          {
-            context.read<GrpData>().updateCard
-            (
-              widget.index, 
-              GrpCard
-              (
-                title: titleController.text, 
-                type: typeController.text, 
-                img: widget.edittingCard.img, 
-                isAddCard: false
-              )
-            );
-            Navigator.pop(context);
-          },
-        ),
-
-        TextButton
-        (
-          child: Text('Cancel'),
           onPressed: () => Navigator.pop(context), 
+          child: Text('Cancel')
         )
       ],
     );

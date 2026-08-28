@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:isometry/add_card_dialog.dart';
-import 'package:isometry/edit_card_dialog.dart';
-import 'package:isometry/exercise_grp_data.dart';
-import 'package:isometry/exercise_grp_card.dart';
+import 'package:isometry/page_program/dialog_add_card.dart';
+import 'package:isometry/page_program/dialog_edit_card.dart';
+import 'package:isometry/page_program/exercise_card_data.dart';
+import 'package:isometry/page_program/exercise_card_data_provider.dart';
+import 'package:isometry/page_program/exercise_card_design.dart';
 import 'package:provider/provider.dart';
 
 
@@ -24,7 +25,7 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
   @override
   Widget build(BuildContext context) 
   {
-    final cardData = context.watch<GrpData>();
+    final cardData = context.watch<GrpDataProvider>();
     return Scaffold
     (
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -350,11 +351,11 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                           if (index < cardData.cards.length)
                           {
                             final card = cardData.cards[index];
-                            return GrpCard
+                            return GrpCardDesign
                             (
-                              title: card.title,
-                              type: card.type,
-                              img: card.img,
+                              cardData: GrpCardData
+                              (title: card.title, type: card.type),
+                              img: 'assets/ui/grp_card.svg',
                               isAddCard: false,
                               onOptionTap: ()
                                 {
@@ -381,10 +382,10 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                                   builder: (context) => AddCardDialog()
                                 );
                               },
-                              child: GrpCard
+                              child: GrpCardDesign
                               (
-                                title: '', 
-                                type: '',
+                                cardData: GrpCardData
+                                (title: '', type: ''),
                                 img: 'assets/ui/add_card.svg',
                                 isAddCard: true,
                               ),

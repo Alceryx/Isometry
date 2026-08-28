@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:isometry/exercise_grp_card.dart';
+import 'package:isometry/page_program/exercise_card_data.dart';
 
 
-class GrpData extends ChangeNotifier
+
+class GrpDataProvider extends ChangeNotifier
 {
-  final List<GrpCard> _cards = [];
+  final List<GrpCardData> _cards = [];
   /*
   _cards to make this list private to this file/lib. 
   Any attempt to modify _cards in other files must go
@@ -12,13 +13,13 @@ class GrpData extends ChangeNotifier
   notifyListener() is called.
   */
 
-  List<GrpCard> get cards => _cards;
+  List<GrpCardData> get cards => _cards;
   /*
   Expose _cards using property syntax, not method call.
   cards is like a pucblic read_only proxy for _cards
   */ 
 
-  void addCard(GrpCard card)
+  void addCard(GrpCardData card)
   {
     _cards.add(card); 
     notifyListeners(); 
@@ -30,10 +31,9 @@ class GrpData extends ChangeNotifier
     notifyListeners();
   }
 
-  void updateCard(int index, GrpCard newCard)
+  void updateCard(int index, GrpCardData newCard)
   { 
     _cards[index] = newCard; 
     notifyListeners();
   }
 }
-

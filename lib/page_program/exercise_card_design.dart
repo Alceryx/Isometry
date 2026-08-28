@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:isometry/page_program/exercise_card_data.dart';
 
-class GrpCard extends StatelessWidget 
+class GrpCardDesign extends StatelessWidget 
 {
-  final String title;
-  final String type;  
   final String img; 
   final bool isAddCard; 
   final VoidCallback? onOptionTap; 
-  
-  const GrpCard
+  final GrpCardData cardData; 
+
+  const GrpCardDesign
   ({
     super.key,
-    required this.title,
-    required this.type, 
     required this.img,
     required this.isAddCard,
+    required this.cardData,
     this.onOptionTap
   });
 
@@ -49,12 +48,12 @@ class GrpCard extends StatelessWidget
                     [
                       Text
                       (
-                        type, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.surface)
+                        cardData.type, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.surface)
                       ),
                       
                       Text
                       (
-                        title, style: Theme.of(context).textTheme.titleLarge?.copyWith
+                        cardData.title, style: Theme.of(context).textTheme.titleLarge?.copyWith
                         (color: Theme.of(context).colorScheme.surface)
                       )
                     ],
