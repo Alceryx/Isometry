@@ -78,6 +78,11 @@ flutter:
     - assets/ui/grid_border/border_r.svg
     - assets/ui/grp_card.svg
     - assets/ui/add_card.svg
+    - assets/ui/dialog_card.svg
+    - assets/ui/button_save.svg
+    - assets/ui/button_cancel.svg
+    - assets/ui/button_delete.svg
+    - assets/ui/button_close.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
