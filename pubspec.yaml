@@ -80,8 +80,8 @@ flutter:
     - assets/ui/add_card.svg
     - assets/ui/dialog_card.svg
     - assets/ui/button_save.svg
-    - assets/ui/button_cancel.svg
-    - assets/ui/button_delete.svg
+    - assets/ui/dialog_button_left.svg
+    - assets/ui/dialog_button_right.svg
     - assets/ui/button_close.svg
 
 
