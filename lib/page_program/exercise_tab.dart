@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isometry/fade_animation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:isometry/page_program/dialog_add_card.dart';
@@ -374,10 +375,16 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                             (
                               onTap: () 
                               {
-                                showDialog
+                                showGeneralDialog
                                 (
+                                  barrierColor: Color.fromARGB(230, 0, 0, 0),
                                   context: context, 
-                                  builder: (context) => AddCardDialog()
+                                  pageBuilder: (context, anim1, anim2) => AddCardDialog(),
+                                  transitionDuration: Duration(milliseconds: 400),
+                                  transitionBuilder: (context, anim1, anim2, child)
+                                  {
+                                    return RapidFadeAnimation(child: child);
+                                  }
                                 );
                               },
                               child: GrpCardDesign
