@@ -46,7 +46,9 @@ bool tracer_process_frame(
 {
     if (g_session == nullptr) return false;
 
-    cv::Mat input(height, width, CV_8UC1);
+    int buffer_height = static_cast<int>(height * 1.5);
+    
+    cv::Mat input(buffer_height, width, CV_8UC1);
     std::memcpy(input.data, pixels, height * width * sizeof(uint8_t));
     if (input.empty()) return false;
 
