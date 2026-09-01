@@ -7,4 +7,4 @@
 )
 
 #include "Chapters/Intro.typ"
-#include "Chapters/Object Detection.typ"
+#include "Chapters/Tracer.typ"
