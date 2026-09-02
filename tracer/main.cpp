@@ -43,7 +43,6 @@ int main(void)
 
         while (cap.read(frame))
         {
-
             if (frame.empty())
             {
                 std::cerr << "Error: Could not find or open test.jpg\n";
@@ -98,7 +97,7 @@ int main(void)
                     cv::Point(static_cast<int>(kp.pos.x), static_cast<int>(kp.pos.y)), 
                     7, cv::Scalar(0, 255, 0), -1);
             }
-            
+
             std::map<Joint, float> joint_angles;
 
             std::optional<float> re_ang = detected.angle(detected.kp(Joint::RightShoulder), detected.kp(Joint::RightElbow), detected.kp(Joint::RightWrist));

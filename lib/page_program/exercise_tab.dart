@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:isometry/cam_test.dart';
+import 'package:isometry/camera/cam_test.dart';
 import 'package:isometry/custom_transitions.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +7,10 @@ import 'package:isometry/dialog_data.dart';
 import 'package:isometry/page_program/exercise_card_data.dart';
 import 'package:isometry/page_program/exercise_card_design.dart';
 import 'package:isometry/page_program/exercise_card_data_provider.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class ExerciseGrpTab extends StatefulWidget 
 {

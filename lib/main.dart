@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-// import 'package:isometry/native/tracer_binding.dart';
 import 'package:isometry/page_program/exercise_card_data_provider.dart';
 import 'package:isometry/page_program/exercise_tab.dart';
+
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() 
-{
-  runApp
+{  runApp
   (
     ChangeNotifierProvider
     (

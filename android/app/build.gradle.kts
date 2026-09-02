@@ -14,6 +14,13 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    externalNativeBuild {
+        cmake {
+            path = file("../../tracer/CMakeLists.txt")
+            version = "4.4.0"
+        }
+    }
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.isometry"
@@ -27,6 +34,12 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        externalNativeBuild {
+            cmake {
+                arguments("-DANDROID_STL=c++_shared")
+                abiFilters("arm64-v8a")
+            }
+        }
     }
 
     buildTypes {

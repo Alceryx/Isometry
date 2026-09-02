@@ -7,9 +7,10 @@
 
 #include <vector>
 #include <filesystem>
+#include <memory>
 
-static Ort::Env* g_env = nullptr;
-static Ort::Session* g_session = nullptr;
+static std::unique_ptr<Ort::Env> g_env;
+static std::unique_ptr<Ort::Session> g_session = nullptr;
 
 bool tracer_ping()
 {
@@ -20,10 +21,14 @@ bool tracer_init(const char* model_path)
 {
     try
     {
-        g_env = new Ort::Env(ORT_LOGGING_LEVEL_WARNING, model_path);
+        g_env = std::make_unique<Ort::Env>(ORT_LOGGING_LEVEL_WARNING, "Tracer");
         Ort::SessionOptions options;
+#ifdef _WIN32
         std::wstring path = std::filesystem::path(model_path).wstring();
-        g_session = new Ort::Session(*g_env, path.c_str(), options);
+        g_session = std::make_unique<Ort::Session>(*g_env, path.c_str(), options);
+#else
+        g_session = std::make_unique<Ort::Session>(*g_env, model_path, options);
+#endif
         return true;
     }
     catch (const Ort::Exception&)
@@ -34,26 +39,64 @@ bool tracer_init(const char* model_path)
 
 void tracer_shutdown()
 {
-    delete g_env;
-    delete g_session;
-    g_session = nullptr;
-    g_env = nullptr;
+    g_env.reset();
+    g_session.reset();
 }
 
 bool tracer_process_frame(
-    uint8_t *pixels, int width, int height,
+    uint8_t *pixels, 
+    int width, int height,
+    int pixel_format,
     float *out_keypoints)
 {
-    if (g_session == nullptr) return false;
-
-    int buffer_height = static_cast<int>(height * 1.5);
-    
-    cv::Mat input(buffer_height, width, CV_8UC1);
-    std::memcpy(input.data, pixels, height * width * sizeof(uint8_t));
-    if (input.empty()) return false;
+    if (!pixels || !out_keypoints || !g_session) return false;
 
     cv::Mat frame;
-    cv::cvtColor(input, frame, cv::COLOR_YUV2BGR_NV21, 0, cv::ALGO_HINT_ACCURATE);
+
+    switch (static_cast<TracerPixelFormat>(pixel_format))
+    {
+    case TRACER_PIXEL_FORMAT_NV21:
+    {
+        int yuv_height = height + (height / 2);
+        cv::Mat yuv_mat(yuv_height, width, CV_8UC1, pixels);
+        cv::cvtColor(yuv_mat, frame, cv::COLOR_YUV2BGR_NV21);
+        break;
+    }
+    case TRACER_PIXEL_FORMAT_NV12:
+    {
+        int yuv_height = height + (height / 2);
+        cv::Mat yuv_mat(yuv_height, width, CV_8UC1, pixels);
+        cv::cvtColor(yuv_mat, frame, cv::COLOR_YUV2BGR_NV12);
+        break;
+    }
+    case TRACER_PIXEL_FORMAT_I420:
+    {
+        int yuv_height = height + (height / 2);
+        cv::Mat yuv_mat(yuv_height, width, CV_8UC1, pixels);
+        cv::cvtColor(yuv_mat, frame, cv::COLOR_YUV2BGR_I420);
+        break;
+    }
+    case TRACER_PIXEL_FORMAT_BGRA:
+    {
+        cv::Mat bgra_mat(height, width, CV_8UC4, pixels);
+        cv::cvtColor(bgra_mat, frame, cv::COLOR_BGRA2BGR);
+        break;
+    }
+    case TRACER_PIXEL_FORMAT_RGBA:
+    {
+        cv::Mat rgba_mat(height, width, CV_8UC4, pixels);
+        cv::cvtColor(rgba_mat, frame, cv::COLOR_RGBA2BGR);
+        break;
+    }
+    case TRACER_PIXEL_FORMAT_BGR:
+    {
+        frame = cv::Mat(height, width, CV_8UC3, pixels);
+        break;
+    }
+    default:
+        return false;
+    }
+    
     if (frame.empty()) return false;
     
     try
@@ -61,6 +104,11 @@ bool tracer_process_frame(
         int64_t in_wid = g_session->GetInputTypeInfo(0).GetTensorTypeAndShapeInfo().GetShape()[3];
         int64_t in_hei = g_session->GetInputTypeInfo(0).GetTensorTypeAndShapeInfo().GetShape()[2];
         
+        Ort::AllocatorWithDefaultOptions allocator;
+
+        Ort::AllocatedStringPtr input_name_ptr = g_session->GetInputNameAllocated(0, allocator);
+        Ort::AllocatedStringPtr output_name_ptr = g_session->GetOutputNameAllocated(0, allocator);
+
         cv::Mat blob;
         cv::dnn::blobFromImage(frame, blob, 1.0 / 255.0, 
             cv::Size(static_cast<int>(in_wid), static_cast<int>(in_hei)), 
@@ -76,13 +124,8 @@ bool tracer_process_frame(
             input_shape.data(), input_shape.size()
         );
 
-        Ort::AllocatorWithDefaultOptions allocator;
-
-        Ort::AllocatedStringPtr input_name_ptr = g_session->GetInputNameAllocated(0, allocator);
-        Ort::AllocatedStringPtr output_name_ptr = g_session->GetOutputNameAllocated(0, allocator);
-
-        std::vector<const char *> input_names = {input_name_ptr.get()};
-        std::vector<const char *> output_names = {output_name_ptr.get()};
+        std::vector<const char*> input_names = {input_name_ptr.get()};
+        std::vector<const char*> output_names = {output_name_ptr.get()};
 
         std::vector<Ort::Value> output_tensors = g_session->Run(
             Ort::RunOptions{nullptr},
