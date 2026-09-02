@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:isometry/fade_animation.dart';
+import 'package:isometry/cam_test.dart';
+import 'package:isometry/custom_transitions.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:isometry/page_program/dialog_add_card.dart';
-import 'package:isometry/page_program/dialog_edit_card.dart';
+import 'package:isometry/dialog_data.dart';
 import 'package:isometry/page_program/exercise_card_data.dart';
 import 'package:isometry/page_program/exercise_card_design.dart';
 import 'package:isometry/page_program/exercise_card_data_provider.dart';
@@ -161,7 +161,14 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                   SizedBox(width: 10),
                   GestureDetector
                   (
-                    onTap: () {},
+                    onTap: () 
+                    {
+                      Navigator.of(context).push(MaterialPageRoute
+                      (builder: (context)
+                      {
+                        return CamTest();
+                      }));
+                    },
                     child: SvgPicture.asset
                     (
                       'assets/ui/tab_navigator.svg',
@@ -332,9 +339,10 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                     ),
 
 
+
                     Padding
                     (
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(15.0),
                       child: GridView.builder
                       (
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount
@@ -346,7 +354,6 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                         itemCount: cardData.cards.length + 1,
                         itemBuilder: (context, index) 
                         {
-                          
                           if (index < cardData.cards.length)
                           {
                             final card = cardData.cards[index];
@@ -357,16 +364,22 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                               img: 'assets/ui/grp_card.svg',
                               isAddCard: false,
                               onOptionTap: ()
-                                {
-                                  showDialog
+                              {
+                                showGeneralDialog
+                                (
+                                  context: context, 
+                                  pageBuilder: (context, anim1, anim2) 
+                                  => EditCardDialog
                                   (
-                                    context: context, builder: (context) 
-                                    => EditCardDialog
-                                    (
-                                      index: index, 
-                                      edittingCard: cardData.cards[index])
-                                  );
-                                },
+                                    index: index, 
+                                    edittingCard: cardData.cards[index]
+                                  ),
+                                  transitionBuilder: (context, anim1, anim2, child)
+                                  {
+                                    return RapidFadeAnimation(child: child);
+                                  }
+                                );
+                              },
                             );
                           }
                           else //Add Card Butotn
@@ -379,8 +392,8 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                                 (
                                   barrierColor: Color.fromARGB(230, 0, 0, 0),
                                   context: context, 
-                                  pageBuilder: (context, anim1, anim2) => AddCardDialog(),
-                                  transitionDuration: Duration(milliseconds: 400),
+                                  pageBuilder: (context, anim1, anim2) 
+                                  => AddCardDialog(),
                                   transitionBuilder: (context, anim1, anim2, child)
                                   {
                                     return RapidFadeAnimation(child: child);
@@ -402,7 +415,6 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                   ]
                 )
               ),
-              
               SizedBox(height: 20)
             ],//COL FOR WHOLE PAGE
           ),

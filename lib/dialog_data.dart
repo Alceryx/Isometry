@@ -45,7 +45,6 @@ class _EditCardDialogState extends State<EditCardDialog>
       typeController: typeController, 
       onLeftTap: () 
       {
-        context.read<GrpDataProvider>().deleteCard(widget.index);
         Navigator.pop(context);
       },  
       onRightTap: ()
@@ -61,9 +60,64 @@ class _EditCardDialogState extends State<EditCardDialog>
         );
         Navigator.pop(context);
       }, 
-      leftButtonText: 'Delete', 
-      rightButtonText: 'Save'
+      leftButtonText: 'Cancel', 
+      rightButtonText: 'Save',
+      cornerButton: CornerButton
+      (
+        img: 'assets/ui/button_close.svg', 
+        onCornerTap: ()
+        {
+          context.read<GrpDataProvider>().deleteCard(widget.index);
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 }
+class AddCardDialog extends StatefulWidget 
+{
+  const AddCardDialog({super.key});
+
+  @override
+  State<AddCardDialog> createState() => _AddCardDialogState();
+}
+
+class _AddCardDialogState extends State<AddCardDialog> 
+{
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController typeController = TextEditingController();
+
+  @override
+  void dispose() 
+  {
+    titleController.dispose();
+    typeController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) 
+  {
+    return DialogDesign
+    (
+      title: 'Adding', 
+      titleController: titleController, 
+      typeController: typeController, 
+      onRightTap: () 
+      {
+        final newCard = GrpCardData
+        (
+          title: titleController.text, 
+          type: typeController.text, 
+        );
+
+        context.read<GrpDataProvider>().addCard(newCard);
+        Navigator.pop(context);
+      }, 
+      onLeftTap: () => Navigator.pop(context), 
+      leftButtonText: 'Cancel',
+      rightButtonText: 'Add',
+    );
     
+  }
+}
