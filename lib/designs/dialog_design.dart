@@ -3,6 +3,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'package:isometry/designs/custom_transitions.dart';
+
+//-------------
+//CALL FUNCTION
+//-------------
+
+Future<T?> showCustomDialog<T>
+({
+  required BuildContext context,
+  required WidgetBuilder pageBuilder,
+})
+{
+  return showGeneralDialog
+  (
+    barrierColor: Color.fromARGB(230, 0, 0, 0),
+    context: context, 
+    pageBuilder: (context, anim1, anim2) => pageBuilder(context),
+    transitionBuilder: (context, anim1, anim2, child)
+    {return RapidFadeAnimation(child: child);}
+  );
+}
+
+//-------------
+//DIALOG DESIGN
+//-------------
+
 class DialogDesign extends StatelessWidget 
 {
   final String title;
@@ -250,6 +276,10 @@ class DialogDesign extends StatelessWidget
     );
   }
 }
+
+//--------------------
+//CORNER BUTTON DESIGN
+//--------------------
 
 class CornerButton extends StatelessWidget {
   const CornerButton

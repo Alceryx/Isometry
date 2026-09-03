@@ -5,7 +5,7 @@ import 'package:ffi/ffi.dart';
 import 'package:flutter/services.dart';
 import 'package:isometry/native/tracer_binding.dart';
 import 'package:isometry/native/tracer_model.dart';
-import 'package:isometry/page_program/exercise_tab.dart';
+import 'package:isometry/page_program/tab_exercise_grp.dart';
 import 'package:isometry/camera/camera_service.dart';
 
 

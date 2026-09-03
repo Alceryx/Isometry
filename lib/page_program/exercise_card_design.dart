@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:isometry/page_program/exercise_card_data.dart';
 
 class GrpCardDesign extends StatelessWidget 
 {
   final String img; 
   final bool isAddCard; 
-  final VoidCallback? onOptionTap; 
+  final VoidCallback? onOptionTap;
+  final VoidCallback? onCardTap;  
   final GrpCardData cardData; 
 
   const GrpCardDesign
@@ -15,6 +17,7 @@ class GrpCardDesign extends StatelessWidget
     required this.img,
     required this.isAddCard,
     required this.cardData,
+    required this.onCardTap, 
     this.onOptionTap
   });
 
@@ -24,10 +27,10 @@ class GrpCardDesign extends StatelessWidget
     return LayoutBuilder
     (
       builder: (context, constraints) 
-
       {
-      final cardWidth = constraints.maxWidth;
-      final optionButtonWitdh = cardWidth * 0.36;
+        final cardWidth = constraints.maxWidth;
+        final optionButtonWitdh = cardWidth * 0.36;
+
         return Column
         (
           children: 
@@ -36,27 +39,37 @@ class GrpCardDesign extends StatelessWidget
             (
               children: 
               [
-                SvgPicture.asset(img),
-            
-                Padding
+                GestureDetector
                 (
-                  padding: const EdgeInsets.all(6.0),
-                  child: Column
+                  behavior: HitTestBehavior.translucent,
+                  onTap: onCardTap,
+                  child: SvgPicture.asset(img)
+                ),
+            
+                GestureDetector
+                (
+                  behavior: HitTestBehavior.translucent,
+                  onTap: onCardTap,
+                  child: Padding
                   (
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: 
-                    [
-                      Text
-                      (
-                        cardData.type, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.surface)
-                      ),
-                      
-                      Text
-                      (
-                        cardData.title, style: Theme.of(context).textTheme.titleLarge?.copyWith
-                        (color: Theme.of(context).colorScheme.surface)
-                      )
-                    ],
+                    padding: const EdgeInsets.all(6.0),
+                    child: Column
+                    (
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: 
+                      [
+                        Text
+                        (
+                          cardData.type, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.surface)
+                        ),
+                        
+                        Text
+                        (
+                          cardData.title, style: Theme.of(context).textTheme.titleLarge?.copyWith
+                          (color: Theme.of(context).colorScheme.surface)
+                        )
+                      ],
+                    ),
                   ),
                 ),
             

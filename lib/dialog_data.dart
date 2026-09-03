@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:isometry/dialog_design.dart';
+import 'package:isometry/designs/dialog_design.dart';
 import 'package:isometry/page_program/exercise_card_data.dart';
 import 'package:isometry/page_program/exercise_card_data_provider.dart';
 import 'package:provider/provider.dart';
@@ -118,6 +118,6 @@ class _AddCardDialogState extends State<AddCardDialog>
       leftButtonText: 'Cancel',
       rightButtonText: 'Add',
     );
-    
   }
 }
+

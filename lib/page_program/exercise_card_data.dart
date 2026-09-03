@@ -1,11 +1,22 @@
 class GrpCardData
 {
-  final String title;
-  final String type;  
+  String title;
+  String type;  
+  List<ExerciseCardData> exercises;
   
-  const GrpCardData
+  GrpCardData
   ({
     required this.title,
     required this.type, 
+    List<ExerciseCardData>? exercises
+  }) : exercises = exercises ?? []; 
+}
+
+class ExerciseCardData 
+{
+  String name; 
+  ExerciseCardData
+  ({
+    required this.name
   });
 }
