@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:isometry/page_program/exercise_card_data.dart';
+import 'package:isometry/data_manager.dart';
 
 class GrpDataProvider extends ChangeNotifier
 {
