@@ -24,7 +24,7 @@ Detection::Detection(const float *data, size_t can_idx)
     }
 }
 
-Detection Detection::best_candidate(const float *data)
+Detection Detection::BestCandidate(const float *data)
 {
     size_t best_idx = 0;
     for (size_t c = 1; c < dim_size; c++)
@@ -46,10 +46,10 @@ std::optional<float> Detection::angle(const Keypoint &start, const Keypoint &mid
 
     float angle = std::acos(v1.dot(v2) / (v1.length() * v2.length()));
 
-    return angle * 180.0 / 3.14159265358979323846;
+    return angle * 180.0 / (float)3.14159265358979323846;
 }
 
-void Detection::rescale(float scale_x, float scale_y)
+void Detection::Rescale(float scale_x, float scale_y)
 {
     for (Keypoint& kp : keypoints)
     {

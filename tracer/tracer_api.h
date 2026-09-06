@@ -1,5 +1,15 @@
 #pragma once
 
+#include "detection.hpp"
+#include "tracer.hpp"
+
+#include <onnxruntime_cxx_api.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/dnn.hpp>
+
+#include <vector>
+#include <filesystem>
+#include <memory>
 #include <cstdint>
 
 #ifdef _WIN32
