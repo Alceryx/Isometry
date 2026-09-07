@@ -71,7 +71,7 @@ Detection Tracer::ProcessFrame(cv::Mat& frame)
 
     std::vector<int64_t> output_shape = output_tensors[0].GetTensorTypeAndShapeInfo().GetShape();
 
-    float *data = output_tensors[0].GetTensorMutableData<float>();
+    float* data = output_tensors[0].GetTensorMutableData<float>();
     Detection detected = Detection::BestCandidate(data);
 
     float scale_x = static_cast<float>(frame.cols) / static_cast<float>(input_width);

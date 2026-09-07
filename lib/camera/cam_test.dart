@@ -1,17 +1,11 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:ffi/ffi.dart';
-import 'package:flutter/services.dart';
 import 'package:isometry/native/tracer_binding.dart';
 import 'package:isometry/native/tracer_model.dart';
-import 'package:isometry/page_program/tab_exercise_grp.dart';
 import 'package:isometry/camera/camera_service.dart';
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:path_provider/path_provider.dart';
 
 class CamTest extends StatefulWidget 
 {
@@ -39,7 +33,7 @@ class _CamTestState extends State<CamTest>
 
   Future<void> _setupCamera() async
   {
-    final modelPath = await getModelPath(TracerModel.yolo11nPose);
+    final modelPath = await getModelPath(TracerModel.yolo8nPose320);
     final pathNative = modelPath.toNativeUtf8();
 
     bool ok = _tracer.tracerInit(pathNative);

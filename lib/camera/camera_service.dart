@@ -21,7 +21,7 @@ class CameraService
     try
     {
       final cameras = await availableCameras();
-      controller = CameraController(cameras.first, ResolutionPreset.medium);
+      controller = CameraController(cameras.first, ResolutionPreset.max);
       await controller!.initialize();
     }
     catch (e)

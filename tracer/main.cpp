@@ -33,7 +33,7 @@ int main(void)
         std::cerr << "Error Loading Model" << "\n";
     }
 
-    cv::VideoCapture vid("BL Chicken.mp4");
+    cv::VideoCapture vid(0);
     cv::Mat frame;
 
     while (vid.read(frame))
@@ -60,8 +60,7 @@ int main(void)
         }
     
         cv::imshow("Tracer", frame);
-        if (cv::waitKey(1) == 27)
-            break;       
+        if (cv::waitKey(1) == 27) break;       
     }
 
     tracer.Shutdown();

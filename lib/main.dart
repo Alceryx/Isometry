@@ -5,7 +5,8 @@ import 'package:isometry/page_program/tab_exercise_grp.dart';
 import 'package:isometry/data_manager.dart';
 
 void main() 
-{  runApp
+{ 
+  runApp
   (
     ChangeNotifierProvider
     (
