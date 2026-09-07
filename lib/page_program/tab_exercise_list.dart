@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:isometry/designs/dialog_design.dart';
-import 'package:isometry/dialog_data.dart';
-import 'package:isometry/data_manager.dart';
-import 'package:isometry/page_program/exercise_card_data_provider.dart';
 import 'package:provider/provider.dart';
 
-class ExerciseList extends StatefulWidget 
+import 'package:isometry/data_manager.dart';
+
+class TabExerciseList extends StatefulWidget 
 {
-  final int index;
-  const ExerciseList
+  // final int index;
+  const TabExerciseList
   ({
     super.key,
-    required this.index
+    // required this.index
   });
 
   @override
-  State<ExerciseList> createState() => _ExerciseListState();
+  State<TabExerciseList> createState() => _TabExerciseListState();
 }
 
-class _ExerciseListState extends State<ExerciseList> 
+class _TabExerciseListState extends State<TabExerciseList> 
 {
   @override
   Widget build(BuildContext context) 
   {
-    final grpData = context.watch<GrpDataProvider>().cards[widget.index]; 
+    final exerciseData = context.watch<ExerciseList>();
     return Scaffold
     (
       body: Column
@@ -43,8 +41,10 @@ class _ExerciseListState extends State<ExerciseList>
           (
             onPressed: () 
             {
-              context.read<GrpDataProvider>().addExercise
-              (widget.index, ExerciseCardData(name: 'Exercise 1'));
+              context.read<ExerciseList>().addItem
+              (
+                ExerciseData(title: 'Exercise1', tags: TagListLocal())
+              );
             },
             child: Text('Add Exercise'),
           ),
@@ -53,15 +53,15 @@ class _ExerciseListState extends State<ExerciseList>
           (
             child: ListView.builder
             (
-              itemCount: grpData.exercises.length,
+              itemCount: exerciseData.items.length,
               itemBuilder: (context, index)
               {
-                final exerciseCard = grpData.exercises[index];
+                final exerciseCard = exerciseData.items[index];
                 return Row
                 (
                   children: 
                   [
-                    Text(exerciseCard.name),
+                    Text(exerciseCard.title),
                     TextButton
                     (
                       onPressed: () {},

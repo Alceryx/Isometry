@@ -8,20 +8,19 @@ import 'package:isometry/page_program/exercise_card_design.dart';
 
 import 'package:isometry/dialog_data.dart';
 import 'package:isometry/data_manager.dart';
-import 'package:isometry/page_program/exercise_card_data_provider.dart';
 
 import 'package:isometry/page_program/tab_session.dart';
 import 'package:isometry/page_program/tab_exercise_list.dart';
 
-class ExerciseGrpTab extends StatefulWidget 
+class TabGrpGrid extends StatefulWidget 
 {
-  const ExerciseGrpTab({super.key});
+  const TabGrpGrid({super.key});
 
   @override
-  State<ExerciseGrpTab> createState() => _ExerciseGrpTabState();
+  State<TabGrpGrid> createState() => _TabExerciseGrpState();
 }
 
-class _ExerciseGrpTabState extends State<ExerciseGrpTab> 
+class _TabExerciseGrpState extends State<TabGrpGrid> 
 {
   final double toolHeight = 33;
   final double cornerSize = 60; 
@@ -29,7 +28,8 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
   @override
   Widget build(BuildContext context) 
   {
-    final cardData = context.watch<GrpDataProvider>();
+    final gridData = context.watch<GridData>();
+
     return Scaffold
     (
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -228,47 +228,59 @@ class _ExerciseGrpTabState extends State<ExerciseGrpTab>
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                         ),
-                        itemCount: cardData.cards.length + 1,
+                        itemCount: gridData.items.length + 1,
                         itemBuilder: (context, index) 
                         {
-                          if (index < cardData.cards.length)
+                          if (index < gridData.items.length)
                           {
-                            final card = cardData.cards[index];
-                            return GrpCardDesign
+                            final card = gridData.items[index];
+                            return ChangeNotifierProvider.value
                             (
-                              cardData: GrpCardData
-                              (title: card.title, type: card.type),
-                              img: 'assets/ui/grp_card.svg',
-                              isAddCard: false,
-                              onCardTap: () 
-                              {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) 
+                              value: gridData.items[index],
+                              child: GrpCardDesign
+                              (
+                                // grpData: card,
+                                onCardTap: () 
                                 {
-                                  return ExerciseList(index: index);
-                                }));
-                              },
-                              onOptionTap: ()
-                              {
-                                showCustomDialog
-                                (
-                                  context: context, 
-                                  pageBuilder: (context) => EditCardDialog
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) 
+                                  {
+                                    return ChangeNotifierProvider.value
+                                    (
+                                      value: context.read<GridData>().items[index].exercises,
+                                      child: TabExerciseList(),
+                                    );
+                                  }));
+                                },
+                                onOptionTap: ()
+                                {
+                                  showCustomDialog
                                   (
-                                    index: index, 
-                                    edittingCard: cardData.cards[index]
-                                  ),
-                                );
-                              },
+                                    context: context, 
+                                    pageBuilder: (context) 
+                                    {
+                                      return ChangeNotifierProvider.value
+                                      (
+                                        value: context.read<GridData>().items[index],
+                                        child: GridEditDialog
+                                        (
+                                          index: index,
+                                          edittingCard: gridData.items[index]
+                                        ),
+                                      ); 
+                                    }
+                                  );
+                                },
+                              ),
                             );
                           }
                           else //Add Card Button
                           {
-                            return GrpCardDesign
+                            //TO DO: Add a separate add card instead of recycling grpcarddesign. 
+
+                            return AddCard
                             (
-                              cardData: GrpCardData
-                              (title: '', type: ''),
-                              img: 'assets/ui/add_card.svg',
-                              isAddCard: true,
+                              // grpData: GrpData
+                              // (title: '', subTitle: '', exercises: ExerciseList()),
                               onCardTap: () 
                               {
                                 showCustomDialog

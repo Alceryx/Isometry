@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import 'package:isometry/data_manager.dart';
 
 class GrpCardDesign extends StatelessWidget 
 {
-  final String img; 
-  final bool isAddCard; 
   final VoidCallback? onOptionTap;
   final VoidCallback? onCardTap;  
-  final GrpCardData cardData; 
+  // final GrpData grpData; 
 
   const GrpCardDesign
   ({
     super.key,
-    required this.img,
-    required this.isAddCard,
-    required this.cardData,
+    // required this.grpData,
     required this.onCardTap, 
     this.onOptionTap
   });
@@ -24,6 +21,8 @@ class GrpCardDesign extends StatelessWidget
   @override
   Widget build(BuildContext context) 
   {
+    final grpData = context.watch<GrpData>(); 
+
     return LayoutBuilder
     (
       builder: (context, constraints) 
@@ -43,7 +42,7 @@ class GrpCardDesign extends StatelessWidget
                 (
                   behavior: HitTestBehavior.translucent,
                   onTap: onCardTap,
-                  child: SvgPicture.asset(img)
+                  child: SvgPicture.asset('assets/ui/grp_card.svg')
                 ),
             
                 GestureDetector
@@ -60,12 +59,12 @@ class GrpCardDesign extends StatelessWidget
                       [
                         Text
                         (
-                          cardData.type, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.surface)
+                          grpData.subTitle, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.surface)
                         ),
                         
                         Text
                         (
-                          cardData.title, style: Theme.of(context).textTheme.titleLarge?.copyWith
+                          grpData.title, style: Theme.of(context).textTheme.titleLarge?.copyWith
                           (color: Theme.of(context).colorScheme.surface)
                         )
                       ],
@@ -73,8 +72,7 @@ class GrpCardDesign extends StatelessWidget
                   ),
                 ),
             
-                isAddCard? SizedBox(height: 0, width: 0,)
-                : Align
+                Align
                 (
                   alignment: const Alignment(1, 0),
                   child: GestureDetector
@@ -90,6 +88,28 @@ class GrpCardDesign extends StatelessWidget
           ],
         );
       }
+    );
+  }
+}
+
+class AddCard extends StatelessWidget 
+{
+  final VoidCallback? onCardTap;  
+
+  const AddCard
+  ({
+    super.key,
+    required this.onCardTap
+  });
+
+  @override
+  Widget build(BuildContext context) 
+  {
+    return GestureDetector
+    (
+      behavior: HitTestBehavior.deferToChild,
+      onTap: onCardTap,
+      child: SvgPicture.asset('assets/ui/add_card.svg')
     );
   }
 }

@@ -5,9 +5,7 @@ abstract class IntraData<T extends IntraData<T>> extends ChangeNotifier
   String title;
 
   IntraData
-  ({
-    required this.title
-  });
+  ({required this.title});
   
   @mustCallSuper
   void edit(T newItem)
@@ -52,9 +50,9 @@ class GrpData extends IntraData<GrpData>
 
   @override 
   void edit(GrpData newItem) 
-  {
-    super.edit(newItem); 
+  { 
     subTitle = newItem.subTitle;
+    super.edit(newItem);
   }
 }
 
@@ -72,11 +70,12 @@ class ExerciseData extends IntraData<ExerciseData>
   @override 
   void edit(ExerciseData newItem)
   {
-    super.edit(newItem); 
     tags = newItem.tags; 
+    super.edit(newItem); 
   }
 }
 
+class TagStyle {}
 class TagData extends IntraData<TagData>
 {
   TagStyle style;
@@ -94,5 +93,3 @@ class TagData extends IntraData<TagData>
     style = newItem.style;
   }
 }
-
-class TagStyle {}

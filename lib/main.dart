@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:isometry/page_program/exercise_card_data_provider.dart';
 import 'package:isometry/page_program/tab_exercise_grp.dart';
+import 'package:isometry/data_manager.dart';
 
 void main() 
 {  runApp
   (
     ChangeNotifierProvider
     (
-      create: (context) => GrpDataProvider(),
+      create: (context) => GridData(),
       child: const MyApp()
     )
   );
@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget
         ),
 
       ),
-      home: ExerciseGrpTab(),
+      home: TabGrpGrid(),
     );
   }
 }

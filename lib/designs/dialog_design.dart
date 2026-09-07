@@ -29,18 +29,18 @@ Future<T?> showCustomDialog<T>
 //DIALOG DESIGN
 //-------------
 
-class DialogDesign extends StatelessWidget 
+class CustomDialog extends StatelessWidget 
 {
   final String dialogTitle;
   final DialogField firstField; 
   final DialogField secondField; 
   final String leftButtonText; 
   final String rightButtonText; 
-  final VoidCallback? onLeftTap;
-  final VoidCallback? onRightTap; 
+  final VoidCallback onLeftTap;
+  final VoidCallback onRightTap; 
   final CornerButton? cornerButton;
 
-  const DialogDesign
+  const CustomDialog
   ({
     super.key,
     required this.dialogTitle,
@@ -103,12 +103,14 @@ class DialogDesign extends StatelessWidget
                   //--------------
         
                   firstField,
+                  SizedBox(height: 10,),
         
                   //---------------
                   //SECOND PROPERTY
                   //---------------
         
                   secondField,
+                  SizedBox(height: 15,),
         
                   //--------------
                   //BOTTOM BUTTONS
@@ -280,7 +282,8 @@ abstract class DialogField extends StatelessWidget
             Expanded
             (
               child: buildField(context)
-            )
+            ),
+            SizedBox(width: 30,)
           ]
         )
       ]
@@ -341,8 +344,7 @@ class DialogTextField extends DialogField
         decoration: InputDecoration
         (
           isDense: true,
-          contentPadding: EdgeInsets.symmetric
-          (vertical: 5),
+          contentPadding: EdgeInsets.symmetric(vertical: 5),
           border: entryBorderDefault,
           enabledBorder: entryBorderDefault,
           focusedBorder: entryBorderFocused,
