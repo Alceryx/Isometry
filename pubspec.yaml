@@ -64,7 +64,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/ui/tab_navigator.svg
+    - assets/ui/tab_navigator_next.svg
+    - assets/ui/tab_navigator_back.svg
     - assets/ui/search_bar.svg
     - assets/ui/button_sort.svg
     - assets/ui/button_filter.svg

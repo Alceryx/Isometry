@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:isometry/dialog_design.dart';
-import 'package:isometry/page_program/exercise_card_data.dart';
-import 'package:isometry/page_program/exercise_card_data_provider.dart';
+import 'package:isometry/designs/dialog_design.dart';
+import 'package:isometry/data_manager.dart';
 import 'package:provider/provider.dart';
 
-class EditCardDialog extends StatefulWidget 
+class GridEditDialog extends StatefulWidget 
 {
+  final GrpData edittingCard;
   final int index; 
-  final GrpCardData edittingCard;
-  const EditCardDialog
+
+  const GridEditDialog
   ({
     super.key,
     required this.index,
@@ -16,64 +16,79 @@ class EditCardDialog extends StatefulWidget
   });
 
   @override
-  State<EditCardDialog> createState() => _EditCardDialogState();
+  State<GridEditDialog> createState() => _EditCardDialogState();
 }
 
-class _EditCardDialogState extends State<EditCardDialog> 
+class _EditCardDialogState extends State<GridEditDialog> 
 {
 
   late final TextEditingController titleController 
     = TextEditingController(text: widget.edittingCard.title);
-  late final TextEditingController typeController
-    = TextEditingController(text: widget.edittingCard.type);
+  late final TextEditingController subtitleController
+    = TextEditingController(text: widget.edittingCard.subTitle);
 
   @override
   void dispose() 
   {
     titleController.dispose();
-    typeController.dispose();
+    subtitleController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) 
   {
-    return DialogDesign
+    return CustomDialog
     (
-      title: 'Editing', 
-      titleController: titleController, 
-      typeController: typeController, 
-      onLeftTap: () 
-      {
-        Navigator.pop(context);
-      },  
+      dialogTitle: 'Editing', 
+
+      firstField: DialogTextField
+      (
+        fieldTitle: 'Title', 
+        textFieldController: titleController, 
+        hintText: 'Enter a new title'
+      ),
+
+      secondField: DialogTextField
+      (
+        fieldTitle: 'Subtitle', 
+        textFieldController: subtitleController, 
+        hintText: 'Enter a new subtitle'
+      ),
+
+      leftButtonText: 'Cancel', 
+      rightButtonText: 'Save',
+
+      onLeftTap: () => Navigator.pop(context),  
+      
       onRightTap: ()
       {
-        context.read<GrpDataProvider>().updateCard
+        context.read<GrpData>().edit
         (
-          widget.index, 
-          GrpCardData
+          GrpData
           (
             title: titleController.text, 
-            type: typeController.text, 
+            subTitle: subtitleController.text, 
+            exercises: ExerciseList()
           )
         );
         Navigator.pop(context);
       }, 
-      leftButtonText: 'Cancel', 
-      rightButtonText: 'Save',
+      
       cornerButton: CornerButton
       (
         img: 'assets/ui/button_close.svg', 
         onCornerTap: ()
         {
-          context.read<GrpDataProvider>().deleteCard(widget.index);
+          context.read<GridData>().deleteItem(widget.index);
           Navigator.pop(context);
         },
       ),
     );
   }
 }
+
+
 class AddCardDialog extends StatefulWidget 
 {
   const AddCardDialog({super.key});
@@ -85,39 +100,53 @@ class AddCardDialog extends StatefulWidget
 class _AddCardDialogState extends State<AddCardDialog> 
 {
   final TextEditingController titleController = TextEditingController();
-  final TextEditingController typeController = TextEditingController();
+  final TextEditingController subtitleController = TextEditingController();
 
   @override
   void dispose() 
   {
     titleController.dispose();
-    typeController.dispose();
+    subtitleController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) 
   {
-    return DialogDesign
+    return CustomDialog
     (
-      title: 'Adding', 
-      titleController: titleController, 
-      typeController: typeController, 
-      onRightTap: () 
-      {
-        final newCard = GrpCardData
-        (
-          title: titleController.text, 
-          type: typeController.text, 
-        );
-
-        context.read<GrpDataProvider>().addCard(newCard);
-        Navigator.pop(context);
-      }, 
-      onLeftTap: () => Navigator.pop(context), 
+      dialogTitle: 'Adding', 
+      firstField: DialogTextField
+      (
+        fieldTitle: 'Title', 
+        textFieldController: titleController, 
+        hintText: 'Enter a new title'
+      ), 
+      secondField: DialogTextField
+      (
+        fieldTitle: 'Subtitle',
+        textFieldController: subtitleController,
+        hintText: 'Enter a new subtitle',
+      ),
       leftButtonText: 'Cancel',
       rightButtonText: 'Add',
+      onRightTap: () 
+      {
+        final newGrp = GrpData
+        (
+          title: titleController.text, 
+          subTitle: subtitleController.text,
+          exercises: ExerciseList(),
+        );
+
+        context.read<GridData>().addItem(newGrp);
+        Navigator.pop(context);
+      }, 
+
+      onLeftTap: () => Navigator.pop(context), 
+      
     );
-    
   }
 }
+
+//TO DO: Make edit & add dialogs recyclable. 

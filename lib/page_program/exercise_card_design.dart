@@ -1,33 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:isometry/page_program/exercise_card_data.dart';
+import 'package:provider/provider.dart';
+
+import 'package:isometry/data_manager.dart';
 
 class GrpCardDesign extends StatelessWidget 
 {
-  final String img; 
-  final bool isAddCard; 
-  final VoidCallback? onOptionTap; 
-  final GrpCardData cardData; 
+  final VoidCallback? onOptionTap;
+  final VoidCallback? onCardTap;  
+  // final GrpData grpData; 
 
   const GrpCardDesign
   ({
     super.key,
-    required this.img,
-    required this.isAddCard,
-    required this.cardData,
+    // required this.grpData,
+    required this.onCardTap, 
     this.onOptionTap
   });
 
   @override
   Widget build(BuildContext context) 
   {
+    final grpData = context.watch<GrpData>(); 
+
     return LayoutBuilder
     (
       builder: (context, constraints) 
-
       {
-      final cardWidth = constraints.maxWidth;
-      final optionButtonWitdh = cardWidth * 0.36;
+        final cardWidth = constraints.maxWidth;
+        final optionButtonWitdh = cardWidth * 0.36;
+
         return Column
         (
           children: 
@@ -36,32 +38,41 @@ class GrpCardDesign extends StatelessWidget
             (
               children: 
               [
-                SvgPicture.asset(img),
-            
-                Padding
+                GestureDetector
                 (
-                  padding: const EdgeInsets.all(6.0),
-                  child: Column
+                  behavior: HitTestBehavior.translucent,
+                  onTap: onCardTap,
+                  child: SvgPicture.asset('assets/ui/grp_card.svg')
+                ),
+            
+                GestureDetector
+                (
+                  behavior: HitTestBehavior.translucent,
+                  onTap: onCardTap,
+                  child: Padding
                   (
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: 
-                    [
-                      Text
-                      (
-                        cardData.type, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.surface)
-                      ),
-                      
-                      Text
-                      (
-                        cardData.title, style: Theme.of(context).textTheme.titleLarge?.copyWith
-                        (color: Theme.of(context).colorScheme.surface)
-                      )
-                    ],
+                    padding: const EdgeInsets.all(6.0),
+                    child: Column
+                    (
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: 
+                      [
+                        Text
+                        (
+                          grpData.subTitle, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.surface)
+                        ),
+                        
+                        Text
+                        (
+                          grpData.title, style: Theme.of(context).textTheme.titleLarge?.copyWith
+                          (color: Theme.of(context).colorScheme.surface)
+                        )
+                      ],
+                    ),
                   ),
                 ),
             
-                isAddCard? SizedBox(height: 0, width: 0,)
-                : Align
+                Align
                 (
                   alignment: const Alignment(1, 0),
                   child: GestureDetector
@@ -77,6 +88,28 @@ class GrpCardDesign extends StatelessWidget
           ],
         );
       }
+    );
+  }
+}
+
+class AddCard extends StatelessWidget 
+{
+  final VoidCallback? onCardTap;  
+
+  const AddCard
+  ({
+    super.key,
+    required this.onCardTap
+  });
+
+  @override
+  Widget build(BuildContext context) 
+  {
+    return GestureDetector
+    (
+      behavior: HitTestBehavior.deferToChild,
+      onTap: onCardTap,
+      child: SvgPicture.asset('assets/ui/add_card.svg')
     );
   }
 }
