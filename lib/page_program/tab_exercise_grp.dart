@@ -45,8 +45,8 @@ class _TabExerciseGrpState extends State<TabGrpGrid>
             [
               PageHeader
               (
-                pageTitle: 'Program', 
-                tabTitle: 'Exercise',
+                pageTitle: 'PROGRAM', 
+                tabTitle: 'EXERCISE',
                 onNextTap: () 
                 {
                   Navigator.of(context).push
@@ -78,6 +78,7 @@ class _TabExerciseGrpState extends State<TabGrpGrid>
                         (
                           child: Stack
                           (
+                            alignment: Alignment.centerRight,
                             children: 
                             [
                               Row
@@ -96,18 +97,19 @@ class _TabExerciseGrpState extends State<TabGrpGrid>
 
                               Padding
                               (
-                                padding: const EdgeInsets.only(left: 10, right: 10, bottom: 7),
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
                                 child: TextField
                                 (
-                                  style: Theme.of(context).textTheme.displaySmall?.copyWith
+                                  style: Theme.of(context).textTheme.displayMedium?.copyWith
                                   (
                                     color: Theme.of(context).colorScheme.onSurface
                                   ),
                                   decoration: InputDecoration
                                   (
+                                    isDense: true,
                                     border: InputBorder.none,
-                                    hintText: 'Search',
-                                    hintStyle: Theme.of(context).textTheme.displaySmall?.copyWith
+                                    hintText: 'SEARCH',
+                                    hintStyle: Theme.of(context).textTheme.displayMedium?.copyWith
                                     (
                                       color: Theme.of(context).colorScheme.onSurface
                                     )
@@ -233,13 +235,12 @@ class _TabExerciseGrpState extends State<TabGrpGrid>
                         {
                           if (index < gridData.items.length)
                           {
-                            final card = gridData.items[index];
+                            // final card = gridData.items[index];
                             return ChangeNotifierProvider.value
                             (
                               value: gridData.items[index],
                               child: GrpCardDesign
                               (
-                                // grpData: card,
                                 onCardTap: () 
                                 {
                                   Navigator.of(context).push(MaterialPageRoute(builder: (context) 
@@ -279,8 +280,6 @@ class _TabExerciseGrpState extends State<TabGrpGrid>
 
                             return AddCard
                             (
-                              // grpData: GrpData
-                              // (title: '', subTitle: '', exercises: ExerciseList()),
                               onCardTap: () 
                               {
                                 showCustomDialog

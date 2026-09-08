@@ -60,37 +60,65 @@ class MyApp extends StatelessWidget
         (
           displayLarge: TextStyle
           (
-            fontFamily: 'Liberator',
+            fontFamily: 'ChakraPetch',
             fontSize: 57,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w900,
+          ),
+
+          displayMedium: TextStyle
+          (
+            fontFamily: 'ChakraPetch',
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
           ),
 
           displaySmall: TextStyle
           (
-            fontFamily: 'Liberator',
+            fontFamily: 'ChakraPetch',
             fontSize: 20,
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w500,
           ),
 
           titleLarge: TextStyle
           (
-            fontFamily: 'Liberator',
+            fontFamily: 'ChakraPetch',
             fontSize: 40,
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w600,
           ),
 
           titleMedium: TextStyle
           (
-            fontFamily: 'Liberator',
-            fontSize: 24,
-            fontWeight: FontWeight.w100,
+            fontFamily: 'ChakraPetch',
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
           ),
 
           titleSmall: TextStyle
           (
-            fontFamily: 'Liberator',
-            fontSize: 20,
-            fontWeight: FontWeight.w300,
+            fontFamily: 'ChakraPetch',
+            fontSize: 18,
+            fontWeight: FontWeight.w400,
+          ),
+
+          bodyLarge: TextStyle
+          (
+            fontFamily: 'MonaspaceKrypton',
+            fontSize: 22,
+            fontWeight: FontWeight.w500,
+          ), 
+          
+          bodyMedium: TextStyle
+          (
+            fontFamily: 'MonaspaceKrypton',
+            fontSize: 18,
+            fontWeight: FontWeight.w500
+          ),
+
+          bodySmall: TextStyle
+          (
+            fontFamily: 'MonaspaceKrypton',
+            fontSize: 16,
+            fontWeight: FontWeight.w300
           ),
         ),
 

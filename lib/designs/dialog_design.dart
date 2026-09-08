@@ -85,16 +85,12 @@ class CustomDialog extends StatelessWidget
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: 
                 [
-                  Transform.translate
+                  Text
                   (
-                    offset: Offset(0, 2.5),
-                    child: Text
-                    (
-                      dialogTitle,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith
-                      (color: Theme.of(context).colorScheme.primary,
-                      height: 1),
-                    ),
+                    dialogTitle,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith
+                    (color: Theme.of(context).colorScheme.primary,
+                    height: 1),
                   ),
                   SizedBox(height: 15,),
               
@@ -122,7 +118,7 @@ class CustomDialog extends StatelessWidget
                     (
                       children: 
                       [
-                        SizedBox(width: 101,),
+                        SizedBox(width: 106,),
                         GestureDetector
                         (
                           onTap: onLeftTap,
@@ -132,16 +128,20 @@ class CustomDialog extends StatelessWidget
                             children: 
                             [
                               SvgPicture.asset('assets/ui/dialog_button_left.svg'),
-                              Text
+                              Padding
                               (
-                                leftButtonText,
-                                style: Theme.of(context).textTheme.displaySmall?.copyWith
-                                (color: Theme.of(context).colorScheme.primary),
+                                padding: const EdgeInsets.only(left: 3.0),
+                                child: Text
+                                (
+                                  leftButtonText,
+                                  style: Theme.of(context).textTheme.displaySmall?.copyWith
+                                  (color: Theme.of(context).colorScheme.primary),
+                                ),
                               )
                             ],
                           )
                         ),
-                        SizedBox(width: 5,),
+                        SizedBox(width: 8,),
       
                         GestureDetector
                         (
@@ -152,11 +152,15 @@ class CustomDialog extends StatelessWidget
                             children: 
                             [
                               SvgPicture.asset('assets/ui/dialog_button_right.svg'),
-                              Text
+                              Padding
                               (
-                                rightButtonText,
-                                style: Theme.of(context).textTheme.displaySmall?.copyWith
-                                (color: Theme.of(context).colorScheme.primary),
+                                padding: const EdgeInsets.only(right: 3.0),
+                                child: Text
+                                (
+                                  rightButtonText,
+                                  style: Theme.of(context).textTheme.displaySmall?.copyWith
+                                  (color: Theme.of(context).colorScheme.primary),
+                                ),
                               )
                             ],
                           )
@@ -251,22 +255,18 @@ abstract class DialogField extends StatelessWidget
               child: ColoredBox
               (color: Theme.of(context).colorScheme.primary),
             ),
-            SizedBox(width: 10,),
+            SizedBox(width: 7,),
                       
-            Transform.translate
+            Text
             (
-              offset: Offset(0, 1.4),
-              child: Text
-              (
-                fieldTitle,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith
-                (color: Theme.of(context).colorScheme.primary,
-                height: 0.8),
-              ),
+              fieldTitle,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith
+              (color: Theme.of(context).colorScheme.primary,
+              height: 0.8),
             ),
           ],
         ),
-        SizedBox(height: 3,),
+        SizedBox(height: 4,),
 
         Row
         (
@@ -340,21 +340,18 @@ class DialogTextField extends DialogField
       child: TextField
       (
         controller: textFieldController,
-        style: Theme.of(context).textTheme.displaySmall,
+        style: Theme.of(context).textTheme.bodyMedium,
         decoration: InputDecoration
         (
           isDense: true,
-          contentPadding: EdgeInsets.symmetric(vertical: 5),
+          contentPadding: EdgeInsets.symmetric(vertical: 0),
           border: entryBorderDefault,
           enabledBorder: entryBorderDefault,
           focusedBorder: entryBorderFocused,
           errorBorder: entryBorderFocused,
           hintText: hintText,
-          hintStyle: Theme.of(context).textTheme.displaySmall?.copyWith
-          (
-            color: Theme.of(context).colorScheme.onSurface,
-            height: 1.2
-          )
+          hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith
+          (color: Theme.of(context).colorScheme.onSurface)
         )
       ),
     );

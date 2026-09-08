@@ -40,24 +40,24 @@ class _EditCardDialogState extends State<GridEditDialog>
   {
     return CustomDialog
     (
-      dialogTitle: 'Editing', 
+      dialogTitle: 'EDITING', 
 
       firstField: DialogTextField
       (
-        fieldTitle: 'Title', 
+        fieldTitle: 'TITLE', 
         textFieldController: titleController, 
-        hintText: 'Enter a new title'
+        hintText: 'NEW TITLE'
       ),
 
       secondField: DialogTextField
       (
-        fieldTitle: 'Subtitle', 
+        fieldTitle: 'SUBTITLE', 
         textFieldController: subtitleController, 
-        hintText: 'Enter a new subtitle'
+        hintText: 'NEW SUBTITLE'
       ),
 
-      leftButtonText: 'Cancel', 
-      rightButtonText: 'Save',
+      leftButtonText: 'CANCEL', 
+      rightButtonText: 'SAVE',
 
       onLeftTap: () => Navigator.pop(context),  
       
@@ -115,21 +115,21 @@ class _AddCardDialogState extends State<AddCardDialog>
   {
     return CustomDialog
     (
-      dialogTitle: 'Adding', 
+      dialogTitle: 'ADDING', 
       firstField: DialogTextField
       (
-        fieldTitle: 'Title', 
+        fieldTitle: 'TITLE', 
         textFieldController: titleController, 
-        hintText: 'Enter a new title'
+        hintText: 'NEW TITLE'
       ), 
       secondField: DialogTextField
       (
-        fieldTitle: 'Subtitle',
+        fieldTitle: 'SUBTITLE',
         textFieldController: subtitleController,
-        hintText: 'Enter a new subtitle',
+        hintText: 'NEW SUBTITLE',
       ),
-      leftButtonText: 'Cancel',
-      rightButtonText: 'Add',
+      leftButtonText: 'CANCEL',
+      rightButtonText: 'ADD',
       onRightTap: () 
       {
         final newGrp = GrpData

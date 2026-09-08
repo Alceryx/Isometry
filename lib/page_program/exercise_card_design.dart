@@ -51,7 +51,7 @@ class GrpCardDesign extends StatelessWidget
                   onTap: onCardTap,
                   child: Padding
                   (
-                    padding: const EdgeInsets.all(6.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
                     child: Column
                     (
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +59,7 @@ class GrpCardDesign extends StatelessWidget
                       [
                         Text
                         (
-                          grpData.subTitle, style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.surface)
+                          grpData.subTitle, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.surface)
                         ),
                         
                         Text
