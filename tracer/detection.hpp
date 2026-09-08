@@ -40,7 +40,7 @@ class Detection
     std::array<float, key_row> box;
 
     Detection(const float *data, size_t can_idx);
-    static Detection best_candidate(const float *data);
+    static Detection BestCandidate(const float *data);
 
     Keypoint kp(Joint j) const { return keypoints[static_cast<size_t>(j)]; };
     float x(size_t index) const
@@ -59,7 +59,7 @@ class Detection
         return keypoints[index].conf;
     }
 
-    void rescale(float scale_x, float scale_y);
+    void Rescale(float scale_x, float scale_y);
 
     std::optional<float> angle(const Keypoint& start, const Keypoint& mid, const Keypoint& end) const;
     

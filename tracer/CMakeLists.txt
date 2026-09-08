@@ -30,9 +30,9 @@ find_package(OpenCV REQUIRED)
 
 
 if (NOT ANDROID)
-    add_executable(Tracer main.cpp detection.cpp tracer_api.cpp)
+    add_executable(Tracer main.cpp detection.cpp tracer.cpp tracer_api.cpp)
 endif()
-add_library(TracerLib SHARED detection.cpp tracer_api.cpp)
+add_library(TracerLib SHARED detection.cpp tracer.cpp tracer_api.cpp)
 set_target_properties(TracerLib PROPERTIES OUTPUT_NAME "tracer")
 
 set(TARGETS TracerLib)

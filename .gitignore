@@ -47,3 +47,5 @@ app.*.map.json
 # Tracer
 tracer/build/
 tracer/onnxruntime/
+# Widget Preview related
+.widget_preview/
