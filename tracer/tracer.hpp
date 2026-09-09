@@ -15,15 +15,26 @@
 class Tracer
 {
     public:
+    
     bool Init(const std::string& model_path);
+    void ProcessFrame(cv::Mat& frame);
     void Shutdown();
-    Detection ProcessFrame(cv::Mat& frame);
+    Detection GetDetection(size_t candidate);
 
-    private:
+    void AnnotateFrame(cv::Mat& frame, Detection& detection);
+    
+    private: 
     std::unique_ptr<Ort::Env> env;
     std::unique_ptr<Ort::Session> session;
+    
     int64_t input_width = 0;
     int64_t input_height = 0;
+    int frame_width = 0;
+    int frame_height = 0;
+
+    float* data;
+
+    void ConnectJoint(cv::Mat&frame, Keypoint &start, Keypoint &end);
 };
 
 #endif

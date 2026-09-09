@@ -66,52 +66,50 @@ class CameraService
     Pointer<Uint8>? nativePixels;
     Pointer<Float>? nativeKeypoints;
 
-    try
-    {
-      nativePixels = malloc.allocate<Uint8>(frameSize);
-      nativeKeypoints = malloc.allocate<Float>(17 * sizeOf<Float>() * 3);
+    try {
+    nativePixels = malloc.allocate<Uint8>(frameSize);
+    nativeKeypoints = malloc.allocate<Float>(17 * sizeOf<Float>() * 3);
 
-      final nativeBytesList = nativePixels.asTypedList(frameSize);
-      int offset = 0;
-      for (var plane in image.planes) {
-        nativeBytesList.setAll(offset, plane.bytes);
-        offset += plane.bytes.length;
-      }
-
-      TracerPixelFormat format;
-      switch (image.format.group)
-      {
-        case ImageFormatGroup.yuv420: format = TracerPixelFormat.i420; break;
-        case ImageFormatGroup.bgra8888: format = TracerPixelFormat.bgra; break;
-        case ImageFormatGroup.nv21: format = TracerPixelFormat.nv21; break;
-        default: return;
-      }
-
-      debugPrint("PIXEL FORMAT: ${format.value}");
-
-      final sw = Stopwatch()..start();
-      bool success = tracer.tracerProcessFrame(
-        nativePixels,
-        image.width,
-        image.height,
-        format.value,
-        nativeKeypoints
-      );
-      debugPrint('Frame time: ${sw.elapsedMilliseconds}ms');
-
-      if (success)
-      {
-        debugPrint("FUCK YEAH");
-      }
+    final nativeBytesList = nativePixels.asTypedList(frameSize);
+    int offset = 0;
+    for (var plane in image.planes) {
+      nativeBytesList.setAll(offset, plane.bytes);
+      offset += plane.bytes.length;
     }
-    catch (e)
+
+    TracerPixelFormat format;
+    switch (image.format.group)
     {
-      debugPrint("Error processing frame: $e");
-    } finally {
+      case ImageFormatGroup.yuv420: format = TracerPixelFormat.i420; break;
+      case ImageFormatGroup.bgra8888: format = TracerPixelFormat.bgra; break;
+      case ImageFormatGroup.nv21: format = TracerPixelFormat.nv21; break;
+      default: return;
+    }
+
+    debugPrint("PIXEL FORMAT: ${format.value}");
+
+    final sw = Stopwatch()..start();
+    bool success = tracer.tracerProcessFrame(
+      nativePixels,
+      image.width,
+      image.height,
+      format.value,
+      nativeKeypoints
+    );
+    debugPrint('Frame time: ${sw.elapsedMilliseconds}ms');
+
+    if (success)
+    {
+      debugPrint("FUCK YEAH");
+    }
+  } catch (e) {
+    debugPrint("Error processing frame: $e");
+  } finally {
       if (nativePixels != null) malloc.free(nativePixels);
       if (nativeKeypoints != null) malloc.free(nativeKeypoints);
 
       isProcessing = false;
-    }
+  }
+  
   }
 }

@@ -26,7 +26,7 @@ void shape_info(Ort::Session& session)
 int main(void)
 {
     Tracer tracer{};
-    bool status = tracer.Init("models/yolo11n-pose.onnx");
+    bool status = tracer.Init("models/yolo26n-pose.onnx");
 
     if (!status)
     {
@@ -38,20 +38,14 @@ int main(void)
 
     while (vid.read(frame))
     {
-        Detection detected = tracer.ProcessFrame(frame);
-    
-        for (Keypoint &kp : detected.keypoints)
-        {
-            if (!detected.visible(kp))
-                continue;
-            cv::circle(frame,
-                       cv::Point(static_cast<int>(kp.pos.x), static_cast<int>(kp.pos.y)),
-                       7, cv::Scalar(0, 255, 0), -1);
-        }
+        tracer.ProcessFrame(frame);
+        Detection detected = tracer.GetDetection(0);
+
+        tracer.AnnotateFrame(frame, detected);
     
         std::map<Joint, float> joint_angles;
     
-        std::optional<float> re_ang = detected.angle(detected.kp(Joint::RightShoulder), detected.kp(Joint::RightElbow), detected.kp(Joint::RightWrist));
+        std::optional<float> re_ang = detected.Angle(detected.kp(Joint::RightShoulder), detected.kp(Joint::RightElbow), detected.kp(Joint::RightWrist));
     
         if (re_ang.has_value())
         {

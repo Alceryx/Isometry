@@ -13,9 +13,9 @@ bool Tracer::Init(const std::string& model_path)
     session = std::make_unique<Ort::Session>(*env, model_path.c_str(), options);
     #endif
 
-    auto shape = session->GetInputTypeInfo(0).GetTensorTypeAndShapeInfo().GetShape();
-    input_width = shape[3];
-    input_height = shape[2];
+    auto input_shape = session->GetInputTypeInfo(0).GetTensorTypeAndShapeInfo().GetShape();
+    input_width = input_shape[3];
+    input_height = input_shape[2];
 
     return true;
 
@@ -31,9 +31,12 @@ void Tracer::Shutdown()
     session.reset();
 }
 
-Detection Tracer::ProcessFrame(cv::Mat& frame)
+void Tracer::ProcessFrame(cv::Mat& frame)
 {
     try {
+    frame_width = frame.cols;
+    frame_height = frame.rows;
+
     Ort::AllocatorWithDefaultOptions allocator;
 
     if (frame.empty())
@@ -71,17 +74,52 @@ Detection Tracer::ProcessFrame(cv::Mat& frame)
 
     std::vector<int64_t> output_shape = output_tensors[0].GetTensorTypeAndShapeInfo().GetShape();
 
-    float* data = output_tensors[0].GetTensorMutableData<float>();
-    Detection detected = Detection::BestCandidate(data);
-
-    float scale_x = static_cast<float>(frame.cols) / static_cast<float>(input_width);
-    float scale_y = static_cast<float>(frame.rows) / static_cast<float>(input_height);
-    detected.Rescale(scale_x, scale_y);
-
-    return detected;
-
+    data = output_tensors[0].GetTensorMutableData<float>();
+    
     } catch (const Ort::Exception& e) {
         std::cerr << "ONNX Runtime Exception: " << e.what() << "\n";
         exit(EXIT_FAILURE);
     }
+}
+
+Detection Tracer::GetDetection(size_t candidate)
+{
+    Detection detected(data, 0);
+
+    float scale_x = static_cast<float>(frame_width) / static_cast<float>(input_width);
+    float scale_y = static_cast<float>(frame_height) / static_cast<float>(input_height);
+    detected.Rescale(scale_x, scale_y);
+
+    return detected;
+}
+
+void Tracer::AnnotateFrame(cv::Mat &frame, Detection& detection)
+{
+    cv::rectangle(frame, cv::Point(static_cast<int>(detection.box[0]), static_cast<int>(detection.box[1])),
+    cv::Point(static_cast<int>(detection.box[2]), static_cast<int>(detection.box[3])),
+    cv::Scalar(60,60,229), 3);
+
+    for (Keypoint &kp : detection.keypoints)
+    {
+        if (!kp.visible()) continue;
+        cv::circle(frame,
+        cv::Point(static_cast<int>(kp.pos.x), static_cast<int>(kp.pos.y)),
+        7, cv::Scalar(0, 255, 0), cv::FILLED);
+
+        cv::putText(frame, "Conf " + std::to_string(kp.conf),
+        cv::Point(static_cast<int>(detection.box[0]), static_cast<int>(detection.box[1] - 15)),
+        cv::FONT_HERSHEY_SIMPLEX, 1,
+        cv::Scalar(60, 60, 229), 1);
+    }
+
+    ConnectJoint(frame, detection.kp(Joint::RightShoulder), detection.kp(Joint::RightElbow));
+    ConnectJoint(frame, detection.kp(Joint::RightElbow), detection.kp(Joint::RightWrist));
+}
+
+void Tracer::ConnectJoint(cv::Mat& frame, Keypoint& start, Keypoint& end)
+{
+    if (!start.visible() || !end.visible()) return;
+    cv::line(frame, cv::Point(static_cast<int>(start.pos.x), static_cast<int>(start.pos.y)),
+    cv::Point(static_cast<int>(end.pos.x), static_cast<int>(end.pos.y)),
+    cv::Scalar(60,60,229), 5);
 }

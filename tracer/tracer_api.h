@@ -37,3 +37,6 @@ TRACER_EXPORT bool tracer_process_frame(
     int pixel_format,
     float* out_keypoints
 );
+
+
+TRACER_EXPORT bool tracer_video_check(const char* path);
