@@ -36,19 +36,29 @@ class Detection
     static constexpr size_t KEY_COL = 6;
     static constexpr size_t KEY_DIM = 57;
 
+    static constexpr size_t BOX_SZ = 4;
+    static constexpr size_t BOX_COL = 0;
+
+    static constexpr size_t STATS_SZ = 2;
+    static constexpr size_t STATS_COL = 4;
+
     std::array<Keypoint, KEY_NUM> keypoints;
-    std::array<float, KEY_COL> box;
+    std::array<float, BOX_SZ> box;
+    std::array<float, STATS_SZ> stats;
 
     Detection() = default;
     Detection(const float *data, size_t candidate);
+    
+    Keypoint kp(Joint j) const { return keypoints[static_cast<size_t>(j)]; };
 
     void Rescale(float scale_x, float scale_y);
-
-    Keypoint kp(Joint j) const { return keypoints[static_cast<size_t>(j)]; };
 
 
     // TODO: Move to Vec or Math
     std::optional<float> Angle(const Keypoint& start, const Keypoint& mid, const Keypoint& end) const;
+
+    private:
+
 };
 
 #endif

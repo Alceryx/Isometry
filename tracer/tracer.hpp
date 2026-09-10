@@ -17,7 +17,7 @@ class Tracer
     public:
     
     bool Init(const std::string& model_path);
-    void ProcessFrame(cv::Mat& frame);
+    void ProcessFrame(cv::Mat& frame, float* data = nullptr);
     void Shutdown();
     Detection GetDetection(size_t candidate);
 

@@ -26,7 +26,7 @@ void shape_info(Ort::Session& session)
 int main(void)
 {
     Tracer tracer{};
-    bool status = tracer.Init("models/yolo26n-pose.onnx");
+    bool status = tracer.Init("models/yolo26s-pose.onnx");
 
     if (!status)
     {
@@ -54,7 +54,7 @@ int main(void)
         }
     
         cv::imshow("Tracer", frame);
-        if (cv::waitKey(1) == 27) break;       
+        if (cv::waitKey(1) == 27) break;
     }
 
     tracer.Shutdown();

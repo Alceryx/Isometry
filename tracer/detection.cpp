@@ -10,9 +10,14 @@ namespace
 
 Detection::Detection(const float *data, size_t candidate)
 {
-    for (size_t i = 0; i < KEY_COL; i++) 
+    for (size_t i = 0; i < BOX_SZ; i++) 
     {
-        box[i] = read(data, i, candidate);
+        box[i] = read(data, BOX_COL + i, candidate);
+    }
+
+    for (size_t i = 0; i < STATS_SZ; i++) 
+    {
+        stats[i] = read(data, STATS_COL + i, candidate);
     }
 
     for (size_t i = 0; i < KEY_NUM; i++)
