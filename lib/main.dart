@@ -1,12 +1,33 @@
-import 'package:flutter/material.dart';
+import 'package:ffi/ffi.dart';
 import 'package:isometry/temp_design.dart';
-import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
+
+import 'package:isometry/native/tracer_binding.dart';
+import 'package:isometry/native/tracer_model.dart';
 
 import 'package:isometry/page_program/tab_exercise_grp.dart';
 import 'package:isometry/data_manager.dart';
 
-void main() 
-{ 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+Future<void> main() async 
+{
+  TracerBinding tracer = TracerBinding();
+  final path = await getModelPath(TracerModel.yolo11nPose);
+  bool init = tracer.tracerInit(path.toNativeUtf8());
+  debugPrint("Initialization Status: $init");
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  PlatformFile? result = await FilePicker.pickFile(type: FileType.video);
+  if (result != null)
+  {
+    final video = result.path!;
+    bool ok = tracer.tracerVideoCheck(video.toNativeUtf8());
+    debugPrint("Video Input Path: $video | Video Load Status: $ok");
+  }
+
   runApp
   (
     ChangeNotifierProvider

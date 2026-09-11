@@ -43,7 +43,8 @@ class _CamTestState extends State<CamTest>
 
     await _cameraService.initialize();
     
-    if (mounted) {
+    if (mounted) 
+    {
       setState(() 
       {
         _isCameraReady = true;

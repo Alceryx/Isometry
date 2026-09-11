@@ -2,45 +2,40 @@
 
 namespace
 {
-    inline float read(const float *data, size_t row, size_t candidate)
+    inline float read(const float *data, size_t col, size_t candidate)
     {
-        return data[row * Detection::dim_size + candidate];
+        return data[candidate * Detection::KEY_DIM + col];
     }
 }
 
-Detection::Detection(const float *data, size_t can_idx)
+Detection::Detection(const float *data, size_t candidate)
 {
-    for (size_t i = 0; i < key_row; i++) 
+    for (size_t i = 0; i < BOX_SZ; i++) 
     {
-        box[i] = read(data, i, can_idx);
+        box[i] = read(data, BOX_COL + i, candidate);
     }
 
-    for (size_t i = 0; i < key_num; i++)
+    for (size_t i = 0; i < STATS_SZ; i++) 
     {
-        size_t row = key_row + i * 3;
-        keypoints[i] = {read(data, row, can_idx), 
-                        read(data, row + 1, can_idx),
-                        read(data, row + 2, can_idx)};
+        stats[i] = read(data, STATS_COL + i, candidate);
+    }
+
+    for (size_t i = 0; i < KEY_NUM; i++)
+    {
+        size_t col = KEY_COL + i * 3;
+        keypoints[i] = {read(data, col, candidate), 
+                        read(data, col + 1, candidate),
+                        read(data, col + 2, candidate)};
     }
 }
 
-Detection Detection::BestCandidate(const float *data)
+std::optional<float> Detection::Angle(const Keypoint& start, const Keypoint& mid, const Keypoint& end) const
 {
-    size_t best_idx = 0;
-    for (size_t c = 1; c < dim_size; c++)
-    {
-        if (read(data, 4, c) > read(data, 4, best_idx)) best_idx = c;
-    }
-    return Detection(data, best_idx);
-}
-
-std::optional<float> Detection::angle(const Keypoint &start, const Keypoint &mid, const Keypoint &end) const
-{
-    if (!visible(start) || !visible(mid) || !visible(end))
+    if (!start.visible() || !mid.visible() || !end.visible() )
     {
         return std::nullopt;
     }
-
+    
     Vec2 v1 = start.pos - mid.pos;
     Vec2 v2 = end.pos - mid.pos;
 
@@ -51,6 +46,9 @@ std::optional<float> Detection::angle(const Keypoint &start, const Keypoint &mid
 
 void Detection::Rescale(float scale_x, float scale_y)
 {
+    box[0] *= scale_x; box[2] *= scale_x;
+    box[1] *= scale_x; box[3] *= scale_x;
+
     for (Keypoint& kp : keypoints)
     {
         kp.pos.x *= scale_x;

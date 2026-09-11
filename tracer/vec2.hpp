@@ -11,6 +11,4 @@ struct Vec2
     float length() const { return std::sqrt(x*x + y*y); };
 };
 
-
-
 #endif

@@ -13,6 +13,9 @@ struct Keypoint
 {
     Vec2 pos;
     float conf;
+
+    static constexpr float VISIBILITY_THRESHOLD = 0.5;
+    bool visible() const { return conf >= VISIBILITY_THRESHOLD; };
 };
 
 enum class Joint
@@ -29,40 +32,33 @@ enum class Joint
 class Detection
 {
     public:
-    static constexpr size_t key_num = 17;
-    static constexpr size_t key_row = 5;
-    static constexpr size_t dim_size = 8400;
+    static constexpr size_t KEY_NUM = 17;
+    static constexpr size_t KEY_COL = 6;
+    static constexpr size_t KEY_DIM = 57;
 
-    static constexpr float visibility_threshold = 0.5;
-    bool visible(const Keypoint& kp) const { return kp.conf >= visibility_threshold; };
+    static constexpr size_t BOX_SZ = 4;
+    static constexpr size_t BOX_COL = 0;
 
-    std::array<Keypoint, key_num> keypoints;
-    std::array<float, key_row> box;
+    static constexpr size_t STATS_SZ = 2;
+    static constexpr size_t STATS_COL = 4;
 
-    Detection(const float *data, size_t can_idx);
-    static Detection BestCandidate(const float *data);
+    std::array<Keypoint, KEY_NUM> keypoints;
+    std::array<float, BOX_SZ> box;
+    std::array<float, STATS_SZ> stats;
 
+    Detection() = default;
+    Detection(const float *data, size_t candidate);
+    
     Keypoint kp(Joint j) const { return keypoints[static_cast<size_t>(j)]; };
-    float x(size_t index) const
-    {
-        assert(index < key_num);
-        return keypoints[index].pos.x;
-    }
-    float y(size_t index) const
-    {
-        assert(index < key_num);
-        return keypoints[index].pos.y;
-    }
-    float conf(size_t index) const
-    {
-        assert(index < key_num);
-        return keypoints[index].conf;
-    }
 
     void Rescale(float scale_x, float scale_y);
 
-    std::optional<float> angle(const Keypoint& start, const Keypoint& mid, const Keypoint& end) const;
-    
+
+    // TODO: Move to Vec or Math
+    std::optional<float> Angle(const Keypoint& start, const Keypoint& mid, const Keypoint& end) const;
+
+    private:
+
 };
 
 #endif

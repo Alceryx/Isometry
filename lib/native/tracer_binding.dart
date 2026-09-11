@@ -16,6 +16,9 @@ typedef TracerInitDart = bool Function(Pointer<Utf8>);
 typedef TracerProcessFrameNative = Bool Function(Pointer<Uint8>, Int, Int, Int, Pointer<Float>);
 typedef TracerProcessFrameDart = bool Function(Pointer<Uint8>, int, int, int, Pointer<Float>);
 
+typedef TracerVideoCheckNative = Bool Function(Pointer<Utf8>);
+typedef TracerVideoCheckDart = bool Function(Pointer<Utf8>);
+
 enum TracerPixelFormat {
   nv21(0),
   nv12(1),
@@ -36,13 +39,16 @@ class TracerBinding
   late TracerShutDownDart tracerShutdown;
   late TracerInitDart tracerInit;
   late TracerProcessFrameDart tracerProcessFrame;
+  late TracerVideoCheckDart tracerVideoCheck;
 
   TracerBinding()
   {
     _lib = Platform.isAndroid ? DynamicLibrary.open('libtracer.so') : DynamicLibrary.open('tracer.dll');
+
     tracerPing = _lib.lookupFunction<TracerPingNative, TracerPingDart>('tracer_ping');
     tracerShutdown = _lib.lookupFunction<TracerShutDownNative, TracerShutDownDart>('tracer_shutdown');
     tracerInit = _lib.lookupFunction<TracerInitNative, TracerInitDart>('tracer_init');
     tracerProcessFrame = _lib.lookupFunction<TracerProcessFrameNative, TracerProcessFrameDart>('tracer_process_frame');
+    tracerVideoCheck = _lib.lookupFunction<TracerVideoCheckNative, TracerVideoCheckDart>('tracer_video_check');
   }
 }

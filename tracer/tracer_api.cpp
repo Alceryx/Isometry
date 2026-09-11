@@ -71,9 +71,10 @@ bool tracer_process_frame(
         return false;
     }
 
-    Detection detected = g_tracer.ProcessFrame(frame);
+    g_tracer.ProcessFrame(frame);
+    Detection detected = g_tracer.GetDetection(0);
 
-    for (size_t i = 0; i < Detection::key_num; i++)
+    for (size_t i = 0; i < Detection::KEY_NUM; i++)
     {
         out_keypoints[i * 3 + 0] = detected.keypoints[i].pos.x;
         out_keypoints[i * 3 + 1] = detected.keypoints[i].pos.y;
@@ -81,4 +82,15 @@ bool tracer_process_frame(
     }
 
     return true;
+}
+
+bool tracer_video_check(const char *path)
+{
+    cv::VideoCapture video(path);
+    if (!video.isOpened())
+        return false;
+
+    cv::Mat frame;
+    bool read_ok = video.read(frame);
+    return read_ok && !frame.empty();
 }
