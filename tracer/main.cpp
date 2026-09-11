@@ -33,7 +33,7 @@ int main(void)
         std::cerr << "Error Loading Model" << "\n";
     }
 
-    cv::VideoCapture vid(0);
+    cv::VideoCapture vid("Ang_Occ_Hor.mov");
     cv::Mat frame;
 
     while (vid.read(frame))
@@ -43,16 +43,25 @@ int main(void)
 
         tracer.AnnotateFrame(frame, detected);
     
-        std::map<Joint, float> joint_angles;
+        // std::map<Joint, float> joint_angles;
     
-        std::optional<float> re_ang = detected.Angle(detected.kp(Joint::RightShoulder), detected.kp(Joint::RightElbow), detected.kp(Joint::RightWrist));
+        // std::optional<float> re_ang = detected.Angle(detected.kp(Joint::RightShoulder), detected.kp(Joint::RightElbow), detected.kp(Joint::RightWrist));
     
-        if (re_ang.has_value())
+        // if (re_ang.has_value())
+        // {
+        //     joint_angles[Joint::RightElbow] = re_ang.value();
+        //     std::cout << "Right Elbow Angle: " << joint_angles[Joint::RightElbow] << "\n";
+        // }
+
+        if (cv::waitKey(1) == 99)
         {
-            joint_angles[Joint::RightElbow] = re_ang.value();
-            std::cout << "Right Elbow Angle: " << joint_angles[Joint::RightElbow] << "\n";
+            std::cout << "x_min: " << detected.box[0] << " | y_min: " << detected.box[1] << "\n";
+            std::cout << "x_max: " << detected.box[2]<< " | y_max: " << detected.box[3] << "\n";
+            cv::imwrite("snippet.jpg", frame);
+            break;
         }
-    
+
+
         cv::imshow("Tracer", frame);
         if (cv::waitKey(1) == 27) break;
     }

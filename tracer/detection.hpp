@@ -9,6 +9,9 @@
 #include <map>
 #include <optional>
 
+#include <iostream>
+#include <opencv2/opencv.hpp>
+
 struct Keypoint
 {
     Vec2 pos;

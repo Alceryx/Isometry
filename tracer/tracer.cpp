@@ -85,7 +85,7 @@ void Tracer::ProcessFrame(cv::Mat &frame, float* data)
 
 Detection Tracer::GetDetection(size_t candidate)
 {
-    Detection detected(data, 0);
+    Detection detected(data, candidate);
 
     float scale_x = static_cast<float>(frame_width) / static_cast<float>(input_width);
     float scale_y = static_cast<float>(frame_height) / static_cast<float>(input_height);
@@ -109,8 +109,10 @@ void Tracer::AnnotateFrame(cv::Mat &frame, Detection& detection)
         // 7, cv::Scalar(0, 255, 0), cv::FILLED);
     }
 
+    auto conf_y = detection.box[1] - 15;
+    if (conf_y < 0) conf_y = detection.box[3] + 30; 
     cv::putText(frame, "Conf " + std::to_string(detection.stats[0]),
-    cv::Point(static_cast<int>(detection.box[0]), static_cast<int>(detection.box[1] - 15)),
+    cv::Point(static_cast<int>(detection.box[0]), static_cast<int>(conf_y)),
     cv::FONT_HERSHEY_SIMPLEX, 1,
     cv::Scalar(60, 60, 229), 1);
 

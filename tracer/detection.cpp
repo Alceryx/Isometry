@@ -47,7 +47,7 @@ std::optional<float> Detection::Angle(const Keypoint& start, const Keypoint& mid
 void Detection::Rescale(float scale_x, float scale_y)
 {
     box[0] *= scale_x; box[2] *= scale_x;
-    box[1] *= scale_x; box[3] *= scale_x;
+    box[1] *= scale_y; box[3] *= scale_y;
 
     for (Keypoint& kp : keypoints)
     {
