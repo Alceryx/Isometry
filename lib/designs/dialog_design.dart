@@ -222,7 +222,7 @@ class CornerButton extends StatelessWidget
 //DIALOG FIELD STRUCT
 //-------------------
 
-abstract class DialogField extends StatelessWidget 
+abstract class DialogField extends StatelessWidget
 {
   const DialogField
   ({

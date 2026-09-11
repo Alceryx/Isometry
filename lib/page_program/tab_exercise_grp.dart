@@ -173,15 +173,15 @@ class _TabExerciseGrpState extends State<TabGrpGrid>
                                 child: SvgPicture.asset
                                 (
                                   'assets/ui/grid_border/border_t.svg', 
-                                  fit: BoxFit.fill, alignment: Alignment.center,
+                                  fit: BoxFit.fill
                                 )
                               ),
                         
                               SvgPicture.asset('assets/ui/grid_border/border_tr.svg')
-                            ],
+                            ], //Top Grid Row
                           ),
-                        ), //Top Grid Row
-                    
+                        ),
+
                         Expanded
                         (
                           child: 
@@ -190,11 +190,11 @@ class _TabExerciseGrpState extends State<TabGrpGrid>
                             crossAxisAlignment: CrossAxisAlignment.stretch, //Force children's vertical stretch
                             children: 
                             [
-                              SvgPicture.asset('assets/ui/grid_border/border_l.svg', fit: BoxFit.fill, alignment: Alignment.center, width: cornerSize,),
+                              SvgPicture.asset('assets/ui/grid_border/border_l.svg', fit: BoxFit.fill, width: cornerSize,),
                               
                               Expanded(child: ColoredBox(color: Theme.of(context).colorScheme.surface)),
                     
-                              SvgPicture.asset('assets/ui/grid_border/border_r.svg', fit: BoxFit.fill, alignment: Alignment.center, width: cornerSize,)
+                              SvgPicture.asset('assets/ui/grid_border/border_r.svg', fit: BoxFit.fill, width: cornerSize,)
                             ], //Mid Grid Row
                           ),
                         ),

@@ -71,6 +71,7 @@ flutter:
     - assets/ui/button_filter.svg
     - assets/ui/button_select.svg
     - assets/ui/button_option.svg
+
     - assets/ui/grid_border/border_tl.svg
     - assets/ui/grid_border/border_tr.svg
     - assets/ui/grid_border/border_bl.svg
@@ -80,6 +81,7 @@ flutter:
     - assets/ui/grid_border/border_m.svg
     - assets/ui/grid_border/border_l.svg
     - assets/ui/grid_border/border_r.svg
+
     - assets/ui/grp_card.svg
     - assets/ui/add_card.svg
     - assets/ui/dialog_card.svg
@@ -87,6 +89,23 @@ flutter:
     - assets/ui/dialog_button_left.svg
     - assets/ui/dialog_button_right.svg
     - assets/ui/button_close.svg
+
+    - assets/ui/tab_exercise/subtitle_corner.svg
+    - assets/ui/tab_exercise/title_bl.svg
+    - assets/ui/tab_exercise/title_expandable.svg
+    - assets/ui/tab_exercise/title_br.svg
+    - assets/ui/tab_exercise/list_add.svg
+    - assets/ui/tab_exercise/list_link.svg
+    - assets/ui/tab_exercise/list_sort.svg
+    - assets/ui/tab_exercise/list_tl.svg
+    - assets/ui/tab_exercise/list_tr.svg
+    - assets/ui/tab_exercise/list_t.svg
+    - assets/ui/tab_exercise/list_bl.svg
+    - assets/ui/tab_exercise/list_br.svg
+    - assets/ui/tab_exercise/list_b.svg
+    - assets/ui/tab_exercise/list_l.svg
+    - assets/ui/tab_exercise/list_r.svg
+  
 
     - assets/models/yolov8n-pose.onnx
     - assets/models/yolov8n-pose-320.onnx

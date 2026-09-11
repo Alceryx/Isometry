@@ -5,11 +5,9 @@ import 'package:isometry/data_manager.dart';
 
 class TabExerciseList extends StatefulWidget 
 {
-  // final int index;
   const TabExerciseList
   ({
-    super.key,
-    // required this.index
+    super.key
   });
 
   @override
