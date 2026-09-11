@@ -1,4 +1,5 @@
 import 'package:ffi/ffi.dart';
+import 'package:isometry/temp_design.dart';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:isometry/native/tracer_binding.dart';
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget
           onPrimary: Color(0xFF1D1D1D),
           
           //White
-          secondary: Color(0xFFD8D9D9),
+          secondary: Color(0xFFD9D5CA),
           onSecondary: Color(0xFF1D1D1D),
 
           //BG
@@ -145,7 +146,7 @@ class MyApp extends StatelessWidget
         ),
 
       ),
-      home: TabGrpGrid(),
+      home: TabExerciseList()
     );
   }
 }
