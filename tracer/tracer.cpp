@@ -31,7 +31,7 @@ void Tracer::Shutdown()
     session.reset();
 }
 
-void Tracer::ProcessFrame(cv::Mat &frame, float* data)
+void Tracer::ProcessFrame(cv::Mat &frame)
 {
     try {
     frame_width = frame.cols;
@@ -72,10 +72,8 @@ void Tracer::ProcessFrame(cv::Mat &frame, float* data)
         input_names.data(), &input_tensor, 1,
         output_names.data(), 1);
 
-    std::vector<int64_t> output_shape = output_tensors[0].GetTensorTypeAndShapeInfo().GetShape();
-
-    if (data != nullptr) data = this->data;
-    this->data = output_tensors[0].GetTensorMutableData<float>();
+    // TODO: Iterate through number of output element in the tensor.
+    data = output_tensors[0].GetTensorMutableData<float>();
     
     } catch (const Ort::Exception& e) {
         std::cerr << "ONNX Runtime Exception: " << e.what() << "\n";
@@ -85,6 +83,12 @@ void Tracer::ProcessFrame(cv::Mat &frame, float* data)
 
 Detection Tracer::GetDetection(size_t candidate)
 {
+    if (data == nullptr)
+    {
+        std::cerr << "Frame has not been processed" << "\n";
+        exit(EXIT_FAILURE);
+    }
+
     Detection detected(data, candidate);
 
     float scale_x = static_cast<float>(frame_width) / static_cast<float>(input_width);
@@ -94,7 +98,7 @@ Detection Tracer::GetDetection(size_t candidate)
     return detected;
 }
 
-void Tracer::AnnotateFrame(cv::Mat &frame, Detection& detection)
+void Tracer::AnnotateFrame(cv::Mat& frame, Detection& detection)
 {
     cv::rectangle(frame, cv::Point(static_cast<int>(detection.box[0]), static_cast<int>(detection.box[1])),
     cv::Point(static_cast<int>(detection.box[2]), static_cast<int>(detection.box[3])),
@@ -126,4 +130,16 @@ void Tracer::ConnectJoint(cv::Mat& frame, Keypoint& start, Keypoint& end)
     cv::line(frame, cv::Point(static_cast<int>(start.pos.x), static_cast<int>(start.pos.y)),
     cv::Point(static_cast<int>(end.pos.x), static_cast<int>(end.pos.y)),
     cv::Scalar(60,60,229), 5);
+}
+
+
+// Debugging
+void Tracer::Snippet(cv::Mat& frame, Detection& detection)
+{
+    if (cv::waitKey(1) == 99)
+    {
+        std::cout << "x_min: " << detection.box[0] << " | y_min: " << detection.box[1] << "\n";
+        std::cout << "x_max: " << detection.box[2] << " | y_max: " << detection.box[3] << "\n";
+        cv::imwrite("snippet.jpg", frame);
+    }
 }

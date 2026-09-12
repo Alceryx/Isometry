@@ -17,12 +17,16 @@ class Tracer
     public:
     
     bool Init(const std::string& model_path);
-    void ProcessFrame(cv::Mat& frame, float* data = nullptr);
+    void ProcessFrame(cv::Mat& frame);
     void Shutdown();
     Detection GetDetection(size_t candidate);
 
     void AnnotateFrame(cv::Mat& frame, Detection& detection);
     
+
+    // Debugging
+    void Snippet(cv::Mat& frame, Detection& detection);
+
     private: 
     std::unique_ptr<Ort::Env> env;
     std::unique_ptr<Ort::Session> session;

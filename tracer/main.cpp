@@ -26,44 +26,44 @@ void shape_info(Ort::Session& session)
 int main(void)
 {
     Tracer tracer{};
-    bool status = tracer.Init("models/yolo26s-pose.onnx");
+    bool status = tracer.Init("models/hmr2/hmr2-mesh.onnx");
 
     if (!status)
     {
         std::cerr << "Error Loading Model" << "\n";
     }
 
-    cv::VideoCapture vid("Ang_Occ_Hor.mov");
+    cv::VideoCapture vid("Occ_Hor.mp4");
     cv::Mat frame;
 
-    while (vid.read(frame))
+    // while (vid.read(frame))
+    // {
+    //     tracer.ProcessFrame(frame);
+    //     Detection detected = tracer.GetDetection(0);
+
+    //     tracer.AnnotateFrame(frame, detected);
+    
+    //     // std::map<Joint, float> joint_angles;
+    
+    //     // std::optional<float> re_ang = detected.Angle(detected.kp(Joint::RightShoulder), detected.kp(Joint::RightElbow), detected.kp(Joint::RightWrist));
+    
+    //     // if (re_ang.has_value())
+    //     // {
+    //     //     joint_angles[Joint::RightElbow] = re_ang.value();
+    //     //     std::cout << "Right Elbow Angle: " << joint_angles[Joint::RightElbow] << "\n";
+    //     // }
+
+
+    //     tracer.Snippet(frame, detected);
+
+
+    //     cv::imshow("Tracer", frame);
+    //     if (cv::waitKey(1) == 27) break;
+    // }
+
+    if (vid.read(frame))
     {
         tracer.ProcessFrame(frame);
-        Detection detected = tracer.GetDetection(0);
-
-        tracer.AnnotateFrame(frame, detected);
-    
-        // std::map<Joint, float> joint_angles;
-    
-        // std::optional<float> re_ang = detected.Angle(detected.kp(Joint::RightShoulder), detected.kp(Joint::RightElbow), detected.kp(Joint::RightWrist));
-    
-        // if (re_ang.has_value())
-        // {
-        //     joint_angles[Joint::RightElbow] = re_ang.value();
-        //     std::cout << "Right Elbow Angle: " << joint_angles[Joint::RightElbow] << "\n";
-        // }
-
-        if (cv::waitKey(1) == 99)
-        {
-            std::cout << "x_min: " << detected.box[0] << " | y_min: " << detected.box[1] << "\n";
-            std::cout << "x_max: " << detected.box[2]<< " | y_max: " << detected.box[3] << "\n";
-            cv::imwrite("snippet.jpg", frame);
-            break;
-        }
-
-
-        cv::imshow("Tracer", frame);
-        if (cv::waitKey(1) == 27) break;
     }
 
     tracer.Shutdown();

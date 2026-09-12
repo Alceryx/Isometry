@@ -44,8 +44,10 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Widget Preview related
+.widget_preview/
+
 # Tracer
 tracer/build/
 tracer/onnxruntime/
-# Widget Preview related
-.widget_preview/
+tracer/models/
