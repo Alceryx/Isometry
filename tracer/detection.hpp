@@ -1,7 +1,8 @@
 #ifndef DETECTION
 #define DETECTION
 
-#include "vec2.hpp"
+// #include "vec2.hpp"
+#include "math/vec.hpp"
 
 #include <array>
 #include <cassert>
@@ -14,7 +15,7 @@
 
 struct Keypoint
 {
-    Vec2 pos;
+    Vec2 pos{};
     float conf;
 
     static constexpr float VISIBILITY_THRESHOLD = 0.5;
@@ -46,7 +47,8 @@ class Detection
     static constexpr size_t STATS_COL = 4;
 
     std::array<Keypoint, KEY_NUM> keypoints;
-    std::array<float, BOX_SZ> box;
+    // std::array<float, BOX_SZ> box;
+    Vec2 box_min, box_max;
     std::array<float, STATS_SZ> stats;
 
     Detection() = default;

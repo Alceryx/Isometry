@@ -76,8 +76,8 @@ bool tracer_process_frame(
 
     for (size_t i = 0; i < Detection::KEY_NUM; i++)
     {
-        out_keypoints[i * 3 + 0] = detected.keypoints[i].pos.x;
-        out_keypoints[i * 3 + 1] = detected.keypoints[i].pos.y;
+        out_keypoints[i * 3 + 0] = detected.keypoints[i].pos.x();
+        out_keypoints[i * 3 + 1] = detected.keypoints[i].pos.y();
         out_keypoints[i * 3 + 2] = detected.keypoints[i].conf;
     }
 

@@ -27,13 +27,14 @@ int main(void)
 {
     Tracer tracer{};
     bool status = tracer.Init("models/hmr2/hmr2-mesh.onnx");
+    // bool status = tracer.Init("models/yolo26s-pose.onnx");
 
     if (!status)
     {
         std::cerr << "Error Loading Model" << "\n";
     }
 
-    cv::VideoCapture vid("Occ_Hor.mp4");
+    cv::VideoCapture vid("Ang_Occ_Hor.mp4");
     cv::Mat frame;
 
     // while (vid.read(frame))
