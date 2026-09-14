@@ -248,7 +248,7 @@ class _TabExerciseGrpState extends State<TabGrpGrid>
                                     return ChangeNotifierProvider.value
                                     (
                                       value: context.read<GridData>().items[index].exercises,
-                                      child: TabExerciseList(),
+                                      child: TabExerciseList(grpData: gridData.items[index]),
                                     );
                                   }));
                                 },

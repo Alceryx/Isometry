@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:isometry/data_manager.dart';
+import 'package:isometry/designs/text_trim.dart';
 
-class TabExerciseList extends StatefulWidget 
+class TabExerciseListDesign extends StatefulWidget 
 {
-  const TabExerciseList({super.key});
+  final String grpTitle; 
+  final String grpSubtitle;
+
+  const TabExerciseListDesign
+  ({
+    super.key,
+    required this.grpTitle,
+    required this.grpSubtitle
+  });
 
   @override
-  State<TabExerciseList> createState() => _TabExerciseListState();
+  State<TabExerciseListDesign> createState() => _TabExerciseListDesignState();
 }
 
-class _TabExerciseListState extends State<TabExerciseList> 
+class _TabExerciseListDesignState extends State<TabExerciseListDesign> 
 {
   @override
   Widget build(BuildContext context) 
@@ -64,7 +74,7 @@ class _TabExerciseListState extends State<TabExerciseList>
                                     [
                                       Text
                                       (
-                                        'IT WORKED!', 
+                                        widget.grpSubtitle, 
                                         style: Theme.of(context).textTheme.displayMedium?.
                                         copyWith(color: Theme.of(context).colorScheme.onPrimary),
                                       ),
@@ -77,7 +87,10 @@ class _TabExerciseListState extends State<TabExerciseList>
                           ],
                         ),
                       ),
-              
+
+          
+                      //GRP TITLE
+
                       SizedBox
                       (
                         width: double.infinity,
@@ -86,14 +99,15 @@ class _TabExerciseListState extends State<TabExerciseList>
                           color: Theme.of(context).colorScheme.secondary,
                           child: Padding
                           (
-                            padding: const EdgeInsets.symmetric
-                            (horizontal: 10, vertical: 5),
-                            child: Text
+                            padding: const EdgeInsets.only
+                            (left: 10, right: 10, top: 10),
+                            child: TextTrimmer
                             (
-                              'PLANCHE PRESS', 
-                              style: Theme.of(context).textTheme.displayLarge?.
-                              copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                            ),
+                              content: widget.grpTitle, 
+                              style: Theme.of(context).textTheme.displayLarge, 
+                              textColor: Theme.of(context).colorScheme.onPrimary, 
+                              trimMetrics: TrimMetrics.mainTypeface
+                            )
                           ),
                         )
                       ),
@@ -198,13 +212,90 @@ class _TabExerciseListState extends State<TabExerciseList>
                           ),
                         )
                       ],
+                    ),
+                    
+                    Padding
+                    (
+                      padding: const EdgeInsets.only
+                      (top: 57.0, left: 15, right: 15, bottom: 20),
+                      child: ListView
+                      (
+                        children: 
+                        [
+                          ExerciseCard()
+                        ],
+                      ),
                     )
-                  ],
+                  ], //STACK FOR EXERCISE LIST
                 ),
               )
             ],
           ),
         )
+      ),
+    );
+  }
+}
+
+class ExerciseCard extends StatelessWidget 
+{
+  // final ExerciseData exerciseData; 
+  const ExerciseCard
+  ({
+    super.key, 
+    // required this.exerciseData
+  });
+
+  @override
+  Widget build(BuildContext context) 
+  {
+    return SizedBox
+    (
+      height: 55,
+      child: Row
+      (
+        children: 
+        [
+          SvgPicture.asset('assets/ui/tab_exercise/list_option.svg'),
+          SizedBox(width: 7,),
+          Column
+          (
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: 
+            [
+              TextTrimmer
+              (
+                content: 'Planche Push-up', 
+                trimMetrics: TrimMetrics.mainTypeface,
+                style: Theme.of(context).textTheme.titleMedium,
+                textColor: Theme.of(context).colorScheme.secondary,
+              ),
+              SizedBox(height: 5,),
+
+              Expanded
+              (
+                child: ColoredBox
+                (
+                  color: Theme.of(context).colorScheme.primary,
+                  child: SizedBox
+                  (
+                    child: Padding
+                    (
+                      padding: const EdgeInsets.all(3),
+                      child: TextTrimmer
+                      (
+                        content: 'ACCESSORY', 
+                        trimMetrics: TrimMetrics.secondaryTypeface,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        textColor: Theme.of(context).colorScheme.onPrimary
+                      ),
+                    )
+                  )
+                ),
+              )
+            ],
+          )
+        ],
       ),
     );
   }
