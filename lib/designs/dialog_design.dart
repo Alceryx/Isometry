@@ -260,7 +260,7 @@ abstract class DialogField extends StatelessWidget
             Text
             (
               fieldTitle,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith
+              style: Theme.of(context).textTheme.titleSmall?.copyWith
               (color: Theme.of(context).colorScheme.primary,
               height: 0.8),
             ),

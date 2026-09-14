@@ -1,9 +1,8 @@
 import 'package:ffi/ffi.dart';
-import 'package:isometry/temp_design.dart';
 import 'package:file_picker/file_picker.dart';
 
-import 'package:isometry/native/tracer_binding.dart';
-import 'package:isometry/native/tracer_model.dart';
+// import 'package:isometry/native/tracer_binding.dart';
+// import 'package:isometry/native/tracer_model.dart';
 
 import 'package:isometry/page_program/tab_exercise_grp.dart';
 import 'package:isometry/data_manager.dart';
@@ -13,20 +12,21 @@ import 'package:provider/provider.dart';
 
 Future<void> main() async 
 {
-  TracerBinding tracer = TracerBinding();
-  final path = await getModelPath(TracerModel.yolo11nPose);
-  bool init = tracer.tracerInit(path.toNativeUtf8());
-  debugPrint("Initialization Status: $init");
+  // TracerBinding tracer = TracerBinding();
+  // final path = await getModelPath(TracerModel.yolo11nPose);
+  // bool init = tracer.tracerInit(path.toNativeUtf8());
+  // debugPrint("Initialization Status: $init");
 
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
 
-  PlatformFile? result = await FilePicker.pickFile(type: FileType.video);
-  if (result != null)
-  {
-    final video = result.path!;
-    bool ok = tracer.tracerVideoCheck(video.toNativeUtf8());
-    debugPrint("Video Input Path: $video | Video Load Status: $ok");
-  }
+  // PlatformFile? result = await FilePicker.pickFile(type: FileType.video);
+  // if (result != null)
+  // {
+  //   final video = result.path!;
+  //   // bool ok = tracer.tracerVideoCheck(video.toNativeUtf8());
+  //   debugPrint("Video Input Path: $video");
+  //   // debugPrint("Video Load Status: $ok");
+  // }
 
   runApp
   (
@@ -112,14 +112,14 @@ class MyApp extends StatelessWidget
           titleMedium: TextStyle
           (
             fontFamily: 'ChakraPetch',
-            fontSize: 20,
+            fontSize: 28,
             fontWeight: FontWeight.w500,
           ),
 
           titleSmall: TextStyle
           (
             fontFamily: 'ChakraPetch',
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: FontWeight.w400,
           ),
 
@@ -146,7 +146,7 @@ class MyApp extends StatelessWidget
         ),
 
       ),
-      home: TabExerciseList()
+      home: TabGrpGrid()
     );
   }
 }
