@@ -34,7 +34,7 @@ int main(void)
         std::cerr << "Error Loading Model" << "\n";
     }
 
-    cv::VideoCapture vid("Ang_Occ_Hor.mp4");
+    cv::VideoCapture vid("tests/Ang_Occ_Hor.mp4");
     cv::Mat frame;
 
     // while (vid.read(frame))

@@ -103,6 +103,7 @@ struct Mat3
 {
     std::array<Vec3, 3> e;
     
+    Mat3() : e{Vec3{}, Vec3{}, Vec3{}} {};
     Mat3(Vec3 i, Vec3 j, Vec3 k) : e{i, j, k} {};
 
     // Columns

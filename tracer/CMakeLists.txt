@@ -28,18 +28,36 @@ else()
 endif()
 find_package(OpenCV REQUIRED)
 
+set(TRACER_SOURCES
+    api/tracer_api.cpp
+    detection/detection.cpp
+    extraction/mesh.cpp
+    tracer.cpp
+)
 
 if (NOT ANDROID)
-    add_executable(Tracer main.cpp detection.cpp tracer.cpp tracer_api.cpp)
+    add_executable(Tracer main.cpp ${TRACER_SOURCES})
 endif()
-add_library(TracerLib SHARED detection.cpp tracer.cpp tracer_api.cpp)
+
+add_library(TracerLib SHARED ${TRACER_SOURCES})
 set_target_properties(TracerLib PROPERTIES OUTPUT_NAME "tracer")
+
+foreach(target Tracer TracerLib)
+    if (TARGET ${target})
+        target_include_directories(${target} PUBLIC
+            ${CMAKE_CURRENT_SOURCE_DIR}
+            ${CMAKE_CURRENT_SOURCE_DIR}/api
+            ${CMAKE_CURRENT_SOURCE_DIR}/math
+            ${CMAKE_CURRENT_SOURCE_DIR}/detection
+            ${CMAKE_CURRENT_SOURCE_DIR}/extraction
+        )
+    endif()
+endforeach()
 
 set(TARGETS TracerLib)
 if(NOT ANDROID)
     list(APPEND TARGETS Tracer)
 endif()
-
 
 foreach(target ${TARGETS})
     target_include_directories(${target} PRIVATE ${ONNXRUNTIME_INCLUDE_DIR} ${OpenCV_INCLUDE_DIRS})

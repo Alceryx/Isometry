@@ -72,7 +72,6 @@ void Tracer::ProcessFrame(cv::Mat &frame)
         input_names.data(), &input_tensor, 1,
         output_names.data(), 1);
 
-    // TODO: Iterate through number of output element in the tensor.
     data = output_tensors[0].GetTensorMutableData<float>();
     
     } catch (const Ort::Exception& e) {

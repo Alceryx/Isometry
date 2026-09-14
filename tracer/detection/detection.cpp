@@ -2,7 +2,7 @@
 
 namespace
 {
-    inline float Read(const float *data, size_t col, size_t candidate)
+    inline float Read(const float* data, size_t col, size_t candidate)
     {
         return data[candidate * Detection::KEY_DIM + col];
     }
@@ -43,17 +43,11 @@ std::optional<float> Detection::Angle(const Keypoint& start, const Keypoint& mid
 
 void Detection::Rescale(float scale_x, float scale_y)
 {
-    // box[0] *= scale_x; box[2] *= scale_x;
-    // box[1] *= scale_y; box[3] *= scale_y;
-
     box_min *= Vec2(scale_x, scale_y);
     box_max *= Vec2(scale_x, scale_y);
 
     for (Keypoint& kp : keypoints)
     {
-        // kp.pos.x *= scale_x;
-        // kp.pos.y *= scale_y;
-
         kp.pos *= Vec2(scale_x, scale_y);
     }
 }

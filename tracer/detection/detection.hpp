@@ -1,7 +1,6 @@
 #ifndef DETECTION
 #define DETECTION
 
-// #include "vec2.hpp"
 #include "math/vec.hpp"
 
 #include <array>
@@ -47,12 +46,11 @@ class Detection
     static constexpr size_t STATS_COL = 4;
 
     std::array<Keypoint, KEY_NUM> keypoints;
-    // std::array<float, BOX_SZ> box;
     Vec2 box_min, box_max;
     std::array<float, STATS_SZ> stats;
 
     Detection() = default;
-    Detection(const float *data, size_t candidate);
+    Detection(const float* data, size_t candidate);
     
     Keypoint kp(Joint j) const { return keypoints[static_cast<size_t>(j)]; };
 
@@ -61,9 +59,6 @@ class Detection
 
     // TODO: Move to Vec or Math
     std::optional<float> Angle(const Keypoint& start, const Keypoint& mid, const Keypoint& end) const;
-
-    private:
-
 };
 
 #endif
