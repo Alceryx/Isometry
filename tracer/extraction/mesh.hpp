@@ -1,7 +1,7 @@
 #ifndef MESH
 #define MESH
 
-#include "math/vec.hpp"
+#include "vec.hpp"
 
 #include <array>
 

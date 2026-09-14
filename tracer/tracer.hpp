@@ -1,6 +1,7 @@
 #ifndef TRACER
 #define TRACER
 
+#include "detector.hpp"
 #include "detection.hpp"
 
 #include <onnxruntime_cxx_api.h>
@@ -11,32 +12,26 @@
 #include <cstdint>
 #include <memory>
 #include <filesystem>
+#include <optional>
 
 class Tracer
 {
     public:
-    
+
     bool Init(const std::string& model_path);
-    void ProcessFrame(cv::Mat& frame);
     void Shutdown();
-    Detection GetDetection(size_t candidate);
+
+    std::optional<Detection> DetectPose(cv::Mat& frame);
 
     void AnnotateFrame(cv::Mat& frame, Detection& detection);
-    
 
     // Debugging
     void Snippet(cv::Mat& frame, Detection& detection);
 
     private: 
-    std::unique_ptr<Ort::Env> env;
-    std::unique_ptr<Ort::Session> session;
-    
-    int64_t input_width = 0;
-    int64_t input_height = 0;
-    int frame_width = 0;
-    int frame_height = 0;
+    Ort::Env env;
 
-    float* data;
+    Detector yolo;
 
     void ConnectJoint(cv::Mat&frame, Keypoint &start, Keypoint &end);
 };

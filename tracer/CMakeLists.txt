@@ -29,8 +29,9 @@ endif()
 find_package(OpenCV REQUIRED)
 
 set(TRACER_SOURCES
-    api/tracer_api.cpp
+    # api/tracer_api.cpp
     detection/detection.cpp
+    detection/detector.cpp
     extraction/mesh.cpp
     tracer.cpp
 )

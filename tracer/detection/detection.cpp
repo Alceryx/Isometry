@@ -38,7 +38,7 @@ std::optional<float> Detection::Angle(const Keypoint& start, const Keypoint& mid
 
     float angle = std::acos(v1.Dot(v2) / (v1.Length() * v2.Length()));
 
-    return angle * 180.0 / (float)3.14159265358979323846;
+    return angle * 180.0f / 3.14159265358979323846f;
 }
 
 void Detection::Rescale(float scale_x, float scale_y)

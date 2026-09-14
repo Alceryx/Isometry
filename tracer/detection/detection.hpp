@@ -1,7 +1,7 @@
 #ifndef DETECTION
 #define DETECTION
 
-#include "math/vec.hpp"
+#include "vec.hpp"
 
 #include <array>
 #include <cassert>
