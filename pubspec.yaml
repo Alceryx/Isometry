@@ -108,6 +108,7 @@ flutter:
     - assets/ui/tab_exercise/list_l.svg
     - assets/ui/tab_exercise/list_r.svg
     - assets/ui/tab_exercise/list_option.svg
+    - assets/ui/tab_exercise/list_back.svg
   
 
     - assets/models/yolov8n-pose.onnx

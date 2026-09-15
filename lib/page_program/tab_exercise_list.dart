@@ -28,67 +28,29 @@ class _TabExerciseListState extends State<TabExerciseList>
     (
       grpTitle: widget.grpData.title,
       grpSubtitle: widget.grpData.subTitle,
+      onAddTap: () 
+      {
+        context.read<ExerciseList>().addItem
+        (
+          ExerciseData(title: 'Exercise1', tags: TagListLocal())
+        );
+      },
+      exerciseListBuilder: ListView.builder
+      (
+        itemCount: exerciseData.items.length,
+        itemBuilder: (context, index)
+        {
+          final exerciseCard = exerciseData.items[index];
+          return Padding
+          (
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: ExerciseCard
+            (
+              onOptionTap: () {}
+            ),
+          );
+        }
+      ),
     );
   }
 }
-
-// class Temp extends StatelessWidget {
-//   const Temp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold
-//     (
-//       body: Column
-//       (
-//         children: 
-//         [
-//           TextButton
-//           (
-//             onPressed: () 
-//             {
-//               Navigator.of(context).pop(context); 
-//             },
-//             child: Text('Back Button'),
-//           ),
-      
-//           TextButton //Add Exercise Button
-//           (
-//             onPressed: () 
-//             {
-//               context.read<ExerciseList>().addItem
-//               (
-//                 ExerciseData(title: 'Exercise1', tags: TagListLocal())
-//               );
-//             },
-//             child: Text('Add Exercise'),
-//           ),
-      
-//           Expanded
-//           (
-//             child: ListView.builder
-//             (
-//               itemCount: exerciseData.items.length,
-//               itemBuilder: (context, index)
-//               {
-//                 final exerciseCard = exerciseData.items[index];
-//                 return Row
-//                 (
-//                   children: 
-//                   [
-//                     Text(exerciseCard.title),
-//                     TextButton
-//                     (
-//                       onPressed: () {},
-//                       child: Text('Options')
-//                     )
-//                   ],
-//                 ); 
-//               }
-//             ),
-//           )
-//         ],
-//       ),
-//     );;
-//   }
-// }

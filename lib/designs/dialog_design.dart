@@ -280,9 +280,7 @@ abstract class DialogField extends StatelessWidget
             ),
             SizedBox(width: 5,),
             Expanded
-            (
-              child: buildField(context)
-            ),
+            (child: buildField(context)),
             SizedBox(width: 30,)
           ]
         )

@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:isometry/data_manager.dart';
 import 'package:isometry/designs/text_trim.dart';
 
-class TabExerciseListDesign extends StatefulWidget 
+class TabExerciseListDesign extends StatelessWidget 
 {
   final String grpTitle; 
   final String grpSubtitle;
+  final VoidCallback onAddTap;
+  final Widget exerciseListBuilder;
 
   const TabExerciseListDesign
   ({
     super.key,
     required this.grpTitle,
-    required this.grpSubtitle
+    required this.grpSubtitle,
+    required this.onAddTap,
+    required this.exerciseListBuilder
   });
 
-  @override
-  State<TabExerciseListDesign> createState() => _TabExerciseListDesignState();
-}
-
-class _TabExerciseListDesignState extends State<TabExerciseListDesign> 
-{
   @override
   Widget build(BuildContext context) 
   {
@@ -74,7 +71,7 @@ class _TabExerciseListDesignState extends State<TabExerciseListDesign>
                                     [
                                       Text
                                       (
-                                        widget.grpSubtitle, 
+                                        grpSubtitle, 
                                         style: Theme.of(context).textTheme.displayMedium?.
                                         copyWith(color: Theme.of(context).colorScheme.onPrimary),
                                       ),
@@ -100,10 +97,10 @@ class _TabExerciseListDesignState extends State<TabExerciseListDesign>
                           child: Padding
                           (
                             padding: const EdgeInsets.only
-                            (left: 10, right: 10, top: 10),
+                            (left: 10, right: 10, top: 10, bottom: 5),
                             child: TextTrimmer
                             (
-                              content: widget.grpTitle, 
+                              content: grpTitle, 
                               style: Theme.of(context).textTheme.displayLarge, 
                               textColor: Theme.of(context).colorScheme.onPrimary, 
                               trimMetrics: TrimMetrics.mainTypeface
@@ -126,8 +123,23 @@ class _TabExerciseListDesignState extends State<TabExerciseListDesign>
                         ),
                       )
                     ], // COL FOR GRP INFO CARD
+                  ),
+
+                  Positioned
+                  (
+                    left: 0,
+                    bottom: 0,
+                    child: GestureDetector
+                    (
+                      onTap: () => Navigator.of(context).pop(),
+                      child: SizedBox
+                      (
+                        height: grpInfoBottomHeight / 1.5,
+                        child: SvgPicture.asset('assets/ui/tab_exercise/list_back.svg')
+                      ),
+                    ),
                   )
-                ],
+                ], //STACK FOR GRP DATA INFO
               ),
 
               Expanded
@@ -147,7 +159,11 @@ class _TabExerciseListDesignState extends State<TabExerciseListDesign>
                           (
                             children: 
                             [
-                              SvgPicture.asset('assets/ui/tab_exercise/list_add.svg'),
+                              GestureDetector
+                              (
+                                onTap: onAddTap,
+                                child: SvgPicture.asset('assets/ui/tab_exercise/list_add.svg')
+                              ),
                               SvgPicture.asset('assets/ui/tab_exercise/list_link.svg'),
                               Expanded(child: SizedBox()),
                               SvgPicture.asset('assets/ui/tab_exercise/list_sort.svg')
@@ -217,14 +233,8 @@ class _TabExerciseListDesignState extends State<TabExerciseListDesign>
                     Padding
                     (
                       padding: const EdgeInsets.only
-                      (top: 57.0, left: 15, right: 15, bottom: 20),
-                      child: ListView
-                      (
-                        children: 
-                        [
-                          ExerciseCard()
-                        ],
-                      ),
+                      (top: 50.0, left: 15, right: 15, bottom: 20),
+                      child: exerciseListBuilder
                     )
                   ], //STACK FOR EXERCISE LIST
                 ),
@@ -239,11 +249,11 @@ class _TabExerciseListDesignState extends State<TabExerciseListDesign>
 
 class ExerciseCard extends StatelessWidget 
 {
-  // final ExerciseData exerciseData; 
+  final VoidCallback onOptionTap; 
   const ExerciseCard
   ({
     super.key, 
-    // required this.exerciseData
+    required this.onOptionTap
   });
 
   @override
@@ -256,7 +266,11 @@ class ExerciseCard extends StatelessWidget
       (
         children: 
         [
-          SvgPicture.asset('assets/ui/tab_exercise/list_option.svg'),
+          GestureDetector
+          (
+            onTap: onOptionTap,
+            child: SvgPicture.asset('assets/ui/tab_exercise/list_option.svg')
+          ),
           SizedBox(width: 7,),
           Column
           (
