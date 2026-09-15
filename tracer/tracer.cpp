@@ -1,11 +1,11 @@
 #include "tracer.hpp"
 
-bool Tracer::Init(const std::string& model_path)
+bool Tracer::Init(const std::string& det_path, const std::string& ext_path)
 {
     try {
     env = Ort::Env(ORT_LOGGING_LEVEL_WARNING, "Tracer");
-    yolo = {env, model_path};
-
+    yolo = {env, det_path};
+    hmr2 = {env, ext_path};
     return true;
 
     } catch (const Ort::Exception &e) {
@@ -33,7 +33,6 @@ void Tracer::AnnotateFrame(cv::Mat& frame, Detection& detection)
     cv::Point(static_cast<int>(detection.box_max.x()), static_cast<int>(detection.box_max.y())),
     cv::Scalar(60,60,229), 3);
 
-    auto prev_conf = 0;
     for (Keypoint &kp : detection.keypoints)
     {
         // if (!kp.visible()) continue;

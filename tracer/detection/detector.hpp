@@ -2,14 +2,15 @@
 #define DETECTOR
 
 #include "detection.hpp"
+#include "vec.hpp"
 
 #include <onnxruntime_cxx_api.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/dnn.hpp>
 
+#include <filesystem>
 #include <memory>
 #include <string>
-#include <filesystem>
 #include <vector>
 
 class Detector

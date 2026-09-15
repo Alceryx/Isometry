@@ -18,17 +18,19 @@ Detector::Detector(const Ort::Env& env, const std::string &model_path)
 
 std::vector<Detection> Detector::Detect(cv::Mat &frame)
 {
-    try {
-    frame_width = frame.cols;
-    frame_height = frame.rows;
-
-    Ort::AllocatorWithDefaultOptions allocator;
+    std::vector<Detection> detections;
 
     if (frame.empty())
     {
         std::cerr << "Error: Could not load frame\n";
-        exit(EXIT_FAILURE);
+        return detections;
     }
+
+    frame_width = frame.cols;
+    frame_height = frame.rows;
+
+    try {
+    Ort::AllocatorWithDefaultOptions allocator;
 
     cv::Mat blob;
     cv::dnn::blobFromImage(frame, blob, 1.0 / 255.0,
@@ -59,7 +61,6 @@ std::vector<Detection> Detector::Detect(cv::Mat &frame)
 
     float* data = output_tensors[0].GetTensorMutableData<float>();
         
-    std::vector<Detection> detections;
     for (size_t i = 0; i < DETECT_NUM; i++)
     {
         Detection det {data, i};

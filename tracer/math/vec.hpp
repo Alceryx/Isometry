@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <array>
+#include <iostream>
 
 template<size_t N>
 struct VecBase
@@ -10,7 +11,7 @@ struct VecBase
     std::array<float, N> e;
 
     VecBase() { e.fill(0.0f); };
-    VecBase(std::array<float, N> init) : e(init) {}; 
+    VecBase(std::array<float, N> init) : e(init) {};
 
     VecBase operator-() const
     {
@@ -160,6 +161,16 @@ VecBase<N> operator/(VecBase<N> v, float t)
 {
     v /= t;
     return v;
+}
+
+inline std::ostream &operator<<(std::ostream &out, const Vec2 &v)
+{
+    return out << v.e[0] << ' ' << v.e[1];
+}
+
+inline std::ostream &operator<<(std::ostream &out, const Vec3 &v)
+{
+    return out << v.e[0] << ' ' << v.e[1] << ' ' << v.e[2];
 }
 
 inline Vec3 operator*(const Mat3 &M, const Vec3 &v)

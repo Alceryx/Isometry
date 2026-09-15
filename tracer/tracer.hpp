@@ -3,6 +3,8 @@
 
 #include "detector.hpp"
 #include "detection.hpp"
+#include "extractor.hpp"
+#include "mesh.hpp"
 
 #include <onnxruntime_cxx_api.h>
 #include <opencv2/opencv.hpp>
@@ -18,7 +20,7 @@ class Tracer
 {
     public:
 
-    bool Init(const std::string& model_path);
+    bool Init(const std::string& det_path, const std::string& ext_path);
     void Shutdown();
 
     std::optional<Detection> DetectPose(cv::Mat& frame);
@@ -30,8 +32,8 @@ class Tracer
 
     private: 
     Ort::Env env;
-
     Detector yolo;
+    Extractor hmr2;
 
     void ConnectJoint(cv::Mat&frame, Keypoint &start, Keypoint &end);
 };

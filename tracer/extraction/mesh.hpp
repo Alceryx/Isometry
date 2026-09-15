@@ -8,6 +8,8 @@
 class Mesh
 {
     public:
+    static constexpr float FOCAL_LENGTH = 5000.0f;
+
     static constexpr size_t VERTICES_NUM = 6890;
     static constexpr size_t KEY_NUM = 44;
 
@@ -28,6 +30,8 @@ class Mesh
 
     Mesh(const float* const* outputs);
     void ExtractVertices(const float* data);
+
+    Vec3 CamCropToFull(const Vec2& box_center, const float box_size, const Vec2& image_size);
 };
 
 #endif

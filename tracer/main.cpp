@@ -6,11 +6,16 @@
 #include <opencv2/dnn.hpp>
 
 #include <iostream>
+#include <optional>
+#include <string>
 
 int main(void)
 {
+    std::string yolo_path = "models/yolo26s-pose.onnx";
+    std::string hmr2_path = "models/hmr2/hmr2-mesh.onnx";
+
     Tracer tracer{};
-    bool status = tracer.Init("models/yolo26s-pose.onnx");
+    bool status = tracer.Init(yolo_path, hmr2_path);
 
     if (!status)
     {

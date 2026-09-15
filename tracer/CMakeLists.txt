@@ -33,6 +33,7 @@ set(TRACER_SOURCES
     detection/detection.cpp
     detection/detector.cpp
     extraction/mesh.cpp
+    extraction/extractor.cpp
     tracer.cpp
 )
 
