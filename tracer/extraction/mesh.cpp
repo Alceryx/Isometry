@@ -24,7 +24,7 @@ namespace
     }
 }
 
-Mesh::Mesh(const float* const* outputs)
+Mesh::Mesh(const std::vector<float *> outputs)
 {
     const float* key3d_data = outputs[1];
     const float* key2d_data = outputs[2];
@@ -62,15 +62,17 @@ void Mesh::ExtractVertices(const float* data)
     }
 }
 
-Vec3 Mesh::CamCropToFull(const Vec2& box_center, const float box_size, const Vec2& image_size)
+Vec3 Mesh::CamCropToFull(const Vec2& box_center, const float box_size, const Vec2& image)
 {
     float scale = pred_cam[0];
     float h_offset = pred_cam[1];
     float v_offset = pred_cam[2];
     
     float tz = (2.0f * FOCAL_LENGTH) / (scale * box_size);
-    float tx = tz * (box_center.x() + h_offset * box_size/2.0f - image_size.x()/2.0f) / FOCAL_LENGTH;
-    float ty = tz * (box_center.y() + v_offset * box_size/2.0f - image_size.y()/2.0f) / FOCAL_LENGTH;
+
+    Vec2 converted = 2.0f * (box_center - image/2) / (scale * box_size);
+    float tx = converted.x() + h_offset;
+    float ty = converted.y() + v_offset;
 
     return Vec3(tx, ty, tz);
 }

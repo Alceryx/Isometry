@@ -4,6 +4,7 @@
 #include "vec.hpp"
 
 #include <array>
+#include <vector>
 
 class Mesh
 {
@@ -28,7 +29,8 @@ class Mesh
     std::array<float, CAM_NUM> pred_cam;
     std::array<float, CAM_T_NUM> pred_cam_t;
 
-    Mesh(const float* const* outputs);
+    Mesh() = default;
+    Mesh(const std::vector<float *> outputs);
     void ExtractVertices(const float* data);
 
     Vec3 CamCropToFull(const Vec2& box_center, const float box_size, const Vec2& image_size);

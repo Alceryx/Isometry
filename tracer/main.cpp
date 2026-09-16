@@ -29,10 +29,14 @@ int main(void)
     {
         std::optional<Detection> detected = tracer.DetectPose(frame);
 
-        if (detected.has_value())
-        {
-            tracer.AnnotateFrame(frame, detected.value());
-        }
+        if (!detected.has_value()) continue;
+        tracer.AnnotateFrame(frame, detected.value());
+        
+        std::optional<Mesh> mesh = tracer.ExtractMesh(frame, detected.value());
+
+        if (!mesh.has_value()) continue;
+        
+        std::cout << mesh.value().betas[0] << "\n";
     
         // std::map<Joint, float> joint_angles;
     

@@ -21,6 +21,11 @@ std::optional<Detection> Tracer::DetectPose(cv::Mat& frame)
     return detections[0];
 }
 
+std::optional<Mesh> Tracer::ExtractMesh(cv::Mat& frame, const Detection& detection)
+{
+    return hmr2.Extract(frame, detection);
+}
+
 void Tracer::Shutdown()
 {
     delete this;

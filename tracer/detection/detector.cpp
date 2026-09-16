@@ -35,12 +35,13 @@ std::vector<Detection> Detector::Detect(cv::Mat &frame)
     cv::Mat blob;
     cv::dnn::blobFromImage(frame, blob, 1.0 / 255.0,
                            cv::Size(static_cast<int>(input_width), static_cast<int>(input_height)),
-                           cv::Scalar(0, 0, 0), true, false);
+                           cv::Scalar(0,0,0), true, false);
 
     Ort::MemoryInfo memory_info = Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault);
-    std::vector<int64_t> input_shape = {blob.size[0], blob.size[1], blob.size[2], blob.size[3]};
 
+    std::vector<int64_t> input_shape = {blob.size[0], blob.size[1], blob.size[2], blob.size[3]};
     size_t input_tensor_size = blob.total();
+
     Ort::Value input_tensor = Ort::Value::CreateTensor<float>(
         memory_info,
         blob.ptr<float>(),
