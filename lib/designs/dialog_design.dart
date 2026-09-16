@@ -355,3 +355,23 @@ class DialogTextField extends DialogField
     );
   }
 }
+
+//---------------------
+//DIALOG DROPDOWN FIELD
+//---------------------
+
+class DialogDropdownField extends DialogField
+{
+  const DialogDropdownField
+  ({
+    super.key,
+    required super.fieldTitle
+  });
+
+  @override
+  Widget buildField(BuildContext context) 
+  {
+    return SizedBox(height: 10,);
+  }
+}
+

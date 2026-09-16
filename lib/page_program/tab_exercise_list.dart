@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:isometry/designs/dialog_design.dart';
+import 'package:isometry/dialog_data.dart';
 import 'package:isometry/page_program/tab_exercise_list_design.dart';
 import 'package:provider/provider.dart';
 
@@ -23,29 +25,37 @@ class _TabExerciseListState extends State<TabExerciseList>
   @override
   Widget build(BuildContext context) 
   {
-    final exerciseData = context.watch<ExerciseList>();
+    final exerciseListData = context.watch<ExerciseList>();
     return TabExerciseListDesign
     (
       grpTitle: widget.grpData.title,
       grpSubtitle: widget.grpData.subTitle,
       onAddTap: () 
       {
-        context.read<ExerciseList>().addItem
+        showCustomDialog
         (
-          ExerciseData(title: 'Exercise1', tags: TagListLocal())
+          context: context, 
+          pageBuilder: (context) 
+          {
+            return ChangeNotifierProvider.value
+            (
+              value: exerciseListData,
+              child: AddExerciseDialog(),
+            );  
+          }
         );
       },
       exerciseListBuilder: ListView.builder
       (
-        itemCount: exerciseData.items.length,
+        itemCount: exerciseListData.items.length,
         itemBuilder: (context, index)
         {
-          final exerciseCard = exerciseData.items[index];
           return Padding
           (
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: ExerciseCard
             (
+              exerciseTitle: exerciseListData.items[index].title,
               onOptionTap: () {}
             ),
           );

@@ -5,14 +5,14 @@ import 'package:provider/provider.dart';
 
 class GridEditDialog extends StatefulWidget 
 {
-  final GrpData edittingCard;
+  final GrpData edittingItem;
   final int index; 
 
   const GridEditDialog
   ({
     super.key,
     required this.index,
-    required this.edittingCard
+    required this.edittingItem
   });
 
   @override
@@ -21,11 +21,10 @@ class GridEditDialog extends StatefulWidget
 
 class _EditCardDialogState extends State<GridEditDialog> 
 {
-
   late final TextEditingController titleController 
-    = TextEditingController(text: widget.edittingCard.title);
+    = TextEditingController(text: widget.edittingItem.title);
   late final TextEditingController subtitleController
-    = TextEditingController(text: widget.edittingCard.subTitle);
+    = TextEditingController(text: widget.edittingItem.subTitle);
 
   @override
   void dispose() 
@@ -128,7 +127,7 @@ class _AddCardDialogState extends State<AddCardDialog>
         textFieldController: subtitleController,
         hintText: 'NEW SUBTITLE',
       ),
-      leftButtonText: 'CANCEL',
+      
       rightButtonText: 'ADD',
       onRightTap: () 
       {
@@ -143,6 +142,7 @@ class _AddCardDialogState extends State<AddCardDialog>
         Navigator.pop(context);
       }, 
 
+      leftButtonText: 'CANCEL',
       onLeftTap: () => Navigator.pop(context), 
       
     );
@@ -150,3 +150,58 @@ class _AddCardDialogState extends State<AddCardDialog>
 }
 
 //TO DO: Make edit & add dialogs recyclable. 
+class AddExerciseDialog extends StatefulWidget 
+{
+  const AddExerciseDialog({super.key});
+
+  @override
+  State<AddExerciseDialog> createState() => _AddExerciseDialogState();
+}
+
+class _AddExerciseDialogState extends State<AddExerciseDialog> 
+{
+  final TextEditingController titleController = TextEditingController();
+
+  @override
+  void dispose() 
+  {
+    titleController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) 
+  {
+    return CustomDialog
+    (
+      dialogTitle: 'ADDING', 
+      firstField: DialogTextField
+      (
+        fieldTitle: 'TITLE', 
+        textFieldController: titleController, 
+        hintText: 'NEW TITLE'
+      ), 
+      secondField: DialogDropdownField
+      (
+        fieldTitle: 'TAGS',
+      ),
+      
+      rightButtonText: 'ADD',
+      onRightTap: () 
+      {
+        final newExercise = ExerciseData
+        (
+          title: titleController.text, 
+          tags: TagListLocal(),
+        );
+
+        context.read<ExerciseList>().addItem(newExercise);
+        Navigator.pop(context);
+      }, 
+
+      leftButtonText: 'CANCEL',
+      onLeftTap: () => Navigator.pop(context), 
+      
+    );
+  }
+}

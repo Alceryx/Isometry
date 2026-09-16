@@ -249,10 +249,13 @@ class TabExerciseListDesign extends StatelessWidget
 
 class ExerciseCard extends StatelessWidget 
 {
+  final String exerciseTitle; 
   final VoidCallback onOptionTap; 
+
   const ExerciseCard
   ({
     super.key, 
+    required this.exerciseTitle,
     required this.onOptionTap
   });
 
@@ -279,13 +282,14 @@ class ExerciseCard extends StatelessWidget
             [
               TextTrimmer
               (
-                content: 'Planche Push-up', 
+                content: exerciseTitle, 
                 trimMetrics: TrimMetrics.mainTypeface,
                 style: Theme.of(context).textTheme.titleMedium,
                 textColor: Theme.of(context).colorScheme.secondary,
               ),
               SizedBox(height: 5,),
 
+              //PLACEHOLDER FOR TAG ROW
               Expanded
               (
                 child: ColoredBox

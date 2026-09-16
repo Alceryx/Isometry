@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:isometry/designs/page_layouts.dart';
+import 'package:isometry/designs/page_elements.dart';
 
 class SessionTab extends StatefulWidget 
 {
@@ -29,7 +29,7 @@ class _SessionTabState extends State<SessionTab>
             [
               PageHeader
               (
-                pageTitle: 'Program',
+                pageTitle: 'PROGRAM',
                 tabTitle: 'Session',
                 backButton: PageBackButton
                 (
