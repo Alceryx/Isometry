@@ -54,7 +54,7 @@ std::optional<Mesh> Extractor::Extract(cv::Mat& frame, const Detection& detectio
     cv::divide(input, cv::Scalar(57.375, 57.12, 58.395), input);
 
     cv::Mat blob;
-    cv::dnn::blobFromImage(input, blob, 1.0 / 255.0, cv::Size(static_cast<int>(input_size.x()), static_cast<int>(input_size.y())), cv::Scalar(0,0,0), true, false);
+    cv::dnn::blobFromImage(input, blob, 1.0, cv::Size(static_cast<int>(input_size.x()), static_cast<int>(input_size.y())), cv::Scalar(0,0,0), true, false);
 
     try {
     Ort::AllocatorWithDefaultOptions allocator;
@@ -100,10 +100,15 @@ std::optional<Mesh> Extractor::Extract(cv::Mat& frame, const Detection& detectio
     }
 
     Mesh extraction{outputs};
+    Vec3 pred_cam_full(extraction.CamCropToFull(box_center, box_size, Vec2(frame.cols, frame.rows)));
+    for (auto& kp : extraction.keypoints3d)
+    {
+        kp += pred_cam_full;
+    }
     return extraction;
 
     } catch (const Ort::Exception& e) {
         std::cerr << "ONNX Runtime Exception: " << e.what() << "\n";
-        exit(EXIT_FAILURE);
+        return std::nullopt;
     }
 }

@@ -25,36 +25,48 @@ int main(void)
     cv::VideoCapture vid("tests/Ang_Occ_Hor.mov");
     cv::Mat frame;
 
-    while (vid.read(frame))
-    {
-        std::optional<Detection> detected = tracer.DetectPose(frame);
+    cv::Mat img = cv::imread("tests/APT.jpg");
 
-        if (!detected.has_value()) continue;
-        tracer.AnnotateFrame(frame, detected.value());
+    std::optional<Detection> detect = tracer.DetectPose(img);
+
+    if (!detect.has_value()) std::cout << "err" << "\n";
+
+    Detection& body = detect.value();
+    tracer.AnnotateFrame(img, body);
+
+    std::cout << "x_min: " << body.box_min.x() << " | y_min: " << body.box_min.y() << "\n";
+    std::cout << "x_max: " << body.box_max.x() << " | y_max: " << body.box_max.y() << "\n";
+    cv::imwrite("snippet.jpg", img);
+
+    // while (vid.read(frame))
+    // {
+    //     std::optional<Detection> detected = tracer.DetectPose(frame);
+
+    //     if (!detected.has_value()) continue;
+    //     tracer.AnnotateFrame(frame, detected.value());
         
-        std::optional<Mesh> mesh = tracer.ExtractMesh(frame, detected.value());
+    //     // std::optional<Mesh> mesh = tracer.ExtractMesh(frame, detected.value());
 
-        if (!mesh.has_value()) continue;
+    //     // if (!mesh.has_value()) continue;
         
-        std::cout << mesh.value().betas[0] << "\n";
+    //     // std::cout << mesh.value().betas[0] << "\n";
     
-        // std::map<Joint, float> joint_angles;
+    //     // std::map<Joint, float> joint_angles;
     
-        // std::optional<float> re_ang = detected.Angle(detected.kp(Joint::RightShoulder), detected.kp(Joint::RightElbow), detected.kp(Joint::RightWrist));
+    //     // std::optional<float> re_ang = detected.Angle(detected.kp(Joint::RightShoulder), detected.kp(Joint::RightElbow), detected.kp(Joint::RightWrist));
     
-        // if (re_ang.has_value())
-        // {
-        //     joint_angles[Joint::RightElbow] = re_ang.value();
-        //     std::cout << "Right Elbow Angle: " << joint_angles[Joint::RightElbow] << "\n";
-        // }
+    //     // if (re_ang.has_value())
+    //     // {
+    //     //     joint_angles[Joint::RightElbow] = re_ang.value();
+    //     //     std::cout << "Right Elbow Angle: " << joint_angles[Joint::RightElbow] << "\n";
+    //     // }
 
 
-        // tracer.Snippet(frame, detected);
+    //     tracer.Snippet(frame, detected.value());
 
-
-        cv::imshow("Tracer", frame);
-        if (cv::waitKey(1) == 27) break;
-    }
+    //     cv::imshow("Tracer", frame);
+    //     if (cv::waitKey(1) == 27) break;
+    // }
 
     return EXIT_SUCCESS;
 }

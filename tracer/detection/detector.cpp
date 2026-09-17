@@ -77,6 +77,6 @@ std::vector<Detection> Detector::Detect(cv::Mat &frame)
     
     } catch (const Ort::Exception& e) {
         std::cerr << "ONNX Runtime Exception: " << e.what() << "\n";
-        exit(EXIT_FAILURE);
+        return detections;
     }
 }

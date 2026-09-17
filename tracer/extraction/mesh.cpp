@@ -68,7 +68,7 @@ Vec3 Mesh::CamCropToFull(const Vec2& box_center, const float box_size, const Vec
     float h_offset = pred_cam[1];
     float v_offset = pred_cam[2];
     
-    float tz = (2.0f * FOCAL_LENGTH) / (scale * box_size);
+    float tz = (2.0f * focal_length) / (scale * box_size);
 
     Vec2 converted = 2.0f * (box_center - image/2) / (scale * box_size);
     float tx = converted.x() + h_offset;
