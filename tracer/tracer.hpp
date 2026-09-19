@@ -23,7 +23,7 @@ class Tracer
     bool Init(const std::string& det_path, const std::string& ext_path);
     void Shutdown();
 
-    std::optional<Detection> DetectPose(cv::Mat& frame);
+    std::optional<Detection> DetectBody(cv::Mat& frame);
     std::optional<Mesh> ExtractMesh(cv::Mat& frame, const Detection& detection);
 
     void AnnotateFrame(cv::Mat& frame, Detection& detection);

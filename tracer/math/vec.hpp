@@ -165,12 +165,12 @@ VecBase<N> operator/(VecBase<N> v, float t)
 
 inline std::ostream &operator<<(std::ostream &out, const Vec2 &v)
 {
-    return out << v.e[0] << ' ' << v.e[1];
+    return out << '[' << v.e[0] << ' ' << v.e[1] << ']';
 }
 
 inline std::ostream &operator<<(std::ostream &out, const Vec3 &v)
 {
-    return out << v.e[0] << ' ' << v.e[1] << ' ' << v.e[2];
+    return out << '[' << v.e[0] << ' ' << v.e[1] << ' ' << v.e[2] << ']';
 }
 
 inline Vec3 operator*(const Mat3 &M, const Vec3 &v)

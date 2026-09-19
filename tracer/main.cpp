@@ -12,7 +12,7 @@
 int main(void)
 {
     std::string yolo_path = "models/yolo26s-pose.onnx";
-    std::string hmr2_path = "models/hmr2/hmr2-mesh.onnx";
+    std::string hmr2_path = "models/hsmr/hsmr.onnx";
 
     Tracer tracer{};
     bool status = tracer.Init(yolo_path, hmr2_path);
@@ -25,22 +25,21 @@ int main(void)
     cv::VideoCapture vid("tests/Ang_Occ_Hor.mov");
     cv::Mat frame;
 
-    cv::Mat img = cv::imread("tests/APT.jpg");
+    cv::Mat img = cv::imread("tests/Ang_Hor_BodStr_ArmStr_Occ.jpg");
 
-    std::optional<Detection> detect = tracer.DetectPose(img);
+    std::optional<Detection> detect = tracer.DetectBody(img);
 
     if (!detect.has_value()) std::cout << "err" << "\n";
 
     Detection& body = detect.value();
     tracer.AnnotateFrame(img, body);
 
-    std::cout << "x_min: " << body.box_min.x() << " | y_min: " << body.box_min.y() << "\n";
-    std::cout << "x_max: " << body.box_max.x() << " | y_max: " << body.box_max.y() << "\n";
-    cv::imwrite("snippet.jpg", img);
+    std::cout << "Box Min: " << body.box_min << "\n";
+    std::cout << "Box Max: " << body.box_max << "\n";
 
     // while (vid.read(frame))
     // {
-    //     std::optional<Detection> detected = tracer.DetectPose(frame);
+    //     std::optional<Detection> detected = tracer.DetectBody(frame);
 
     //     if (!detected.has_value()) continue;
     //     tracer.AnnotateFrame(frame, detected.value());
@@ -60,9 +59,6 @@ int main(void)
     //     //     joint_angles[Joint::RightElbow] = re_ang.value();
     //     //     std::cout << "Right Elbow Angle: " << joint_angles[Joint::RightElbow] << "\n";
     //     // }
-
-
-    //     tracer.Snippet(frame, detected.value());
 
     //     cv::imshow("Tracer", frame);
     //     if (cv::waitKey(1) == 27) break;

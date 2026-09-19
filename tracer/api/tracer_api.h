@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <memory>
 #include <cstdint>
+#include <optional>
 
 #ifdef _WIN32
 #define TRACER_EXPORT extern "C" __declspec(dllexport)
@@ -29,7 +30,7 @@ typedef enum
 } TracerPixelFormat;
 
 TRACER_EXPORT bool tracer_ping();
-TRACER_EXPORT bool tracer_init(const char* model_path);
+TRACER_EXPORT bool tracer_init(const char* det_path, const char* ext_path);
 TRACER_EXPORT void tracer_shutdown();
 TRACER_EXPORT bool tracer_process_frame(
     uint8_t* pixels, 

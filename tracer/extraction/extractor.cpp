@@ -12,7 +12,7 @@ Extractor::Extractor(Ort::Env& env, const std::string& model_path)
     #endif    
 
     auto input_shape = session->GetInputTypeInfo(0).GetTensorTypeAndShapeInfo().GetShape();
-    input_size = Vec2(static_cast<float>(input_shape[3]), static_cast<float>(input_shape[2]));   
+    input_size = Vec2(static_cast<float>(input_shape[3]), static_cast<float>(input_shape[2]));
 }
 
 std::optional<Mesh> Extractor::Extract(cv::Mat& frame, const Detection& detection)
@@ -100,11 +100,6 @@ std::optional<Mesh> Extractor::Extract(cv::Mat& frame, const Detection& detectio
     }
 
     Mesh extraction{outputs};
-    Vec3 pred_cam_full(extraction.CamCropToFull(box_center, box_size, Vec2(frame.cols, frame.rows)));
-    for (auto& kp : extraction.keypoints3d)
-    {
-        kp += pred_cam_full;
-    }
     return extraction;
 
     } catch (const Ort::Exception& e) {

@@ -7,9 +7,9 @@ bool tracer_ping()
     return true;
 }
 
-bool tracer_init(const char* model_path)
+bool tracer_init(const char* det_path, const char* ext_path)
 {
-    return g_tracer.Init(model_path);
+    return g_tracer.Init(det_path, ext_path);
 }
 
 void tracer_shutdown()
@@ -71,14 +71,15 @@ bool tracer_process_frame(
         return false;
     }
 
-    g_tracer.ProcessFrame(frame);
-    Detection detected = g_tracer.GetDetection(0);
+    std::optional<Detection> detected = g_tracer.DetectBody(frame);
+    if (!detected.has_value()) return false;
 
+    Detection body = detected.value();
     for (size_t i = 0; i < Detection::KEY_NUM; i++)
     {
-        out_keypoints[i * 3 + 0] = detected.keypoints[i].pos.x();
-        out_keypoints[i * 3 + 1] = detected.keypoints[i].pos.y();
-        out_keypoints[i * 3 + 2] = detected.keypoints[i].conf;
+        out_keypoints[i * 3 + 0] = body.keypoints[i].pos.x();
+        out_keypoints[i * 3 + 1] = body.keypoints[i].pos.y();
+        out_keypoints[i * 3 + 2] = body.keypoints[i].conf;
     }
 
     return true;

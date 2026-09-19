@@ -1,4 +1,5 @@
 #include "tracer.hpp"
+#include <chrono>
 
 bool Tracer::Init(const std::string& det_path, const std::string& ext_path)
 {
@@ -14,7 +15,7 @@ bool Tracer::Init(const std::string& det_path, const std::string& ext_path)
     }
 }
 
-std::optional<Detection> Tracer::DetectPose(cv::Mat& frame)
+std::optional<Detection> Tracer::DetectBody(cv::Mat& frame)
 {
     std::vector<Detection> detections = yolo.Detect(frame);
     if (detections.empty()) return std::nullopt;
@@ -63,16 +64,4 @@ void Tracer::ConnectJoint(cv::Mat& frame, Keypoint& start, Keypoint& end)
     cv::line(frame, cv::Point(static_cast<int>(start.pos.x()), static_cast<int>(start.pos.y())),
     cv::Point(static_cast<int>(end.pos.x()), static_cast<int>(end.pos.y())),
     cv::Scalar(60,60,229), 5);
-}
-
-
-// Debugging
-void Tracer::Snippet(cv::Mat& frame, Detection& detection)
-{
-    if (cv::waitKey(1) == 99)
-    {
-        std::cout << "x_min: " << detection.box_min.x() << " | y_min: " << detection.box_min.y() << "\n";
-        std::cout << "x_max: " << detection.box_max.x() << " | y_max: " << detection.box_max.y() << "\n";
-        cv::imwrite("snippet.jpg", frame);
-    }
 }
