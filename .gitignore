@@ -51,3 +51,4 @@ app.*.map.json
 tracer/build/
 tracer/onnxruntime/
 tracer/models/
+tracer/tests

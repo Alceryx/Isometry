@@ -21,6 +21,11 @@ std::optional<Detection> Tracer::DetectPose(cv::Mat& frame)
     return detections[0];
 }
 
+std::optional<Mesh> Tracer::ExtractMesh(cv::Mat& frame, const Detection& detection)
+{
+    return hmr2.Extract(frame, detection);
+}
+
 void Tracer::Shutdown()
 {
     delete this;
@@ -66,7 +71,6 @@ void Tracer::Snippet(cv::Mat& frame, Detection& detection)
 {
     if (cv::waitKey(1) == 99)
     {
-        // TODO: Overload bit-wise operator of Vec
         std::cout << "x_min: " << detection.box_min.x() << " | y_min: " << detection.box_min.y() << "\n";
         std::cout << "x_max: " << detection.box_max.x() << " | y_max: " << detection.box_max.y() << "\n";
         cv::imwrite("snippet.jpg", frame);

@@ -24,6 +24,7 @@ class Tracer
     void Shutdown();
 
     std::optional<Detection> DetectPose(cv::Mat& frame);
+    std::optional<Mesh> ExtractMesh(cv::Mat& frame, const Detection& detection);
 
     void AnnotateFrame(cv::Mat& frame, Detection& detection);
 
