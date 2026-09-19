@@ -152,7 +152,9 @@ class _AddCardDialogState extends State<AddCardDialog>
 //TO DO: Make edit & add dialogs recyclable. 
 class AddExerciseDialog extends StatefulWidget 
 {
-  const AddExerciseDialog({super.key});
+  final TagListLocal localTags = TagListLocal(); 
+
+  AddExerciseDialog({super.key,});
 
   @override
   State<AddExerciseDialog> createState() => _AddExerciseDialogState();
@@ -183,7 +185,8 @@ class _AddExerciseDialogState extends State<AddExerciseDialog>
       ), 
       secondField: DialogDropdownField
       (
-        fieldTitle: 'TAGS',
+        fieldTitle: 'TAGS', 
+        localTags: widget.localTags
       ),
       
       rightButtonText: 'ADD',

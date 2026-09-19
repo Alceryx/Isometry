@@ -21,8 +21,8 @@ class TabExerciseListDesign extends StatelessWidget
   @override
   Widget build(BuildContext context) 
   {
-    final double grpInfoBottomHeight = 60;
-    final double listNavigatorHeight = grpInfoBottomHeight * 44.3/63; 
+    final double grpInfoBottomHeight = 64;
+    final double listNavigatorHeight = grpInfoBottomHeight * 135/194; 
     final double grpInfoSubtitleHeight = 40;
     final double cornerSize = 25; 
     return Scaffold

@@ -92,7 +92,6 @@ flutter:
     - assets/ui/dialog_button_right.svg
     - assets/ui/button_close.svg
 
-    - assets/ui/tab_exercise/subtitle_corner.svg
     - assets/ui/tab_exercise/title_bl.svg
     - assets/ui/tab_exercise/title_expandable.svg
     - assets/ui/tab_exercise/title_br.svg
@@ -110,7 +109,6 @@ flutter:
     - assets/ui/tab_exercise/list_option.svg
     - assets/ui/tab_exercise/list_back.svg
   
-
     - assets/models/yolov8n-pose.onnx
     - assets/models/yolov8n-pose-320.onnx
     - assets/models/yolo11n-pose.onnx

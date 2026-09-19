@@ -30,9 +30,13 @@ Future<void> main() async
 
   runApp
   (
-    ChangeNotifierProvider
+    MultiProvider
     (
-      create: (context) => GridData(),
+      providers: 
+      [
+        ChangeNotifierProvider(create: (_) => GridData()),
+        ChangeNotifierProvider(create: (_) => TagListGlobal()),
+      ],
       child: const MyApp()
     )
   );

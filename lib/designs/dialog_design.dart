@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:isometry/data_manager.dart';
 
 import 'package:isometry/designs/custom_transitions.dart';
+import 'package:provider/provider.dart';
 
 //-------------
 //CALL FUNCTION
@@ -56,134 +58,155 @@ class CustomDialog extends StatelessWidget
   @override
   Widget build(BuildContext context) 
   {
+    final double dialogWidth = 365;
+    final double defaultBottomPadding = 200;
+    final double keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+    final double bottomButtonHeight = 40; 
     return Padding
     (
       padding: EdgeInsets.only 
-      (bottom: MediaQuery.of(context).viewInsets.bottom),
+      (bottom: keyboardSpace + defaultBottomPadding),
       child: Center
       (
-        child: Stack
+        child: SizedBox
         (
-          alignment: AlignmentGeometry.centerStart,
-          children: 
-          [
-            Column
-            (
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: 
-              [
-                SizedBox(height: 15),
-                SvgPicture.asset('assets/ui/dialog_card.svg', width: 365,)
-              ]
-            ),
-        
-            Positioned.fill
-            (
-              child: Column
+          width: dialogWidth,
+          child: Stack
+          (
+            // alignment: AlignmentGeometry.centerStart,
+            children: 
+            [
+              //---------
+              //DIALOG BG
+              //---------
+              Column
               (
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: 
                 [
-                  Text
-                  (
-                    dialogTitle,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith
-                    (color: Theme.of(context).colorScheme.primary,
-                    height: 1),
-                  ),
-                  SizedBox(height: 15,),
+                  SizedBox(height: 15),
+                  SvgPicture.asset('assets/ui/dialog_card.svg')
+                ]
+              ),
+          
+              //------------
+              //DIALOG TITLE
+              //------------
+          
+              Positioned.fill
+              (
+                child: Text
+                (
+                  dialogTitle,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith
+                  (color: Theme.of(context).colorScheme.primary,
+                  height: 1),
+                ),
+              ),
+
+              //--------------
+              //BOTTOM BUTTONS
+              //--------------
+          
+              Positioned
+              (
+                top: 170, left: 100,
+                child: Row
+                (
+                  children: 
+                  [
+                    GestureDetector
+                    (
+                      onTap: onLeftTap,
+                      child: SizedBox
+                      (
+                        height: bottomButtonHeight,
+                        child: Stack
+                        (
+                          alignment: Alignment.center,
+                          children: 
+                          [
+                            SvgPicture.asset('assets/ui/dialog_button_left.svg'),
+                            Padding
+                            (
+                              padding: const EdgeInsets.only(left: 3.0),
+                              child: Text
+                              (
+                                leftButtonText,
+                                style: Theme.of(context).textTheme.displaySmall?.copyWith
+                                (color: Theme.of(context).colorScheme.primary),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ),
+                    SizedBox(width: 8,),
+                              
+                    GestureDetector
+                    (
+                      onTap: onRightTap,
+                      child: SizedBox
+                      (
+                        height: bottomButtonHeight,
+                        child: Stack
+                        (
+                          alignment: Alignment.center,
+                          children: 
+                          [
+                            SvgPicture.asset('assets/ui/dialog_button_right.svg'),
+                            Padding
+                            (
+                              padding: const EdgeInsets.only(right: 3.0),
+                              child: Text
+                              (
+                                rightButtonText,
+                                style: Theme.of(context).textTheme.displaySmall?.copyWith
+                                (color: Theme.of(context).colorScheme.primary),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ),
+                  ],
+                ),
+              ),
+        
+              //-------------
+              //DIALOG FIELDS
+              //-------------
               
-                  //--------------
-                  //FIRST PROPERTY
-                  //--------------
+              Column
+              (
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: 
+                [
+                  SizedBox(height: 55,),
         
                   firstField,
                   SizedBox(height: 10,),
-        
-                  //---------------
-                  //SECOND PROPERTY
-                  //---------------
-        
+                  
                   secondField,
-                  SizedBox(height: 15,),
-        
-                  //--------------
-                  //BOTTOM BUTTONS
-                  //--------------
-
-                  Expanded
-                  (
-                    child:Row
-                    (
-                      children: 
-                      [
-                        SizedBox(width: 106,),
-                        GestureDetector
-                        (
-                          onTap: onLeftTap,
-                          child: Stack
-                          (
-                            alignment: Alignment.center,
-                            children: 
-                            [
-                              SvgPicture.asset('assets/ui/dialog_button_left.svg'),
-                              Padding
-                              (
-                                padding: const EdgeInsets.only(left: 3.0),
-                                child: Text
-                                (
-                                  leftButtonText,
-                                  style: Theme.of(context).textTheme.displaySmall?.copyWith
-                                  (color: Theme.of(context).colorScheme.primary),
-                                ),
-                              )
-                            ],
-                          )
-                        ),
-                        SizedBox(width: 8,),
-      
-                        GestureDetector
-                        (
-                          onTap: onRightTap,
-                          child: Stack
-                          (
-                            alignment: Alignment.center,
-                            children: 
-                            [
-                              SvgPicture.asset('assets/ui/dialog_button_right.svg'),
-                              Padding
-                              (
-                                padding: const EdgeInsets.only(right: 3.0),
-                                child: Text
-                                (
-                                  rightButtonText,
-                                  style: Theme.of(context).textTheme.displaySmall?.copyWith
-                                  (color: Theme.of(context).colorScheme.primary),
-                                ),
-                              )
-                            ],
-                          )
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10,)
+                  SizedBox()
                 ],
               ),
-            ),
-        
-            //-------------
-            //CORNER BUTTON
-            //-------------
-      
-            Positioned
-            (
-              top: 23,
-              right: 9,
-              child: cornerButton ?? SizedBox.shrink()
-            )
-          ],
+          
+              //-------------
+              //CORNER BUTTON
+              //-------------
+                
+              Positioned
+              (
+                top: 23,
+                right: 9,
+                child: cornerButton ?? SizedBox.shrink()
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -236,6 +259,7 @@ abstract class DialogField extends StatelessWidget
   @override
   Widget build(BuildContext context) 
   {
+    final double fieldHeight = 25; 
     return Column
     (
       children: 
@@ -248,7 +272,7 @@ abstract class DialogField extends StatelessWidget
         (
           children: 
           [
-            SizedBox(width: 20,),
+            SizedBox(width: 17,),
             SizedBox
             (
               height: 10, width: 10,
@@ -270,12 +294,13 @@ abstract class DialogField extends StatelessWidget
 
         Row
         (
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: 
           [
-            SizedBox(width: 20,),
+            SizedBox(width: 17,),
             SizedBox
             (
-              width: 5, height: 25,
+              width: 5, height: fieldHeight,
               child: ColoredBox(color: Theme.of(context).colorScheme.onSurface),
             ),
             SizedBox(width: 5,),
@@ -309,29 +334,6 @@ class DialogTextField extends DialogField
   @override
   Widget buildField(BuildContext context) 
   {
-
-    //CUSTOM BORDERS
-
-    final entryBorderDefault = OutlineInputBorder
-    (
-      borderRadius: BorderRadius.zero,
-      borderSide: BorderSide
-      (
-        width: 1.5,
-        color: Theme.of(context).colorScheme.onSurface
-      )
-    );
-
-    final entryBorderFocused = OutlineInputBorder
-    (
-      borderRadius: BorderRadius.zero,
-      borderSide: BorderSide
-      (
-        width: 1.5,
-        color: Theme.of(context).colorScheme.primary
-      )
-    );
-
     return Material
     (
       type: MaterialType.transparency,
@@ -339,21 +341,49 @@ class DialogTextField extends DialogField
       (
         controller: textFieldController,
         style: Theme.of(context).textTheme.bodyMedium,
-        decoration: InputDecoration
-        (
-          isDense: true,
-          contentPadding: EdgeInsets.symmetric(vertical: 0),
-          border: entryBorderDefault,
-          enabledBorder: entryBorderDefault,
-          focusedBorder: entryBorderFocused,
-          errorBorder: entryBorderFocused,
-          hintText: hintText,
-          hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith
-          (color: Theme.of(context).colorScheme.onSurface)
-        )
+        decoration: textFieldDecor(hintText, context)
       ),
     );
   }
+}
+
+//TEXTFIELD DECORATION
+InputDecoration textFieldDecor(String hintText, BuildContext context) 
+{
+  //CUSTOM BORDERS
+
+  final entryBorderDefault = OutlineInputBorder
+  (
+    borderRadius: BorderRadius.zero,
+    borderSide: BorderSide
+    (
+      width: 1.5,
+      color: Theme.of(context).colorScheme.onSurface
+    )
+  );
+
+  final entryBorderFocused = OutlineInputBorder
+  (
+    borderRadius: BorderRadius.zero,
+    borderSide: BorderSide
+    (
+      width: 1.5,
+      color: Theme.of(context).colorScheme.primary
+    )
+  );
+
+  return InputDecoration
+  (
+    isDense: true,
+    contentPadding: EdgeInsets.symmetric(vertical: 0),
+    border: entryBorderDefault,
+    enabledBorder: entryBorderDefault,
+    focusedBorder: entryBorderFocused,
+    errorBorder: entryBorderFocused,
+    hintText: hintText,
+    hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith
+    (color: Theme.of(context).colorScheme.onSurface)
+  );
 }
 
 //---------------------
@@ -362,16 +392,308 @@ class DialogTextField extends DialogField
 
 class DialogDropdownField extends DialogField
 {
+  final TagListLocal localTags; 
+
   const DialogDropdownField
   ({
     super.key,
-    required super.fieldTitle
+    required super.fieldTitle,
+    required this.localTags, 
   });
 
   @override
   Widget buildField(BuildContext context) 
   {
-    return SizedBox(height: 10,);
+    return _TagFieldBody(localTags: localTags);
   }
 }
 
+class _TagFieldBody extends StatefulWidget 
+{
+  final TagListLocal localTags;
+
+  const _TagFieldBody
+  ({
+    super.key,
+    required this.localTags
+  });
+
+  @override
+  State<_TagFieldBody> createState() => __TagFieldBodyState();
+}
+
+class __TagFieldBodyState extends State<_TagFieldBody> 
+{
+  final TextEditingController _tagFieldController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+  bool _expanded = false; 
+
+  @override
+  void dispose() 
+  {
+    _tagFieldController.dispose();
+    _focusNode.dispose(); 
+    super.dispose();
+  }
+  //------------------
+  //DROPDOWN BEHAVIOUR
+  //------------------
+
+  void _expandDropdown()
+  {
+    setState(() => _expanded = true);
+    _focusNode.requestFocus(); 
+  }
+
+  void _collapseDropdown()
+  {
+    setState(() => _expanded = false);
+    _focusNode.unfocus(); 
+  }
+
+  //--------------
+  //TAG MANAGEMENT
+  //--------------
+
+  void _submitTag(TagListGlobal globalTags, String rawTagTitle)
+  {
+    final String newTagTitle = rawTagTitle.trim();
+    if (newTagTitle.isEmpty) return; 
+
+    final existingMatches = globalTags.items.where
+    ((tag) => tag.title == newTagTitle);
+
+    //Add New Tag if Not Alr Existed
+    final TagData tag = existingMatches.isNotEmpty 
+    ? existingMatches.first
+    : TagData
+    (
+      title: newTagTitle, 
+      style: TagStyle
+      (
+        color: Colors.amber, 
+        isFilled: true
+      )
+    );
+
+    if(existingMatches.isEmpty) globalTags.addItem(tag);
+
+    //Assign Current Tag is not Alr Assigned
+    if(!widget.localTags.items.contains(tag)) widget.localTags.addItem(tag);
+
+    _tagFieldController.clear();
+    setState(() {});
+  }
+  
+  void _assignOrDeassign (TagData tag)
+  {
+    final int tagIndex = widget.localTags.items.indexOf(tag);
+    final bool tagIsAssigned = tagIndex >= 0
+    ? true
+    : false; 
+
+    tagIsAssigned 
+    ? widget.localTags.deleteItem(tagIndex)
+    : widget.localTags.addItem(tag);
+  }
+
+  void _deleteGlobalTag (TagListGlobal globalTags, TagData tag)
+  {
+    final int globalTagIndex = globalTags.items.indexOf(tag); 
+    if (globalTagIndex >= 0) globalTags.deleteItem(globalTagIndex);
+
+    //This only delete the tag for the current exercise, not on other ones yet
+    final int localTagIndex = widget.localTags.items.indexOf(tag); 
+    if (localTagIndex >= 0) widget.localTags.deleteItem(localTagIndex);
+    //Cascade delete in managed in ...
+  }
+
+  Future<void> _renameTag(TagData tag) async 
+  {
+    final TextEditingController renameController = TextEditingController();
+    final String? newTitle = await showDialog<String>
+    (
+      context: context,
+      builder: (dialogContext) => AlertDialog
+      (
+        title: const Text('Rename Tag'),
+        content: TextField(controller: renameController, autofocus: true),
+        actions: 
+        [
+          TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text('Cancel')),
+          TextButton
+          (
+            onPressed: ()
+            {
+              Navigator.pop(dialogContext, renameController.text.trim()); 
+            },
+            child: Text('Save')
+          )
+        ],
+      )
+    );
+
+    if (newTitle != null && newTitle.isNotEmpty && newTitle != tag.title) 
+    {tag.edit(TagData(title: newTitle, style: tag.style));}
+  }
+
+  void _changeStyle (TagData tag, TagStyle newStyle)
+  {tag.edit(TagData(title: tag.title, style: newStyle));}
+
+
+
+  @override
+  Widget build(BuildContext context) 
+  {
+    final globalTags = context.watch<TagListGlobal>();
+    final String autocompleteQuery = _tagFieldController.text.trim().toLowerCase(); 
+
+    //Autocomplete as user types
+    final visibleTags = autocompleteQuery.isEmpty
+    ? globalTags.items
+    : globalTags.items.where((tag) => tag.title.toLowerCase().contains(autocompleteQuery)).toList();  
+
+    return TapRegion
+    (
+      onTapOutside: (_) => _collapseDropdown(),
+      child: ListenableBuilder
+      (
+        listenable: widget.localTags, 
+        builder: (context, _) 
+        {
+          final int textFieldFlex = 3; 
+          return Column
+          (
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: 
+            [
+              GestureDetector
+              (
+                onTap: _expandDropdown,
+                child: SizedBox
+                (
+                  height: 25,
+                  child: Row
+                  (
+                    children: 
+                    [
+                      Expanded
+                      (
+                        flex: textFieldFlex,
+                        child: Material
+                        (
+                          type: MaterialType.transparency,
+                          child: TextField
+                          (
+                            controller: _tagFieldController,
+                            focusNode: _focusNode,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            decoration: textFieldDecor('SEARCH/ADD', context),
+                            onChanged: (_) => setState(() {}),
+                            onSubmitted: (enteredValue) => _submitTag
+                            (globalTags, enteredValue)
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8,),
+                  
+                      Expanded
+                      (
+                        flex: textFieldFlex + 1,
+                        child: ListView.builder
+                        (
+                          scrollDirection: Axis.horizontal,
+                          itemCount: widget.localTags.items.length,
+                          itemBuilder: (context, index) 
+                          {
+                            final TagData tag = widget.localTags.items.reversed.toList()[index];
+                            return Padding
+                            (
+                              padding: const EdgeInsets.only(right: 5),
+                              child: Text
+                              (
+                                tag.title, 
+                                style: Theme.of(context).textTheme.displayMedium?.copyWith(color: Theme.of(context).colorScheme.primary),
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 10,),
+              if(_expanded)
+              Container
+              (
+                constraints: const BoxConstraints(maxHeight: 250),
+                decoration: BoxDecoration
+                (
+                  color: Theme.of(context).colorScheme.surface,
+                  border: Border.all(color:Theme.of(context).colorScheme.primary),
+                  borderRadius: BorderRadius.zero,
+                ),
+                child: ListView.builder
+                (
+                  itemCount: visibleTags.length,
+                  itemBuilder: (context, index)
+                  {
+                    final tag = visibleTags[index]; 
+                    return ChangeNotifierProvider<TagData>.value
+                    (
+                      value: tag,
+                      child: Consumer<TagData>
+                      (
+                        builder: (context, tag, _)
+                        {
+                          final bool assigned = widget.localTags.items.contains(tag);
+                          return SizedBox
+                          (
+                            child: Row
+                            (
+                              children: 
+                              [
+                                IconButton
+                                (
+                                  icon: const Icon(Icons.delete_outline),
+                                  onPressed: () => _deleteGlobalTag(globalTags, tag),
+                                ),
+                                SizedBox(width: 5,),
+                                
+                                Expanded
+                                (
+                                  child: GestureDetector
+                                  (
+                                    onTap: () => _renameTag(tag),
+                                    child: Text
+                                    (
+                                      tag.title, 
+                                      style: Theme.of(context).textTheme.bodyLarge,
+                                    ),
+                                  )
+                                ),
+                                SizedBox(width: 10,),
+
+                                IconButton
+                                (
+                                  icon: Icon(assigned ? Icons.delete_outline : Icons.circle),
+                                  onPressed: () => _assignOrDeassign(tag)
+                                ),
+                                SizedBox(width: 5,)
+                              ],
+                            ),
+                          );
+                        }
+                      ),
+                    );
+                  }
+                ),
+              )
+            ],
+          );
+        }
+      )
+    );
+  }
+}

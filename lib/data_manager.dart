@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+
+//-----------
+//ABS STRUCTS
+//-----------
+
 abstract class IntraData<T extends IntraData<T>> extends ChangeNotifier
 {
   String title;
@@ -15,7 +20,7 @@ abstract class IntraData<T extends IntraData<T>> extends ChangeNotifier
   }
 } 
 
-class ListStruct<T> extends ChangeNotifier
+abstract class ListStruct<T> extends ChangeNotifier
 {
   final List<T> _items = []; 
   List<T> get items => _items; 
@@ -32,6 +37,10 @@ class ListStruct<T> extends ChangeNotifier
     notifyListeners();
   }
 }
+
+//----------
+//GRID & GRP
+//----------
 
 class GridData extends ListStruct<GrpData> {}
 
@@ -56,26 +65,21 @@ class GrpData extends IntraData<GrpData>
   }
 }
 
-class TagListLocal extends ListStruct<TagData> {}
-class ExerciseData extends IntraData<ExerciseData>
+//----
+//TAGS
+//----
+
+class TagStyle 
 {
-  TagListLocal tags;
+  final Color color; 
+  final bool isFilled; 
 
-  ExerciseData
+  const TagStyle
   ({
-    required super.title,
-    required this.tags
+    required this.color,
+    required this.isFilled
   });
-
-  @override 
-  void edit(ExerciseData newItem)
-  {
-    tags = newItem.tags; 
-    super.edit(newItem); 
-  }
 }
-
-class TagStyle {}
 class TagData extends IntraData<TagData>
 {
   TagStyle style;
@@ -91,5 +95,31 @@ class TagData extends IntraData<TagData>
   {
     super.edit(newItem);
     style = newItem.style;
+  }
+}
+
+class TagListGlobal extends ListStruct<TagData> {}
+class TagListLocal extends ListStruct<TagData> {}
+
+
+//--------
+//EXERCISE
+//--------
+
+class ExerciseData extends IntraData<ExerciseData>
+{
+  TagListLocal tags;
+
+  ExerciseData
+  ({
+    required super.title,
+    required this.tags
+  });
+
+  @override 
+  void edit(ExerciseData newItem)
+  {
+    tags = newItem.tags; 
+    super.edit(newItem); 
   }
 }
