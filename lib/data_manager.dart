@@ -71,13 +71,13 @@ class GrpData extends IntraData<GrpData>
 
 class TagStyle 
 {
-  final Color color; 
+  final Color tagColour; 
   final bool isFilled; 
 
   const TagStyle
   ({
-    required this.color,
-    required this.isFilled
+    required this.tagColour,
+    required this.isFilled,
   });
 }
 class TagData extends IntraData<TagData>

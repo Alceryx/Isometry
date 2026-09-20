@@ -9,8 +9,8 @@ enum TrimMetrics
   ),
   secondaryTypeface
   (
-    trimRatio: 1,
-    elevation: 0.8
+    trimRatio: 0.9,
+    elevation: 1
   );
 
   const TrimMetrics

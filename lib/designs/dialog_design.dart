@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:isometry/data_manager.dart';
 
 import 'package:isometry/designs/custom_transitions.dart';
+import 'package:isometry/designs/text_trim.dart';
 import 'package:provider/provider.dart';
 
 //-------------
@@ -471,8 +472,8 @@ class __TagFieldBodyState extends State<_TagFieldBody>
       title: newTagTitle, 
       style: TagStyle
       (
-        color: Colors.amber, 
-        isFilled: true
+        tagColour: Theme.of(context).colorScheme.primary, 
+        isFilled: false
       )
     );
 
@@ -537,8 +538,36 @@ class __TagFieldBodyState extends State<_TagFieldBody>
     {tag.edit(TagData(title: newTitle, style: tag.style));}
   }
 
-  void _changeStyle (TagData tag, TagStyle newStyle)
-  {tag.edit(TagData(title: tag.title, style: newStyle));}
+  //STYLING
+
+  List<TagStyle> fixedStyles(BuildContext context)
+  {
+    final palette = Theme.of(context).colorScheme; 
+    return 
+    [
+      TagStyle(tagColour: palette.primary, isFilled: true),
+      TagStyle(tagColour: palette.secondary, isFilled: true),
+      TagStyle(tagColour: palette.primary, isFilled: false),
+      TagStyle(tagColour: palette.secondary, isFilled: false),
+    ];
+  } 
+  
+
+  void _cycleStyle(TagData tag) 
+  {
+  final styles = fixedStyles(context);
+
+  //Get the current style
+  final index = styles.indexWhere
+  (
+    (s) => s.tagColour == tag.style.tagColour 
+    && s.isFilled == tag.style.isFilled,
+  );
+
+  //Cycle thru the list; wrap around if at the end using %
+  final next = (index + 1) % styles.length;
+  tag.edit(TagData(title: tag.title, style: styles[next]));
+}
 
 
 
@@ -610,11 +639,7 @@ class __TagFieldBodyState extends State<_TagFieldBody>
                             return Padding
                             (
                               padding: const EdgeInsets.only(right: 5),
-                              child: Text
-                              (
-                                tag.title, 
-                                style: Theme.of(context).textTheme.displayMedium?.copyWith(color: Theme.of(context).colorScheme.primary),
-                              ),
+                              child: ExerciseTagDesign(tagData: tag)
                             );
                           },
                         ),
@@ -650,6 +675,7 @@ class __TagFieldBodyState extends State<_TagFieldBody>
                           final bool assigned = widget.localTags.items.contains(tag);
                           return SizedBox
                           (
+                            
                             child: Row
                             (
                               children: 
@@ -661,23 +687,21 @@ class __TagFieldBodyState extends State<_TagFieldBody>
                                 ),
                                 SizedBox(width: 5,),
                                 
-                                Expanded
+                                GestureDetector
                                 (
-                                  child: GestureDetector
-                                  (
-                                    onTap: () => _renameTag(tag),
-                                    child: Text
-                                    (
-                                      tag.title, 
-                                      style: Theme.of(context).textTheme.bodyLarge,
-                                    ),
-                                  )
+                                  onTap: () => _renameTag(tag),
+                                  child: ExerciseTagDesign(tagData: tag)
                                 ),
-                                SizedBox(width: 10,),
+                                Spacer(),
 
                                 IconButton
                                 (
-                                  icon: Icon(assigned ? Icons.delete_outline : Icons.circle),
+                                  onPressed: () => _cycleStyle(tag), 
+                                  icon: Icon(Icons.palette_outlined)
+                                ),
+                                IconButton  
+                                (
+                                  icon: Icon(assigned ? Icons.remove_circle_outline : Icons.circle),
                                   onPressed: () => _assignOrDeassign(tag)
                                 ),
                                 SizedBox(width: 5,)
@@ -694,6 +718,45 @@ class __TagFieldBodyState extends State<_TagFieldBody>
           );
         }
       )
+    );
+  }
+}
+
+class ExerciseTagDesign extends StatelessWidget 
+{
+  final TagData tagData;
+
+  const ExerciseTagDesign
+  ({
+    super.key,
+    required this.tagData
+  });
+
+  @override
+  Widget build(BuildContext context) 
+  {
+    return Container
+    (
+      alignment: Alignment.center,
+      height: 22,
+      padding: EdgeInsets.symmetric(horizontal: 3),
+      decoration: BoxDecoration
+      (
+        color: tagData.style.isFilled
+        ? tagData.style.tagColour
+        : Color.fromARGB(0,0,0,0),
+        border: Border.all
+        (color:tagData.style.tagColour)
+      ),
+      child: TextTrimmer
+      (
+        content: tagData.title, 
+        trimMetrics: TrimMetrics.secondaryTypeface,
+        style: Theme.of(context).textTheme.bodyMedium,
+        textColor: tagData.style.isFilled
+        ? Theme.of(context).colorScheme.surface
+        : tagData.style.tagColour,
+      ),
     );
   }
 }

@@ -290,26 +290,24 @@ class ExerciseCard extends StatelessWidget
               SizedBox(height: 5,),
 
               //PLACEHOLDER FOR TAG ROW
-              Expanded
+              ColoredBox
               (
-                child: ColoredBox
+                color: Theme.of(context).colorScheme.primary,
+                child: SizedBox
                 (
-                  color: Theme.of(context).colorScheme.primary,
-                  child: SizedBox
+                  height: 22,
+                  child: Padding
                   (
-                    child: Padding
+                    padding: const EdgeInsets.all(3),
+                    child: TextTrimmer
                     (
-                      padding: const EdgeInsets.all(3),
-                      child: TextTrimmer
-                      (
-                        content: 'ACCESSORY', 
-                        trimMetrics: TrimMetrics.secondaryTypeface,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        textColor: Theme.of(context).colorScheme.onPrimary
-                      ),
-                    )
+                      content: 'ACCESSORY', 
+                      trimMetrics: TrimMetrics.secondaryTypeface,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      textColor: Theme.of(context).colorScheme.onPrimary
+                    ),
                   )
-                ),
+                )
               )
             ],
           )
