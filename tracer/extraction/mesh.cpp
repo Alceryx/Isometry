@@ -24,34 +24,14 @@ namespace
     }
 }
 
-Mesh::Mesh(const std::vector<float *> outputs)
+Mesh::Mesh(const std::unordered_map<std::string, float*>&outputs)
 {
-    const float* key3d_data = outputs[1];
-    const float* key2d_data = outputs[2];
-    const float* orient_data = outputs[3];
-    const float* pose_data = outputs[4];
-    const float* betas_data = outputs[5];
-    const float* cam_data = outputs[6];
-    const float* cam_t_data = outputs[7];
+    for (size_t i = 0; i < POSE_NUM; i++) poses[i] = outputs.at("poses")[i];
+    for (size_t i = 0; i < BETAS_NUM; i++) betas[i] = outputs.at("betas")[i];
+    for (size_t i = 0; i < CAM_T_NUM; i++) pd_cam_t[i] = outputs.at("pd_cam_t")[i];
 
-    for (size_t i = 0; i < KEY_NUM; i++)
-    {
-        keypoints3d[i] = ReadVec3(key3d_data, i);
-    }
-
-    for (size_t i = 0; i < KEY_NUM; i++)
-    {
-        keypoints2d[i] = ReadVec2(key2d_data, i);
-    }
-
-    global_orient = ReadMat3(orient_data, 0).Transpose();
-    for (size_t i = 0; i < BODY_POSE_NUM; i++)
-    {
-        body_pose[i] = ReadMat3(pose_data, i).Transpose();
-    }
-    for (size_t i = 0; i < BETAS_NUM; i++) betas[i] = betas_data[i];
-    for (size_t i = 0; i < CAM_NUM; i++) pred_cam[i] = cam_data[i];
-    for (size_t i = 0; i < CAM_T_NUM; i++) pred_cam_t[i] = cam_t_data[i];
+    for (size_t i = 0; i < KEY_NUM; i++) keypoints3d[i] = ReadVec3(outputs.at("pd_kp3d"), i);
+    for (size_t i = 0; i < KEY_NUM; i++) keypoints2d[i] = ReadVec2(outputs.at("pd_kp2d"), i);
 }
 
 void Mesh::ExtractVertices(const float* data)
@@ -64,10 +44,13 @@ void Mesh::ExtractVertices(const float* data)
 
 Vec3 Mesh::CamCropToFull(const Vec2& box_center, const float box_size, const Vec2& image)
 {
-    float scale = pred_cam[0];
-    float h_offset = pred_cam[1];
-    float v_offset = pred_cam[2];
+    float scale = pd_cam_t[0];
+    float h_offset = pd_cam_t[1];
+    float v_offset = pd_cam_t[2];
     
+    // TODO: Maybe move to extractor (should not hard code 256)
+    float focal_length = 5000.0f / 256.0f * std::max(image.x(), image.y());
+
     float tz = (2.0f * focal_length) / (scale * box_size);
 
     Vec2 converted = 2.0f * (box_center - image/2) / (scale * box_size);

@@ -65,3 +65,23 @@ void Tracer::ConnectJoint(cv::Mat& frame, Keypoint& start, Keypoint& end)
     cv::Point(static_cast<int>(end.pos.x()), static_cast<int>(end.pos.y())),
     cv::Scalar(60,60,229), 5);
 }
+
+// Debugging
+void Tracer::Analytic(cv::Mat& img)
+{
+    std::optional<Detection> detection = DetectBody(img);
+    if (!detection.has_value()) std::cout << "err" << "\n";
+    Detection& target = detection.value();
+    
+    std::optional<Mesh> mesh = ExtractMesh(img, target);
+    if (!mesh.has_value()) std::cout << "err" << "\n";
+    Mesh& body = mesh.value();
+    
+    std::cout << "Box Min: " << target.box_min << "\n";
+    std::cout << "Box Max: " << target.box_max << "\n";
+    
+    std::cout << body.poses[0] << "\n";
+
+    AnnotateFrame(img, target);
+    cv::imwrite("snippet.jpg", img);
+}

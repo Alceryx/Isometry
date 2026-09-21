@@ -22,47 +22,26 @@ int main(void)
         std::cerr << "Error Loading Model" << "\n";
     }
 
-    cv::VideoCapture vid("tests/Ang_Occ_Hor.mov");
+    cv::VideoCapture vid("tests/Ang_Up_Occ.mov");
     cv::Mat frame;
 
-    cv::Mat img = cv::imread("tests/Ang_Hor_BodStr_ArmStr_Occ.jpg");
+    while (vid.read(frame))
+    {
+        std::optional<Detection> detected = tracer.DetectBody(frame);
+        if (!detected.has_value()) continue;
+        Detection& target = detected.value();
 
-    std::optional<Detection> detect = tracer.DetectBody(img);
+        tracer.AnnotateFrame(frame, target);
+        std::optional<Mesh> mesh = tracer.ExtractMesh(frame, target);
 
-    if (!detect.has_value()) std::cout << "err" << "\n";
-
-    Detection& body = detect.value();
-    tracer.AnnotateFrame(img, body);
-
-    std::cout << "Box Min: " << body.box_min << "\n";
-    std::cout << "Box Max: " << body.box_max << "\n";
-
-    // while (vid.read(frame))
-    // {
-    //     std::optional<Detection> detected = tracer.DetectBody(frame);
-
-    //     if (!detected.has_value()) continue;
-    //     tracer.AnnotateFrame(frame, detected.value());
+        if (!mesh.has_value()) continue;
+        Mesh& body = mesh.value();
         
-    //     // std::optional<Mesh> mesh = tracer.ExtractMesh(frame, detected.value());
+        std::cout << body.poses[0] << "\n";
 
-    //     // if (!mesh.has_value()) continue;
-        
-    //     // std::cout << mesh.value().betas[0] << "\n";
-    
-    //     // std::map<Joint, float> joint_angles;
-    
-    //     // std::optional<float> re_ang = detected.Angle(detected.kp(Joint::RightShoulder), detected.kp(Joint::RightElbow), detected.kp(Joint::RightWrist));
-    
-    //     // if (re_ang.has_value())
-    //     // {
-    //     //     joint_angles[Joint::RightElbow] = re_ang.value();
-    //     //     std::cout << "Right Elbow Angle: " << joint_angles[Joint::RightElbow] << "\n";
-    //     // }
-
-    //     cv::imshow("Tracer", frame);
-    //     if (cv::waitKey(1) == 27) break;
-    // }
+        cv::imshow("Tracer", frame);
+        if (cv::waitKey(1) == 27) break;
+    }
 
     return EXIT_SUCCESS;
 }

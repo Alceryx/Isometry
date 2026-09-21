@@ -15,12 +15,11 @@
 #include <vector>
 #include <algorithm>
 #include <optional>
+#include <unordered_map>
 
 class Extractor
 {
     public:
-    static constexpr float BOX_PAD = 1.2f;
-
     Extractor() = default;
     Extractor(Ort::Env& env, const std::string& model_path);
 
@@ -30,6 +29,10 @@ class Extractor
     std::unique_ptr<Ort::Session> session;
 
     Vec2 input_size;
+    
+    private:
+    static constexpr float kTgtW = 192.0f;
+    static constexpr float kTgtH = 256.0f;
 };
 
 #endif

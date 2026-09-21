@@ -24,37 +24,40 @@ std::optional<Mesh> Extractor::Extract(cv::Mat& frame, const Detection& detectio
     }
 
     Vec2 box_center = (detection.box_max + detection.box_min) / 2;
-
     float width = detection.box_max.x() - detection.box_min.x();
     float height = detection.box_max.y() - detection.box_min.y();
+    float box_size = std::max(height, width * (kTgtH / kTgtW));
 
-    float box_size = std::max(width, height) * BOX_PAD;
+    int l = static_cast<int>(box_center.x() - box_size / 2);
+    int u = static_cast<int>(box_center.y() - box_size / 2);
+    int patch_size = static_cast<int>(box_size);
 
-    cv::Point2i origin(static_cast<int>(box_center.x()-box_size/2), static_cast<int>(box_center.y()-box_size/2));
-    cv::Size2i size(static_cast<int>(box_size), static_cast<int>(box_size));
+    cv::Mat crop = cv::Mat::zeros(patch_size, patch_size, frame.type());
 
-    cv::Rect raw_box(origin, size);
-    cv::Rect frame_bounds(0, 0, frame.cols, frame.rows);
+    int valid_l = std::max(0, l);
+    int valid_u = std::max(0, u);
+    int valid_r = std::min(frame.cols, l + patch_size);
+    int valid_b = std::min(frame.rows, u + patch_size);
 
-    cv::Rect box = raw_box & frame_bounds;
-    if (box.height <= 0 || box.width <= 0) 
+    if (valid_r > valid_l && valid_b > valid_u)
     {
-        std::cout << "Bounding Box out of bound\n";
-        return std::nullopt;
+        cv::Rect src_roi(valid_l, valid_u, valid_r - valid_l, valid_b - valid_u);
+        cv::Rect dst_roi(valid_l - l, valid_u - u, valid_r - valid_l, valid_b - valid_u);
+        frame(src_roi).copyTo(crop(dst_roi));
     }
-
-    cv::Mat crop(frame, box);
+    
+    cv::Mat patch;
+    cv::resize(crop, patch, cv::Size(static_cast<int>(input_size.x()), static_cast<int>(input_size.y())), 0, 0, cv::INTER_LINEAR);
     
     cv::Mat input;
-    crop.convertTo(input, CV_32FC3);
-
-    // Mean: (103.53, 116.28, 123.675) | Std: (57.375, 57.12, 58.395)
-    // (Pixel/255 - Mean) / Std
-    cv::subtract(input, cv::Scalar(103.53, 116.28, 123.675), input);
-    cv::divide(input, cv::Scalar(57.375, 57.12, 58.395), input);
+    patch.convertTo(input, CV_32FC3);
+    // Mean: (0.485, 0.456, 0.406) | Std: (0.229, 0.224, 0.225)
+    // (Pixel/255 - Mean) / Std = (Pixel - Mean*255) / Std*255
+    cv::subtract(input, cv::Scalar(0.406, 0.456, 0.485) * 255, input);
+    cv::divide(input, cv::Scalar(0.225, 0.224, 0.229) * 255, input);
 
     cv::Mat blob;
-    cv::dnn::blobFromImage(input, blob, 1.0, cv::Size(static_cast<int>(input_size.x()), static_cast<int>(input_size.y())), cv::Scalar(0,0,0), true, false);
+    cv::dnn::blobFromImage(input, blob, 1.0, cv::Size(), cv::Scalar(), true, false);
 
     try {
     Ort::AllocatorWithDefaultOptions allocator;
@@ -92,11 +95,11 @@ std::optional<Mesh> Extractor::Extract(cv::Mat& frame, const Detection& detectio
         output_names.data(), output_names.size()
     );
 
-    std::vector<float *> outputs;
+    std::unordered_map<std::string, float*> outputs;
     outputs.reserve(output_tensors.size());
-    for (auto& tensor : output_tensors)
+    for (size_t i = 0; i < output_tensors.size(); i++)
     {
-        outputs.push_back(tensor.GetTensorMutableData<float>());
+        outputs[output_names[i]] = output_tensors[i].GetTensorMutableData<float>();
     }
 
     Mesh extraction{outputs};

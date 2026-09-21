@@ -29,9 +29,10 @@ class Tracer
     void AnnotateFrame(cv::Mat& frame, Detection& detection);
 
     // Debugging
-    void Snippet(cv::Mat& frame, Detection& detection);
+    void Analytic(cv::Mat& img);
 
-    private: 
+private: 
+    // TODO: No hmr2 but is it a mesh?
     Ort::Env env;
     Detector yolo;
     Extractor hmr2;
