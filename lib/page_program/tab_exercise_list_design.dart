@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:isometry/data_manager.dart';
+import 'package:isometry/designs/dialog_design.dart';
 import 'package:isometry/designs/text_trim.dart';
 
 class TabExerciseListDesign extends StatelessWidget 
@@ -249,13 +251,13 @@ class TabExerciseListDesign extends StatelessWidget
 
 class ExerciseCard extends StatelessWidget 
 {
-  final String exerciseTitle; 
+  final ExerciseData exerciseData; 
   final VoidCallback onOptionTap; 
 
   const ExerciseCard
   ({
     super.key, 
-    required this.exerciseTitle,
+    required this.exerciseData,
     required this.onOptionTap
   });
 
@@ -275,41 +277,41 @@ class ExerciseCard extends StatelessWidget
             child: SvgPicture.asset('assets/ui/tab_exercise/list_option.svg')
           ),
           SizedBox(width: 7,),
-          Column
-          (
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: 
-            [
-              TextTrimmer
-              (
-                content: exerciseTitle, 
-                trimMetrics: TrimMetrics.mainTypeface,
-                style: Theme.of(context).textTheme.titleMedium,
-                textColor: Theme.of(context).colorScheme.secondary,
-              ),
-              SizedBox(height: 5,),
-
-              //PLACEHOLDER FOR TAG ROW
-              ColoredBox
-              (
-                color: Theme.of(context).colorScheme.primary,
-                child: SizedBox
+          Expanded(
+            child: Column
+            (
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: 
+              [
+                TextTrimmer
                 (
-                  height: 22,
-                  child: Padding
+                  content: exerciseData.title, 
+                  trimMetrics: TrimMetrics.mainTypeface,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textColor: Theme.of(context).colorScheme.secondary,
+                ),
+                SizedBox(height: 5,),
+                  
+                //PLACEHOLDER FOR TAG ROW
+                Expanded
+                (
+                  child: ListView.builder
                   (
-                    padding: const EdgeInsets.all(3),
-                    child: TextTrimmer
-                    (
-                      content: 'ACCESSORY', 
-                      trimMetrics: TrimMetrics.secondaryTypeface,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      textColor: Theme.of(context).colorScheme.onPrimary
-                    ),
-                  )
+                    scrollDirection: Axis.horizontal,
+                    itemCount: exerciseData.tags.items.length,
+                    itemBuilder: (context, index)
+                    {
+                      final TagData tag = exerciseData.tags.items.reversed.toList()[index];
+                      return Padding
+                      (
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: ExerciseTagDesign(tagData: tag),
+                      ); 
+                    }
+                  ),
                 )
-              )
-            ],
+              ],
+            ),
           )
         ],
       ),

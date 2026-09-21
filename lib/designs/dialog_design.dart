@@ -546,8 +546,8 @@ class __TagFieldBodyState extends State<_TagFieldBody>
     return 
     [
       TagStyle(tagColour: palette.primary, isFilled: true),
-      TagStyle(tagColour: palette.secondary, isFilled: true),
       TagStyle(tagColour: palette.primary, isFilled: false),
+      TagStyle(tagColour: palette.secondary, isFilled: true),
       TagStyle(tagColour: palette.secondary, isFilled: false),
     ];
   } 
@@ -569,7 +569,9 @@ class __TagFieldBodyState extends State<_TagFieldBody>
   tag.edit(TagData(title: tag.title, style: styles[next]));
 }
 
-
+  //------------
+  //FIELD DESIGN
+  //------------
 
   @override
   Widget build(BuildContext context) 
@@ -596,63 +598,71 @@ class __TagFieldBodyState extends State<_TagFieldBody>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: 
             [
-              GestureDetector
+              SizedBox
               (
-                onTap: _expandDropdown,
-                child: SizedBox
+                height: 25,
+                child: Row
                 (
-                  height: 25,
-                  child: Row
-                  (
-                    children: 
-                    [
-                      Expanded
+                  children: 
+                  [
+                    Expanded
+                    (
+                      flex: textFieldFlex,
+                      child: Material
                       (
-                        flex: textFieldFlex,
-                        child: Material
+                        type: MaterialType.transparency,
+                        child: TextField
                         (
-                          type: MaterialType.transparency,
-                          child: TextField
-                          (
-                            controller: _tagFieldController,
-                            focusNode: _focusNode,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            decoration: textFieldDecor('SEARCH/ADD', context),
-                            onChanged: (_) => setState(() {}),
-                            onSubmitted: (enteredValue) => _submitTag
-                            (globalTags, enteredValue)
-                          ),
+                          onTap: () => _expandDropdown(),
+                          controller: _tagFieldController,
+                          focusNode: _focusNode,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          decoration: textFieldDecor('SEARCH/ADD', context),
+                          onChanged: (_) => setState(() {}),
+                          onSubmitted: (enteredValue) => _submitTag
+                          (globalTags, enteredValue)
                         ),
                       ),
-                      const SizedBox(width: 8,),
-                  
-                      Expanded
+                    ),
+                    const SizedBox(width: 5,),
+                    SizedBox
+                    (
+                      height: 25, width: 1,
+                      child: ColoredBox(color:Theme.of(context).colorScheme.onSurface),
+                    ),
+                    const SizedBox(width: 5,),
+                
+                    Expanded
+                    (
+                      flex: textFieldFlex + 1,
+                      child: ListView.builder
                       (
-                        flex: textFieldFlex + 1,
-                        child: ListView.builder
-                        (
-                          scrollDirection: Axis.horizontal,
-                          itemCount: widget.localTags.items.length,
-                          itemBuilder: (context, index) 
-                          {
-                            final TagData tag = widget.localTags.items.reversed.toList()[index];
-                            return Padding
-                            (
-                              padding: const EdgeInsets.only(right: 5),
-                              child: ExerciseTagDesign(tagData: tag)
-                            );
-                          },
-                        ),
-                      )
-                    ],
-                  ),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.localTags.items.length,
+                        itemBuilder: (context, index) 
+                        {
+                          final TagData tag = widget.localTags.items.reversed.toList()[index];
+                          return Padding
+                          (
+                            padding: const EdgeInsets.only(right: 5),
+                            child: ExerciseTagDesign(tagData: tag)
+                          );
+                        },
+                      ),
+                    )
+                  ],
                 ),
               ),
               SizedBox(height: 10,),
+
+              //---------------
+              //DROPDOWN DESIGN
+              //---------------
+
               if(_expanded)
               Container
               (
-                constraints: const BoxConstraints(maxHeight: 250),
+                constraints: const BoxConstraints(maxHeight: 32 * 5),
                 decoration: BoxDecoration
                 (
                   color: Theme.of(context).colorScheme.surface,
@@ -673,40 +683,36 @@ class __TagFieldBodyState extends State<_TagFieldBody>
                         builder: (context, tag, _)
                         {
                           final bool assigned = widget.localTags.items.contains(tag);
-                          return SizedBox
+                          return Row
                           (
-                            
-                            child: Row
-                            (
-                              children: 
-                              [
-                                IconButton
-                                (
-                                  icon: const Icon(Icons.delete_outline),
-                                  onPressed: () => _deleteGlobalTag(globalTags, tag),
-                                ),
-                                SizedBox(width: 5,),
-                                
-                                GestureDetector
-                                (
-                                  onTap: () => _renameTag(tag),
-                                  child: ExerciseTagDesign(tagData: tag)
-                                ),
-                                Spacer(),
-
-                                IconButton
-                                (
-                                  onPressed: () => _cycleStyle(tag), 
-                                  icon: Icon(Icons.palette_outlined)
-                                ),
-                                IconButton  
-                                (
-                                  icon: Icon(assigned ? Icons.remove_circle_outline : Icons.circle),
-                                  onPressed: () => _assignOrDeassign(tag)
-                                ),
-                                SizedBox(width: 5,)
-                              ],
-                            ),
+                            children: 
+                            [
+                              IconButton
+                              (
+                                icon: const Icon(Icons.delete_outline),
+                                onPressed: () => _deleteGlobalTag(globalTags, tag),
+                              ),
+                              SizedBox(width: 5,),
+                              
+                              GestureDetector
+                              (
+                                onTap: () => _renameTag(tag),
+                                child: ExerciseTagDesign(tagData: tag)
+                              ),
+                              Spacer(),
+                                        
+                              IconButton
+                              (
+                                onPressed: () => _cycleStyle(tag), 
+                                icon: Icon(Icons.palette_outlined)
+                              ),
+                              IconButton  
+                              (
+                                icon: Icon(assigned ? Icons.remove_circle_outline : Icons.circle),
+                                onPressed: () => _assignOrDeassign(tag)
+                              ),
+                              SizedBox(width: 5,)
+                            ],
                           );
                         }
                       ),
@@ -721,6 +727,7 @@ class __TagFieldBodyState extends State<_TagFieldBody>
     );
   }
 }
+
 
 class ExerciseTagDesign extends StatelessWidget 
 {

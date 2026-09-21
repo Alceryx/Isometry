@@ -195,7 +195,7 @@ class _AddExerciseDialogState extends State<AddExerciseDialog>
         final newExercise = ExerciseData
         (
           title: titleController.text, 
-          tags: TagListLocal(),
+          tags: widget.localTags,
         );
 
         context.read<ExerciseList>().addItem(newExercise);

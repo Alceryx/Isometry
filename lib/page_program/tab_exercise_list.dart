@@ -55,7 +55,7 @@ class _TabExerciseListState extends State<TabExerciseList>
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: ExerciseCard
             (
-              exerciseTitle: exerciseListData.items[index].title,
+              exerciseData: exerciseListData.items[index],
               onOptionTap: () {}
             ),
           );
