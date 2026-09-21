@@ -15,7 +15,7 @@ Extractor::Extractor(Ort::Env& env, const std::string& model_path)
     input_size = Vec2(static_cast<float>(input_shape[3]), static_cast<float>(input_shape[2]));
 }
 
-std::optional<Mesh> Extractor::Extract(cv::Mat& frame, const Detection& detection)
+std::optional<Rig> Extractor::Extract(cv::Mat& frame, const Detection& detection)
 {
     if (frame.empty())
     {
@@ -102,7 +102,7 @@ std::optional<Mesh> Extractor::Extract(cv::Mat& frame, const Detection& detectio
         outputs[output_names[i]] = output_tensors[i].GetTensorMutableData<float>();
     }
 
-    Mesh extraction{outputs};
+    Rig extraction{outputs};
     return extraction;
 
     } catch (const Ort::Exception& e) {

@@ -4,7 +4,7 @@
 #include "detector.hpp"
 #include "detection.hpp"
 #include "extractor.hpp"
-#include "mesh.hpp"
+#include "rig.hpp"
 
 #include <onnxruntime_cxx_api.h>
 #include <opencv2/opencv.hpp>
@@ -24,7 +24,7 @@ class Tracer
     void Shutdown();
 
     std::optional<Detection> DetectBody(cv::Mat& frame);
-    std::optional<Mesh> ExtractMesh(cv::Mat& frame, const Detection& detection);
+    std::optional<Rig> ExtractRig(cv::Mat& frame, const Detection& detection);
 
     void AnnotateFrame(cv::Mat& frame, Detection& detection);
 
@@ -35,9 +35,9 @@ private:
     // TODO: No hmr2 but is it a mesh?
     Ort::Env env;
     Detector yolo;
-    Extractor hmr2;
+    Extractor hsmr;
 
-    void ConnectJoint(cv::Mat&frame, Keypoint &start, Keypoint &end);
+    void ConnectJoint(cv::Mat&frame, Keypoint &start, Keypoint&end);
 };
 
 #endif

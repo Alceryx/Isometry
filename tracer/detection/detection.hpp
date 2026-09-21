@@ -56,7 +56,6 @@ class Detection
 
     void Rescale(float scale_x, float scale_y);
 
-
     // TODO: Move to Vec or Math
     std::optional<float> Angle(const Keypoint& start, const Keypoint& mid, const Keypoint& end) const;
 };

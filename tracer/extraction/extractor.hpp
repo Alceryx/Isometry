@@ -1,7 +1,7 @@
 #ifndef EXTRACTOR
 #define EXTRACTOR
 
-#include "mesh.hpp"
+#include "rig.hpp"
 #include "detection.hpp"
 #include "vec.hpp"
 
@@ -23,7 +23,7 @@ class Extractor
     Extractor() = default;
     Extractor(Ort::Env& env, const std::string& model_path);
 
-    std::optional<Mesh> Extract(cv::Mat& frame, const Detection& detection);
+    std::optional<Rig> Extract(cv::Mat& frame, const Detection& detection);
 
     private:
     std::unique_ptr<Ort::Session> session;

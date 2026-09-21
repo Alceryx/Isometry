@@ -32,10 +32,10 @@ int main(void)
         Detection& target = detected.value();
 
         tracer.AnnotateFrame(frame, target);
-        std::optional<Mesh> mesh = tracer.ExtractMesh(frame, target);
+        std::optional<Rig> mesh = tracer.ExtractRig(frame, target);
 
         if (!mesh.has_value()) continue;
-        Mesh& body = mesh.value();
+        Rig& body = mesh.value();
         
         std::cout << body.poses[0] << "\n";
 

@@ -8,7 +8,7 @@
 #include <string>
 #include <unordered_map>
 
-class Mesh
+class Rig
 {
     public:
     
@@ -29,8 +29,8 @@ class Mesh
     std::array<Vec2, KEY_NUM> keypoints2d;
     
     
-    Mesh() = default;
-    Mesh(const std::unordered_map<std::string, float*>& outputs);
+    Rig() = default;
+    Rig(const std::unordered_map<std::string, float*>& outputs);
     void ExtractVertices(const float *data);
 
     Vec3 CamCropToFull(const Vec2& box_center, const float box_size, const Vec2& image);

@@ -6,7 +6,7 @@ bool Tracer::Init(const std::string& det_path, const std::string& ext_path)
     try {
     env = Ort::Env(ORT_LOGGING_LEVEL_WARNING, "Tracer");
     yolo = {env, det_path};
-    hmr2 = {env, ext_path};
+    hsmr = {env, ext_path};
     return true;
 
     } catch (const Ort::Exception &e) {
@@ -22,9 +22,9 @@ std::optional<Detection> Tracer::DetectBody(cv::Mat& frame)
     return detections[0];
 }
 
-std::optional<Mesh> Tracer::ExtractMesh(cv::Mat& frame, const Detection& detection)
+std::optional<Rig> Tracer::ExtractRig(cv::Mat& frame, const Detection& detection)
 {
-    return hmr2.Extract(frame, detection);
+    return hsmr.Extract(frame, detection);
 }
 
 void Tracer::Shutdown()
@@ -73,9 +73,9 @@ void Tracer::Analytic(cv::Mat& img)
     if (!detection.has_value()) std::cout << "err" << "\n";
     Detection& target = detection.value();
     
-    std::optional<Mesh> mesh = ExtractMesh(img, target);
+    std::optional<Rig> mesh = ExtractRig(img, target);
     if (!mesh.has_value()) std::cout << "err" << "\n";
-    Mesh& body = mesh.value();
+    Rig& body = mesh.value();
     
     std::cout << "Box Min: " << target.box_min << "\n";
     std::cout << "Box Max: " << target.box_max << "\n";

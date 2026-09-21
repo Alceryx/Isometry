@@ -32,7 +32,7 @@ set(TRACER_SOURCES
     api/tracer_api.cpp
     detection/detection.cpp
     detection/detector.cpp
-    extraction/mesh.cpp
+    extraction/rig.cpp
     extraction/extractor.cpp
     tracer.cpp
 )

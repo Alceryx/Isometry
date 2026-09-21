@@ -17,7 +17,9 @@ class Detector
 {
     public:
     static constexpr size_t DETECT_NUM = 300;
-    static constexpr float DETECT_THRESHOLD = 0.5;
+    static constexpr float DETECT_THRESHOLD = 0.5f;
+
+    Vec2 old_center;
 
     Detector() = default;
     Detector(const Ort::Env& env, const std::string& model_path);

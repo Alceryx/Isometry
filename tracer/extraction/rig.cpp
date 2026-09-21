@@ -1,4 +1,4 @@
-#include "mesh.hpp"
+#include "rig.hpp"
 
 namespace
 {
@@ -24,7 +24,7 @@ namespace
     }
 }
 
-Mesh::Mesh(const std::unordered_map<std::string, float*>&outputs)
+Rig::Rig(const std::unordered_map<std::string, float*>& outputs)
 {
     for (size_t i = 0; i < POSE_NUM; i++) poses[i] = outputs.at("poses")[i];
     for (size_t i = 0; i < BETAS_NUM; i++) betas[i] = outputs.at("betas")[i];
@@ -34,7 +34,7 @@ Mesh::Mesh(const std::unordered_map<std::string, float*>&outputs)
     for (size_t i = 0; i < KEY_NUM; i++) keypoints2d[i] = ReadVec2(outputs.at("pd_kp2d"), i);
 }
 
-void Mesh::ExtractVertices(const float* data)
+void Rig::ExtractVertices(const float* data)
 {
     for (size_t i = 0; i < VERTICES_NUM; i++)
     {
@@ -42,7 +42,7 @@ void Mesh::ExtractVertices(const float* data)
     }
 }
 
-Vec3 Mesh::CamCropToFull(const Vec2& box_center, const float box_size, const Vec2& image)
+Vec3 Rig::CamCropToFull(const Vec2& box_center, const float box_size, const Vec2& image)
 {
     float scale = pd_cam_t[0];
     float h_offset = pd_cam_t[1];
