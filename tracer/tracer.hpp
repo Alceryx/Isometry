@@ -16,6 +16,9 @@
 #include <filesystem>
 #include <optional>
 
+// Debugging
+#include <sstream>
+
 class Tracer
 {
     public:
@@ -24,7 +27,7 @@ class Tracer
     void Shutdown();
 
     std::optional<Detection> DetectBody(cv::Mat& frame);
-    std::optional<Rig> ExtractRig(cv::Mat& frame, const Detection& detection);
+    Rig ExtractRig(cv::Mat& frame, const Detection& detection);
 
     void AnnotateFrame(cv::Mat& frame, Detection& detection);
 
@@ -32,12 +35,11 @@ class Tracer
     void Analytic(cv::Mat& img);
 
 private: 
-    // TODO: No hmr2 but is it a mesh?
     Ort::Env env;
     Detector yolo;
     Extractor hsmr;
 
-    void ConnectJoint(cv::Mat&frame, Keypoint &start, Keypoint&end);
+    void ConnectJoint(cv::Mat& frame, Keypoint& start, Keypoint& end);
 };
 
 #endif

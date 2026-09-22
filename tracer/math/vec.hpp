@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <array>
+#include <optional>
 #include <iostream>
 
 template<size_t N>
@@ -21,12 +22,12 @@ struct VecBase
     }
 
     // Scalar Compound Assignment
-    VecBase &operator*=(float t)
+    VecBase& operator*=(float t)
     {
         for (size_t i = 0; i < N; i++) e[i] *= t;
         return *this;
     }
-    VecBase &operator/=(float t)
+    VecBase& operator/=(float t)
     {
         return *this *= (1 / t);
     }
@@ -48,6 +49,7 @@ struct VecBase
         return *this;
     }
 
+    // Custom Arithmetic
     float Dot(const VecBase& v) const
     {
         float sum = 0;

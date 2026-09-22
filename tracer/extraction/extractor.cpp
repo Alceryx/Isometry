@@ -15,49 +15,13 @@ Extractor::Extractor(Ort::Env& env, const std::string& model_path)
     input_size = Vec2(static_cast<float>(input_shape[3]), static_cast<float>(input_shape[2]));
 }
 
-std::optional<Rig> Extractor::Extract(cv::Mat& frame, const Detection& detection)
+Rig Extractor::Extract(cv::Mat& frame, const Detection& detection)
 {
-    if (frame.empty())
-    {
-        std::cerr << "Error: Could not load frame\n";
-        return std::nullopt;
-    }
+    assert(!frame.empty());
 
-    Vec2 box_center = (detection.box_max + detection.box_min) / 2;
-    float width = detection.box_max.x() - detection.box_min.x();
-    float height = detection.box_max.y() - detection.box_min.y();
-    float box_size = std::max(height, width * (kTgtH / kTgtW));
-
-    int l = static_cast<int>(box_center.x() - box_size / 2);
-    int u = static_cast<int>(box_center.y() - box_size / 2);
-    int patch_size = static_cast<int>(box_size);
-
-    cv::Mat crop = cv::Mat::zeros(patch_size, patch_size, frame.type());
-
-    int valid_l = std::max(0, l);
-    int valid_u = std::max(0, u);
-    int valid_r = std::min(frame.cols, l + patch_size);
-    int valid_b = std::min(frame.rows, u + patch_size);
-
-    if (valid_r > valid_l && valid_b > valid_u)
-    {
-        cv::Rect src_roi(valid_l, valid_u, valid_r - valid_l, valid_b - valid_u);
-        cv::Rect dst_roi(valid_l - l, valid_u - u, valid_r - valid_l, valid_b - valid_u);
-        frame(src_roi).copyTo(crop(dst_roi));
-    }
-    
-    cv::Mat patch;
-    cv::resize(crop, patch, cv::Size(static_cast<int>(input_size.x()), static_cast<int>(input_size.y())), 0, 0, cv::INTER_LINEAR);
-    
-    cv::Mat input;
-    patch.convertTo(input, CV_32FC3);
-    // Mean: (0.485, 0.456, 0.406) | Std: (0.229, 0.224, 0.225)
-    // (Pixel/255 - Mean) / Std = (Pixel - Mean*255) / Std*255
-    cv::subtract(input, cv::Scalar(0.406, 0.456, 0.485) * 255, input);
-    cv::divide(input, cv::Scalar(0.225, 0.224, 0.229) * 255, input);
-
-    cv::Mat blob;
-    cv::dnn::blobFromImage(input, blob, 1.0, cv::Size(), cv::Scalar(), true, false);
+    CropBox box = Preprocess::ComputeCropBox(detection.box_min, detection.box_max, kTgtW, kTgtH);
+    cv::Mat crop = Preprocess::CropWithPadding(frame, box);
+    cv::Mat blob = Preprocess::NormalizeToBlob(crop, input_size);
 
     try {
     Ort::AllocatorWithDefaultOptions allocator;
@@ -107,6 +71,5 @@ std::optional<Rig> Extractor::Extract(cv::Mat& frame, const Detection& detection
 
     } catch (const Ort::Exception& e) {
         std::cerr << "ONNX Runtime Exception: " << e.what() << "\n";
-        return std::nullopt;
     }
 }

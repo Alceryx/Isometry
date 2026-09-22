@@ -52,3 +52,4 @@ tracer/build/
 tracer/onnxruntime/
 tracer/models/
 tracer/tests
+tracer/outputs

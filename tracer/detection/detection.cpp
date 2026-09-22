@@ -26,21 +26,6 @@ Detection::Detection(const float* data, size_t candidate)
     }
 }
 
-std::optional<float> Detection::Angle(const Keypoint& start, const Keypoint& mid, const Keypoint& end) const
-{
-    if (!start.visible() || !mid.visible() || !end.visible() )
-    {
-        return std::nullopt;
-    }
-    
-    Vec2 v1 = start.pos - mid.pos;
-    Vec2 v2 = end.pos - mid.pos;
-
-    float angle = std::acos(v1.Dot(v2) / (v1.Length() * v2.Length()));
-
-    return angle * 180.0f / 3.14159265358979323846f;
-}
-
 void Detection::Rescale(float scale_x, float scale_y)
 {
     box_min *= Vec2(scale_x, scale_y);

@@ -34,6 +34,8 @@ set(TRACER_SOURCES
     detection/detector.cpp
     extraction/rig.cpp
     extraction/extractor.cpp
+    extraction/preprocess.cpp
+    math/metrics.cpp
     tracer.cpp
 )
 

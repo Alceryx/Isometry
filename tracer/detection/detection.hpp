@@ -3,14 +3,14 @@
 
 #include "vec.hpp"
 
+#include <opencv2/opencv.hpp>
+
 #include <array>
 #include <cassert>
 #include <cmath>
 #include <map>
 #include <optional>
-
 #include <iostream>
-#include <opencv2/opencv.hpp>
 
 struct Keypoint
 {
@@ -55,9 +55,6 @@ class Detection
     Keypoint kp(Joint j) const { return keypoints[static_cast<size_t>(j)]; };
 
     void Rescale(float scale_x, float scale_y);
-
-    // TODO: Move to Vec or Math
-    std::optional<float> Angle(const Keypoint& start, const Keypoint& mid, const Keypoint& end) const;
 };
 
 #endif

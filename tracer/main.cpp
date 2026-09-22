@@ -1,5 +1,6 @@
 #include "detection.hpp"
 #include "tracer.hpp"
+#include "metrics.hpp"
 
 #include <onnxruntime_cxx_api.h>
 #include <opencv2/opencv.hpp>
@@ -8,6 +9,22 @@
 #include <iostream>
 #include <optional>
 #include <string>
+
+// Debugging
+#include <filesystem>
+
+void TestAll(Tracer& tracer)
+{
+    std::string path = "tests";
+    for (const auto& entry : std::filesystem::directory_iterator(path))
+    {
+        auto file_path = entry.path();
+        if (file_path.extension().string() != ".jpg") continue;
+        std::cout << "\n" << file_path.string() << "\n";
+        cv::Mat img = cv::imread(file_path.string());
+        tracer.Analytic(img);
+    }
+}
 
 int main(void)
 {
@@ -32,12 +49,10 @@ int main(void)
         Detection& target = detected.value();
 
         tracer.AnnotateFrame(frame, target);
-        std::optional<Rig> mesh = tracer.ExtractRig(frame, target);
-
-        if (!mesh.has_value()) continue;
-        Rig& body = mesh.value();
+        Rig body = tracer.ExtractRig(frame, target);
         
-        std::cout << body.poses[0] << "\n";
+        // std::cout << body.poses[0] << "\n";
+        std::cout << Metrics::Angle(target.kp(Joint::LeftShoulder).pos, target.kp(Joint::LeftElbow).pos, target.kp(Joint::LeftWrist).pos) << "\n";
 
         cv::imshow("Tracer", frame);
         if (cv::waitKey(1) == 27) break;

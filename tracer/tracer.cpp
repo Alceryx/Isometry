@@ -1,5 +1,4 @@
 #include "tracer.hpp"
-#include <chrono>
 
 bool Tracer::Init(const std::string& det_path, const std::string& ext_path)
 {
@@ -22,7 +21,7 @@ std::optional<Detection> Tracer::DetectBody(cv::Mat& frame)
     return detections[0];
 }
 
-std::optional<Rig> Tracer::ExtractRig(cv::Mat& frame, const Detection& detection)
+Rig Tracer::ExtractRig(cv::Mat& frame, const Detection& detection)
 {
     return hsmr.Extract(frame, detection);
 }
@@ -41,10 +40,10 @@ void Tracer::AnnotateFrame(cv::Mat& frame, Detection& detection)
 
     for (Keypoint &kp : detection.keypoints)
     {
-        // if (!kp.visible()) continue;
-        // cv::circle(frame,
-        // cv::Point(static_cast<int>(kp.pos.x), static_cast<int>(kp.pos.y)),
-        // 7, cv::Scalar(0, 255, 0), cv::FILLED);
+        if (!kp.visible()) continue;
+        cv::circle(frame,
+        cv::Point(static_cast<int>(kp.pos.x()), static_cast<int>(kp.pos.y())),
+        7, cv::Scalar(0, 255, 0), cv::FILLED);
     }
 
     auto conf_y = detection.box_min.y() - 15;
@@ -80,8 +79,13 @@ void Tracer::Analytic(cv::Mat& img)
     std::cout << "Box Min: " << target.box_min << "\n";
     std::cout << "Box Max: " << target.box_max << "\n";
     
-    std::cout << body.poses[0] << "\n";
+    std::cout << "Pelvic Tilt: " << body.poses[0] << "\n";
+    std::cout << "Pelvic List: " << body.poses[1] << "\n";
+    std::cout << "Pelvic Rotation: " << body.poses[2] << "\n";
+    std::cout << body.poses[0] << " " << body.poses[1] << " " << body.poses[2] << "\n";
 
     AnnotateFrame(img, target);
-    cv::imwrite("snippet.jpg", img);
+    std::stringstream ss;
+    ss << "outputs/" << body.poses[0] << " " << body.poses[1] << " " << body.poses[2] << ".jpg";
+    cv::imwrite(ss.str(), img);
 }
