@@ -645,7 +645,7 @@ class __TagFieldBodyState extends State<_TagFieldBody>
                           return Padding
                           (
                             padding: const EdgeInsets.only(right: 5),
-                            child: ExerciseTagDesign(tagData: tag)
+                            child: ExerciseTagDesign(tagData: tag, tagTitle: tag.title,)
                           );
                         },
                       ),
@@ -669,55 +669,116 @@ class __TagFieldBodyState extends State<_TagFieldBody>
                   border: Border.all(color:Theme.of(context).colorScheme.primary),
                   borderRadius: BorderRadius.zero,
                 ),
-                child: ListView.builder
-                (
-                  itemCount: visibleTags.length,
-                  itemBuilder: (context, index)
-                  {
-                    final tag = visibleTags[index]; 
-                    return ChangeNotifierProvider<TagData>.value
-                    (
-                      value: tag,
-                      child: Consumer<TagData>
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.builder
+                  (
+                    itemCount: visibleTags.length,
+                    itemBuilder: (context, index)
+                    {
+                      final tag = visibleTags[index]; 
+                      return ChangeNotifierProvider<TagData>.value
                       (
-                        builder: (context, tag, _)
-                        {
-                          final bool assigned = widget.localTags.items.contains(tag);
-                          return Row
-                          (
-                            children: 
-                            [
-                              IconButton
+                        value: tag,
+                        child: Consumer<TagData>
+                        (
+                          builder: (context, tag, _)
+                          {
+                            final bool assigned = widget.localTags.items.contains(tag);
+                            final double height1 = 28;
+                            final double height2 = 24; 
+                  
+                            return Padding
+                            (
+                              padding: const EdgeInsets.only(bottom: 7),
+                              child: Row
                               (
-                                icon: const Icon(Icons.delete_outline),
-                                onPressed: () => _deleteGlobalTag(globalTags, tag),
-                              ),
-                              SizedBox(width: 5,),
+                                children: 
+                                [
+                                  //ASSIGN / DEASSIGN
+                                  GestureDetector
+                                  (
+                                    onTap: () => _assignOrDeassign(tag),
+                                    child: SvgPicture.asset
+                                    (
+                                      assigned 
+                                      ? 'assets/ui/tab_exercise/tag_deassign.svg'
+                                      : 'assets/ui/tab_exercise/tag_assign.svg',
+                                      height: height1,
+                                    ),
+                                  ),
+                                  SizedBox(width: 8,),
+                                  
+                                  //TAG & RENAME
+                                  Expanded
+                                  (
+                                    flex: 4,
+                                    child: GestureDetector
+                                    (
+                                      onTap: () => _renameTag(tag),
+                                      child: SingleChildScrollView
+                                      (
+                                        scrollDirection: Axis.horizontal,
+                                        child: ExerciseTagDesign(tagData: tag, tagTitle: tag.title,)
+                                      )
+                                    ),
+                                  ),
+                                  Spacer(flex: 1,),
                               
-                              GestureDetector
-                              (
-                                onTap: () => _renameTag(tag),
-                                child: ExerciseTagDesign(tagData: tag)
+                              
+                                  //CHANGE STYLE
+                                
+                                  GestureDetector
+                                  (
+                                    onTap: () => _cycleStyle(tag),
+                                    child: SizedBox
+                                    (
+                                      height: height2, width: height2,
+                                      child: Stack
+                                      (
+                                        children: 
+                                        [
+                                          ExerciseTagDesign(tagData: tag, tagTitle: ""),
+                                          Center
+                                          (
+                                            child: SvgPicture.asset
+                                            (
+                                              'assets/ui/tab_exercise/tag_style_icon.svg', 
+                                              height: height2 - 8,
+                                              colorFilter: ColorFilter.mode
+                                              (
+                                                tag.style.isFilled
+                                                ? Theme.of(context).colorScheme.surface
+                                                : tag.style.tagColour, 
+                                                BlendMode.srcIn
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ), 
+                                  SizedBox(width: 5,),
+                                                
+                                  //DELETE
+                              
+                                  GestureDetector
+                                  (
+                                    onTap: () => _deleteGlobalTag(globalTags, tag),
+                                    child: SvgPicture.asset
+                                    (
+                                      'assets/ui/tab_exercise/tag_delete.svg',
+                                      height: height2,
+                                    ),
+                                  )
+                                ],
                               ),
-                              Spacer(),
-                                        
-                              IconButton
-                              (
-                                onPressed: () => _cycleStyle(tag), 
-                                icon: Icon(Icons.palette_outlined)
-                              ),
-                              IconButton  
-                              (
-                                icon: Icon(assigned ? Icons.remove_circle_outline : Icons.circle),
-                                onPressed: () => _assignOrDeassign(tag)
-                              ),
-                              SizedBox(width: 5,)
-                            ],
-                          );
-                        }
-                      ),
-                    );
-                  }
+                            );
+                          }
+                        ),
+                      );
+                    }
+                  ),
                 ),
               )
             ],
@@ -732,11 +793,13 @@ class __TagFieldBodyState extends State<_TagFieldBody>
 class ExerciseTagDesign extends StatelessWidget 
 {
   final TagData tagData;
+  final String tagTitle; 
 
   const ExerciseTagDesign
   ({
     super.key,
-    required this.tagData
+    required this.tagData,
+    required this.tagTitle
   });
 
   @override
@@ -745,7 +808,7 @@ class ExerciseTagDesign extends StatelessWidget
     return Container
     (
       alignment: Alignment.center,
-      height: 22,
+      height: 24,
       padding: EdgeInsets.symmetric(horizontal: 3),
       decoration: BoxDecoration
       (
@@ -757,7 +820,7 @@ class ExerciseTagDesign extends StatelessWidget
       ),
       child: TextTrimmer
       (
-        content: tagData.title, 
+        content: tagTitle, 
         trimMetrics: TrimMetrics.secondaryTypeface,
         style: Theme.of(context).textTheme.bodyMedium,
         textColor: tagData.style.isFilled

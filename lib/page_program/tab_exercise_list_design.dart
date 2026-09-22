@@ -277,7 +277,8 @@ class ExerciseCard extends StatelessWidget
             child: SvgPicture.asset('assets/ui/tab_exercise/list_option.svg')
           ),
           SizedBox(width: 7,),
-          Expanded(
+          Expanded
+          (
             child: Column
             (
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -285,14 +286,15 @@ class ExerciseCard extends StatelessWidget
               [
                 TextTrimmer
                 (
-                  content: exerciseData.title, 
+                  content: exerciseData.title.isNotEmpty 
+                  ? exerciseData.title
+                  : "Exercise 1", 
                   trimMetrics: TrimMetrics.mainTypeface,
                   style: Theme.of(context).textTheme.titleMedium,
                   textColor: Theme.of(context).colorScheme.secondary,
                 ),
                 SizedBox(height: 5,),
                   
-                //PLACEHOLDER FOR TAG ROW
                 Expanded
                 (
                   child: ListView.builder
@@ -305,7 +307,7 @@ class ExerciseCard extends StatelessWidget
                       return Padding
                       (
                         padding: const EdgeInsets.only(right: 8.0),
-                        child: ExerciseTagDesign(tagData: tag),
+                        child: ExerciseTagDesign(tagData: tag, tagTitle: tag.title,),
                       ); 
                     }
                   ),
