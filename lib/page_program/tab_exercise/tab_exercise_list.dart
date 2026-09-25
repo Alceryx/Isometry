@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isometry/designs/dialog_design.dart';
 import 'package:isometry/dialog_data.dart';
-import 'package:isometry/page_program/tab_exercise_list_design.dart';
+import 'package:isometry/page_program/tab_exercise/tab_exercise_list_design.dart';
 import 'package:provider/provider.dart';
 
 import 'package:isometry/data_manager.dart';

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:isometry/designs/page_elements.dart';
 import 'package:isometry/designs/dialog_design.dart';
-import 'package:isometry/page_program/grp_card_design.dart';
+import 'package:isometry/page_program/tab_exercise/grp_card_design.dart';
 
 import 'package:isometry/dialog_data.dart';
 import 'package:isometry/data_manager.dart';
 
-import 'package:isometry/page_program/tab_session.dart';
-import 'package:isometry/page_program/tab_exercise_list.dart';
+import 'package:isometry/page_program/tab_exercise/tab_exercise_list.dart';
+import 'package:isometry/page_program/tab_session/tab_session.dart';
 
 class TabGrpGrid extends StatefulWidget 
 {

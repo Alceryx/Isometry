@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 // import 'package:isometry/native/tracer_binding.dart';
 // import 'package:isometry/native/tracer_model.dart';
 
-import 'package:isometry/page_program/tab_exercise_grp.dart';
+import 'package:isometry/page_program/tab_exercise/tab_exercise_grp.dart';
 import 'package:isometry/data_manager.dart';
 
 import 'package:flutter/material.dart';
@@ -36,6 +36,8 @@ Future<void> main() async
       [
         ChangeNotifierProvider(create: (_) => GridData()),
         ChangeNotifierProvider(create: (_) => TagListGlobal()),
+
+        ChangeNotifierProvider(create: (_) => SessionList())
       ],
       child: const MyApp()
     )

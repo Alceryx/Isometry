@@ -415,7 +415,7 @@ class _TagFieldBody extends StatefulWidget
 
   const _TagFieldBody
   ({
-    super.key,
+    
     required this.localTags
   });
 

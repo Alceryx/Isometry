@@ -13,7 +13,6 @@ class GrpCardDesign extends StatelessWidget
   const GrpCardDesign
   ({
     super.key,
-    // required this.grpData,
     required this.onCardTap, 
     this.onOptionTap
   });

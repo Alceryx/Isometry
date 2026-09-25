@@ -38,9 +38,11 @@ abstract class ListStruct<T> extends ChangeNotifier
   }
 }
 
-//----------
-//GRID & GRP
-//----------
+//------------
+//EXERCISE TAB
+//------------
+
+//GRID & GRP ------------
 
 class GridData extends ListStruct<GrpData> {}
 
@@ -65,9 +67,27 @@ class GrpData extends IntraData<GrpData>
   }
 }
 
-//----
-//TAGS
-//----
+//EXERCISE ------------
+
+class ExerciseData extends IntraData<ExerciseData>
+{
+  TagListLocal tags;
+
+  ExerciseData
+  ({
+    required super.title,
+    required this.tags
+  });
+
+  @override 
+  void edit(ExerciseData newItem)
+  {
+    tags = newItem.tags; 
+    super.edit(newItem); 
+  }
+}
+
+//TAG ------------
 
 class TagStyle 
 {
@@ -101,25 +121,37 @@ class TagData extends IntraData<TagData>
 class TagListGlobal extends ListStruct<TagData> {}
 class TagListLocal extends ListStruct<TagData> {}
 
+//-----------
+//SESSION TAB
+//-----------
 
-//--------
-//EXERCISE
-//--------
+//SESSION ------------
 
-class ExerciseData extends IntraData<ExerciseData>
+class SessionList extends ListStruct<SessionData>{}
+class SessionData extends IntraData<SessionData>
 {
-  TagListLocal tags;
+  final bool isScheduled;
+  BlockList blockList; 
 
-  ExerciseData
+  SessionData
   ({
     required super.title,
-    required this.tags
+    required this.isScheduled,
+    required this.blockList
   });
+}
 
-  @override 
-  void edit(ExerciseData newItem)
-  {
-    tags = newItem.tags; 
-    super.edit(newItem); 
-  }
+//BLOCK ------------
+
+class BlockList extends ListStruct<BlockData>{}
+class BlockData 
+{
+  final String title;
+  ExerciseList exerciseList; 
+
+  BlockData
+  ({
+    required this.title, 
+    required this.exerciseList
+  });
 }
