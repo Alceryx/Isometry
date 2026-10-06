@@ -34,7 +34,7 @@ Future<void> main() async
     (
       providers: 
       [
-        ChangeNotifierProvider(create: (_) => GridData()),
+        ChangeNotifierProvider(create: (_) => GrpList()),
         ChangeNotifierProvider(create: (_) => TagListGlobal()),
 
         ChangeNotifierProvider(create: (_) => SessionList())

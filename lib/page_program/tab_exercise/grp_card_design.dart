@@ -8,7 +8,6 @@ class GrpCardDesign extends StatelessWidget
 {
   final VoidCallback? onOptionTap;
   final VoidCallback? onCardTap;  
-  // final GrpData grpData; 
 
   const GrpCardDesign
   ({

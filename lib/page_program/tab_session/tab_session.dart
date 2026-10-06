@@ -16,7 +16,7 @@ class _SessionTabState extends State<SessionTab>
   @override
   Widget build(BuildContext context) 
   {
-    final sessionData = context.watch<SessionList>(); 
+    final sessionList = context.watch<SessionList>(); 
 
     return Scaffold
     (
@@ -57,21 +57,69 @@ class _SessionTabState extends State<SessionTab>
               (
                 listViewer: ListView.builder
                 (
-                  itemCount: sessionData.items.length + 1,
+                  itemCount: sessionList.items.length + 1,
                   itemBuilder: (context, index) 
                   {
-                    if (index < sessionData.items.length)
+                    if (index < sessionList.items.length)
                     {
                       return ChangeNotifierProvider.value
                       (
-                        value: sessionData.items[index],
-                        child: Row
+                        value: sessionList.items[index],
+                        child: Padding
                         (
-                          children: 
-                          [
-                            Text(sessionData.items[index].title),
-                            
-                          ],
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: SessionCardDesign
+                          (
+                            onCardTap: () {},
+                            onOptionTap: () 
+                            {
+                              print('object');
+                              showDialog
+                              (
+                                context: context, 
+                                builder: (context)
+                                {
+                                  final TextEditingController editController = TextEditingController();
+                                  editController.text = sessionList.items[index].title; 
+                                  return ChangeNotifierProvider.value
+                                  (
+                                    value: context.read<SessionList>().items[index],
+                                    child: AlertDialog
+                                    (
+                                      title: Text('Editing'),
+                                      content: TextField
+                                      (
+                                        decoration: InputDecoration
+                                        (
+                                          hintText: 'New title'
+                                        ),
+                                        controller: editController,
+                                      ),
+                                      actions: 
+                                      [
+                                        TextButton
+                                        (
+                                          onPressed: () 
+                                          {
+                                            sessionList.items[index].edit(SessionData
+                                            (title: editController.text, isScheduled: sessionList.items[index].isScheduled, blockList: sessionList.items[index].blockList));
+                      
+                                            Navigator.pop(context);
+                                          }, 
+                                          child: Text('Save')
+                                        ),
+                                        TextButton
+                                        (
+                                          onPressed: () => Navigator.pop(context), 
+                                          child: Text('Cancel')
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }
+                              );
+                            }, 
+                          ),
                         ),
                       );
                     }
@@ -79,7 +127,7 @@ class _SessionTabState extends State<SessionTab>
                     {
                       return TextButton
                       (
-                        onPressed: () => sessionData.addItem
+                        onPressed: () => sessionList.addItem
                         (
                           SessionData
                           (
@@ -97,6 +145,43 @@ class _SessionTabState extends State<SessionTab>
             ]
           ),
         )
+      ),
+    );
+  }
+}
+
+class SessionCardDesign extends StatelessWidget 
+{
+  const SessionCardDesign
+  ({
+    super.key,
+    required this.onOptionTap,
+    required this.onCardTap
+  });
+
+  final VoidCallback? onOptionTap;
+  final VoidCallback? onCardTap; 
+
+  @override
+  Widget build(BuildContext context) 
+  {
+    final sessionData = context.watch<SessionData>(); 
+
+    return GestureDetector
+    (
+      onTap: onCardTap,
+      child: Row
+      (
+        children: 
+        [
+          Text(sessionData.title),
+          Spacer(),
+          TextButton
+          (
+            onPressed: onOptionTap,
+            child: Text('Edit')
+          )
+        ],
       ),
     );
   }

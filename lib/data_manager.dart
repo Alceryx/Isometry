@@ -42,11 +42,9 @@ abstract class ListStruct<T> extends ChangeNotifier
 //EXERCISE TAB
 //------------
 
-//GRID & GRP ------------
+//GRP ------------
 
-class GridData extends ListStruct<GrpData> {}
-
-class ExerciseList extends ListStruct<ExerciseData> {}
+class GrpList extends ListStruct<GrpData> {}
 class GrpData extends IntraData<GrpData>
 {
   String subTitle;
@@ -69,6 +67,7 @@ class GrpData extends IntraData<GrpData>
 
 //EXERCISE ------------
 
+class ExerciseList extends ListStruct<ExerciseData> {}
 class ExerciseData extends IntraData<ExerciseData>
 {
   TagListLocal tags;

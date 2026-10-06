@@ -26,7 +26,7 @@ class _TabExerciseGrpState extends State<TabGrpGrid>
   @override
   Widget build(BuildContext context) 
   {
-    final gridData = context.watch<GridData>();
+    final gridData = context.watch<GrpList>();
 
     return Scaffold
     (
@@ -99,7 +99,7 @@ class _TabExerciseGrpState extends State<TabGrpGrid>
                             {
                               return ChangeNotifierProvider.value
                               (
-                                value: context.read<GridData>().items[index].exercises,
+                                value: context.read<GrpList>().items[index].exercises,
                                 child: TabExerciseList(grpData: gridData.items[index]),
                               );
                             }));
@@ -113,7 +113,7 @@ class _TabExerciseGrpState extends State<TabGrpGrid>
                               {
                                 return ChangeNotifierProvider.value
                                 (
-                                  value: context.read<GridData>().items[index],
+                                  value: context.read<GrpList>().items[index],
                                   child: GridEditDialog
                                   (
                                     index: index,

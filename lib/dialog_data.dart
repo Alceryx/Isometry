@@ -79,7 +79,7 @@ class _EditCardDialogState extends State<GridEditDialog>
         img: 'assets/ui/button_close.svg', 
         onCornerTap: ()
         {
-          context.read<GridData>().deleteItem(widget.index);
+          context.read<GrpList>().deleteItem(widget.index);
           Navigator.pop(context);
         },
       ),
@@ -138,7 +138,7 @@ class _AddCardDialogState extends State<AddCardDialog>
           exercises: ExerciseList(),
         );
 
-        context.read<GridData>().addItem(newGrp);
+        context.read<GrpList>().addItem(newGrp);
         Navigator.pop(context);
       }, 
 
